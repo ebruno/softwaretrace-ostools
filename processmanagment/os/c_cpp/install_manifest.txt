@@ -1,0 +1,4 @@
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/include/swtrpocmgt.h
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/lib/libswtrprocmgt.so
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/lib/libswtrprocmgt_static.a
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/lib/libswtrprocmgt.so
