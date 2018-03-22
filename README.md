@@ -1,2 +1,2 @@
 # softwaretrace-ostools
-Various Operating System tools both Library and Applications
+Various Operating System tools. Contains both Library and Applications in multiple languages.
