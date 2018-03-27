@@ -29,7 +29,7 @@ In brief what ENV33-C states is shown below:
 
 The recommendation ENV33-C is actually applicable to any programming language in an Linux/Unix platform that has a "system" command feature.
 
-The functions in this library allow a developer to option the same type of information when API's do not exist to obtain the information.
+The functions in this library allow a developer to obtain the same type of information when API's do not exist to obtain the information.
 
 
 
