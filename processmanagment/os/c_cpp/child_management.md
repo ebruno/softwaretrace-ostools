@@ -118,8 +118,7 @@ The fields, in order, with their proper scanf(3) format specifiers, are:
    
   *  endcode %lu (27) The address below which program text can run.
   
-  *  startstack %lu
-             (28) The address of the start (i.e., bottom) of the stack.
+  *  startstack %lu (28) The address of the start (i.e., bottom) of the stack.
    
   *  kstkesp %lu (29) The current value of ESP (stack pointer), as found in the kernel stack page for the process.
 
@@ -131,11 +130,9 @@ The fields, in order, with their proper scanf(3) format specifiers, are:
   *  blocked %lu (32)  The  bitmap of blocked signals, displayed as a decimal number.  Obsolete, because it does not provide information on
             real-time signals; use /proc/[pid]/status instead.
    
-  *  sigignore %lu
-            (33) The bitmap of ignored signals, displayed as a decimal number.  Obsolete, because it does not provide  information  on
+  *  sigignore %lu (33) The bitmap of ignored signals, displayed as a decimal number.  Obsolete, because it does not provide  information  on
              real-time signals; use /proc/[pid]/status instead.
-  *  sigcatch %lu
-             (34)  The  bitmap  of caught signals, displayed as a decimal number.  Obsolete, because it does not provide information on
+  *  sigcatch %lu (34)  The  bitmap  of caught signals, displayed as a decimal number.  Obsolete, because it does not provide information on
             real-time signals; use /proc/[pid]/status instead.
   *  wchan %lu   (35) This is the "channel" in which the process is waiting.  It is the address of a system call, and can be looked up in a
             namelist if you need a textual name.  (If you have an up-to-date /etc/psdatabase, then try ps -l to see the WCHAN field in
@@ -146,35 +143,20 @@ The fields, in order, with their proper scanf(3) format specifiers, are:
             (38) Signal to be sent to parent when we die.
   *  processor %d (since Linux 2.2.8)
             (39) CPU number last executed on.
-  *  rt_priority %u (since Linux 2.5.19; was %lu before Linux 2.6.22)
-            (40) Real-time scheduling priority, a number in the range 1 to 99 for processes scheduled under a real-time policy, or  0,
+  *  rt_priority %u (since Linux 2.5.19; was %lu before Linux 2.6.22) (40) Real-time scheduling priority, a number in the range 1 to 99 for processes scheduled under a real-time policy, or  0,
             for non-real-time processes (see sched_setscheduler(2)).
-  *  policy %u (since Linux 2.5.19; was %lu before Linux 2.6.22)
-            (41) Scheduling policy (see sched_setscheduler(2)).  Decode using the SCHED_* constants in linux/sched.h.
-  *  delayacct_blkio_ticks %llu (since Linux 2.6.18)
-            (42) Aggregated block I/O delays, measured in clock ticks (centiseconds).
-  *  guest_time %lu (since Linux 2.6.24)
-            (43)  Guest  time  of the process (time spent running a virtual CPU for a guest operating system), measured in clock ticks
-            (divide by sysconf(_SC_CLK_TCK)).		
-  *  cguest_time %ld (since Linux 2.6.24)
-            (44) Guest time of the process's children, measured in clock ticks (divide by sysconf(_SC_CLK_TCK)).
-  *  start_data %lu (since Linux 3.3)
-            (45) Address above which program data+bss is placed.
-  *  end_data %lu (since Linux 3.3)
-            (46) Address below which program data+bss is placed.
-  *  start_brk %lu (since Linux 3.3)
-            (47) Address above which program heap can be expanded with brk().
-  *  arg_start %lu (since Linux 3.5)
-            (48) Address above which program command line is placed.
-  *  arg_end %lu (since Linux 3.5)
-            (49) Address below which program command line is placed.
-  *  env_start %lu (since Linux 3.5)
-            (50) Address above which program environment is placed.
-  *  env_end %lu (since Linux 3.5)
-            (51) Address below which program environment is placed.
-
-  *  exit_code %d (since Linux 3.5)
-            (52) The thread's exit_code in the form reported by the waitpid system.
+  *  policy %u (since Linux 2.5.19; was %lu before Linux 2.6.22) (41) Scheduling policy (see sched_setscheduler(2)).  Decode using the SCHED_* constants in linux/sched.h.
+  *  delayacct_blkio_ticks %llu (since Linux 2.6.18) (42) Aggregated block I/O delays, measured in clock ticks (centiseconds).
+  *  guest_time %lu (since Linux 2.6.24) (43)  Guest  time  of the process (time spent running a virtual CPU for a guest operating system), measured in clock ticks (divide by sysconf(_SC_CLK_TCK)).	   
+  *  cguest_time %ld (since Linux 2.6.24) (44) Guest time of the process's children, measured in clock ticks (divide by sysconf(_SC_CLK_TCK)).
+  *  start_data %lu (since Linux 3.3) (45) Address above which program data+bss is placed.
+  *  end_data %lu (since Linux 3.3) (46) Address below which program data+bss is placed.
+  *  start_brk %lu (since Linux 3.3) (47) Address above which program heap can be expanded with brk().
+  *  arg_start %lu (since Linux 3.5) (48) Address above which program command line is placed.
+  *  arg_end %lu (since Linux 3.5) (49) Address below which program command line is placed.
+  *  env_start %lu (since Linux 3.5) (50) Address above which program environment is placed.
+  *  env_end %lu (since Linux 3.5) (51) Address below which program environment is placed.
+  *  exit_code %d (since Linux 3.5) (52) The thread's exit_code in the form reported by the waitpid system.
 
 
 pid_t waitpid(pid_t pid, int *status, int options);
