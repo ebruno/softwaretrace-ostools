@@ -1,4 +1,13 @@
-/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/include/swtrpocmgt.h
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/test/include/swtrstrlib.h
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/test/lib/libswtrstrlib.so.0.9.0
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/test/lib/libswtrstrlib.so
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/test/lib/libswtrstrlib_static.a
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/test/include/swtrpocmgt.h
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/test/lib/libswtrprocmgt.so.0.9.0
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/test/lib/libswtrprocmgt.so
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/test/lib/libswtrprocmgt_static.a
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/lib/libswtrprocmgt.so.0.9.0
 /home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/lib/libswtrprocmgt.so
-/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/lib/libswtrprocmgt_static.a
-/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/lib/libswtrprocmgt.so
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/lib/libswtrstrlib.so.0.9.0
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/lib/libswtrstrlib.so
+/home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp/test_bin/demo_001
