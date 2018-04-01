@@ -30,12 +30,12 @@ void create_zombies(int count) {
 
 
 int main(int argc, char **argv) {
-  SWTPROC_MGT ctrl = SWTPROC_INIT_MGTCTRL_V1;
+  SWTPROC_MGT ctrl;
   int result = 0;
   int count = 0;
   int num_zombies = 5;
   pid_t my_pid = getpid();
-  swtrprcmgt_set_maxpid(&ctrl); 
+  SWTPROC_INIT_MGTCTRL(&ctrl);
   fprintf(stdout,"Creating %d children.\n",num_zombies);
   create_zombies(num_zombies);
   // Wait for the children to exit

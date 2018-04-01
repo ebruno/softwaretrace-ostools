@@ -63,8 +63,8 @@ int swtrprcmgt_count_children(SWTPROC_MGT *ctrl, pid_t pid, char state) {
   pid_t cpid = 0;
   pid_t ppid = 0;
   if (ctrl != NULL) {
-    if (pid <= ctrl->max_pid) {
-      sprintf(glob_pattern,glob_fmt_pattern,ctrl->proc_system_root);
+    if (pid <= ctrl->mgt.v1.max_pid) {
+      sprintf(glob_pattern,glob_fmt_pattern,ctrl->mgt.v1.proc_system_root);
       result = glob(glob_pattern,flags,NULL,&pglob);
       if (result == 0) {
 	char **base_entry = pglob.gl_pathv;
