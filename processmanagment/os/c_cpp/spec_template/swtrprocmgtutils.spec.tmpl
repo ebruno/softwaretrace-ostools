@@ -1,0 +1,48 @@
+Name:		swtrprocmgtutils
+%global major          XMAJOR
+%global minor          XMINOR
+%global subversion     XSUBVERSION
+%global build_number   XBUILD_NUMBER
+%global private_build_id XPRIVATE_BUILD_ID
+%global release_key    XRELEASE_KEY
+Version:	%{major}.%{minor}.%{subversion}.%{private_build_id}.%{build_number}
+Release:	%{release_key}%{?dist}
+Summary:	Softwaretrace process management library. Contains various functions that help with process management.
+
+License:	BSD 3-Clause License
+URL:		https://github.com/ebruno/softwaretrace-ostools
+Source0:	softwaretrace-ostools-src-%{version}.tar.gz
+
+#BuildRequires:	
+#Requires:	
+
+%description
+Routines for process management:
+	 find all of a processes children.
+	 find reap the status of all zombie/defunct children of a process.
+
+
+%prep
+%setup -q
+
+
+%build
+cmake -DCMAKE_BUILD_TYPE:STRING="ReleaseLibsOnly;BuildType" -DSWTRLIB_LIB_INSTALL_ROOT:STRING=/usr/local -DSWTRLIB_BUILD_LIBS:STRING="swtrprocmgt" .
+make %{?_smp_mflags}
+
+
+%install
+rm -rf $RPM_BUILD_ROOT
+%make_install
+
+
+
+
+%files
+/usr/local/include/*
+/usr/local/lib/*
+%doc
+
+
+
+%changelog
