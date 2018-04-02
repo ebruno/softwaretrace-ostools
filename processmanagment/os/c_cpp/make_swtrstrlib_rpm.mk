@@ -44,7 +44,7 @@ swtrstrlib_create_rpm:
 		sed -e "s/XPRIVATE_BUILD_ID/${SWTRSTRLIB_PRIVATE_BUILD_ID}/g" -i ${SPEC_DIR}/${SWTRSTRLIB_NAME}.spec;\
 		sed -e "s/XBUILD_NUMBER/${SWTRSTRLIB_BUILD_NUMBER}/g" -i ${SPEC_DIR}/${SWTRSTRLIB_NAME}.spec;\
 		sed -e "s/XRELEASE_KEY/${SWTRSTRLIB_RELEASE_KEY}/g" -i ${SPEC_DIR}/${SWTRSTRLIB_NAME}.spec;\
-		rpmbuild %(RPM_VERBOSE} -bb ${SPEC_DIR}/${SWTRSTRLIB_NAME}.spec; \
+		rpmbuild $(RPM_VERBOSE} -bb ${SPEC_DIR}/${SWTRSTRLIB_NAME}.spec; \
 	else \
 	  echo "Error unable to locate ${CURDIR}/${SPEC_TEMPLATE_DIR}, fatal,terminating"; \
 	  exit 1; \
