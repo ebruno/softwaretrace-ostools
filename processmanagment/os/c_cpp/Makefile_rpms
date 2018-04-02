@@ -12,11 +12,16 @@ SPEC_TEMPLATE_DIR = spec_template
 
 RPM_VERBOSE = 
 
-# RPM_VERBOSE = --vv
+#RPM_VERBOSE = --vv
 
 ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_rpm.mk)","")
 else
  include ${CURDIR}/make_swtrstrlib_rpm.mk
+endif
+
+ifeq ("$(wildcard ${CURDIR}/make_swtrprocmgtutils_rpm.mk)","")
+else
+ include ${CURDIR}/make_swtrprocmgtutils_rpm.mk
 endif
 
 TEMP_DIRS = ${SPEC_DIR}
