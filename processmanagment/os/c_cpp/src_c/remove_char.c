@@ -17,7 +17,6 @@ int swtrstrlib_strip_char(char *inbuf, char remove_char) {
   int result = 0;
   char *result_ptr = NULL;
   char *look_ptr = NULL;
-  bool found_remove_char = false;
   if ((inbuf != NULL) && (remove_char != SWTRSTRLIB_STRING_TERMINATOR_C)) {
     look_ptr = inbuf;
     result_ptr = inbuf;
