@@ -24,11 +24,6 @@ int main(int argc, char **argv) {
   pid_t my_pid = getpid();
   SWTPROC_INIT_MGTCTRL(&ctrl);
   SWTPROC_STAT_INFO proc_info;
-  char test_buf[] = "12345 6890123 4567 890";
-  fprintf(stdout,"count %d  buffer:'%s'\n",strlen(test_buf),test_buf);
-  count = swtrstrlib_strip_char(test_buf,' ');
-  fprintf(stdout,"count %d  buffer:'%s'\n",count,test_buf);
-  exit(1);
   result = swtrprcmgt_get_process_stat(&ctrl, my_pid, &proc_info);
   fprintf(stdout,"mypid = %d\n",my_pid);
   fprintf(stdout," %d ",my_pid, proc_info.stat.kernel_3_5.pid);
