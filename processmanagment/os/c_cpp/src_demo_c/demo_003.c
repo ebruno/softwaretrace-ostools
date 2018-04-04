@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
   SWTPROC_STAT_INFO proc_info;
   result = swtrprcmgt_get_process_stat(&ctrl, my_pid, &proc_info);
   fprintf(stdout,"mypid = %d\n",my_pid);
-  fprintf(stdout," %d ",my_pid, proc_info.stat.kernel_3_5.pid);
+  fprintf(stdout," %d ", proc_info.stat.kernel_3_5.pid);
   fprintf(stdout,"%s ", proc_info.stat.kernel_3_5.comm);
   fprintf(stdout,"%c ", proc_info.stat.kernel_3_5.state);
   fprintf(stdout,"%d ", proc_info.stat.kernel_3_5.ppid);
@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
   fprintf(stdout,"%ld ", proc_info.stat.kernel_3_5.nice);
   fprintf(stdout,"%ld ", proc_info.stat.kernel_3_5.num_threads);
   fprintf(stdout,"%ld ", proc_info.stat.kernel_3_5.itrealvalue);
-  fprintf(stdout,"%lu ", proc_info.stat.kernel_3_5.starttime);
+  fprintf(stdout,"%llu ", proc_info.stat.kernel_3_5.starttime);
   fprintf(stdout,"%lu ", proc_info.stat.kernel_3_5.vsize);
   fprintf(stdout,"%ld ", proc_info.stat.kernel_3_5.rss);
   fprintf(stdout,"%lu ", proc_info.stat.kernel_3_5.rsslim);
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
   fprintf(stdout,"%lu ", proc_info.stat.kernel_3_5.wchan);
   fprintf(stdout,"%lu ", proc_info.stat.kernel_3_5.nswap);
   fprintf(stdout,"%lu ", proc_info.stat.kernel_3_5.cnswap);
-  fprintf(stdout,"%d ", proc_info.stat.kernel_3_5.exit_signal);
+  fprintf(stdout,"%ld ", proc_info.stat.kernel_3_5.exit_signal);
   fprintf(stdout,"%lu ", proc_info.stat.kernel_3_5.processor);
   fprintf(stdout,"%u ", proc_info.stat.kernel_3_5.rt_priority);
   fprintf(stdout,"%u ", proc_info.stat.kernel_3_5.policy);
@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
 
 
 
-  fprintf(stdout,"pid: %d ",my_pid, proc_info.stat.kernel_3_5.pid);
+  fprintf(stdout,"pid: %d ", proc_info.stat.kernel_3_5.pid);
   fprintf(stdout,"comm:'%s' ", proc_info.stat.kernel_3_5.comm);
   fprintf(stdout,"state: %c ", proc_info.stat.kernel_3_5.state);
   fprintf(stdout,"ppid: %d ", proc_info.stat.kernel_3_5.ppid);
@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
   fprintf(stdout,"nice: %ld\n", proc_info.stat.kernel_3_5.nice);
   fprintf(stdout,"num_threads: %ld ", proc_info.stat.kernel_3_5.num_threads);
   fprintf(stdout,"itrealvalue: %ld ", proc_info.stat.kernel_3_5.itrealvalue);
-  fprintf(stdout,"starttime: %lu ", proc_info.stat.kernel_3_5.starttime);
+  fprintf(stdout,"starttime: %llu ", proc_info.stat.kernel_3_5.starttime);
   fprintf(stdout,"vsize: %lu ", proc_info.stat.kernel_3_5.vsize);
   fprintf(stdout,"rss: %ld ", proc_info.stat.kernel_3_5.rss);
   fprintf(stdout,"rsslim: %lu\n", proc_info.stat.kernel_3_5.rsslim);
@@ -118,7 +118,7 @@ int main(int argc, char **argv) {
   fprintf(stdout,"wchan: %lu ", proc_info.stat.kernel_3_5.wchan);
   fprintf(stdout,"nswap: %lu ", proc_info.stat.kernel_3_5.nswap);
   fprintf(stdout,"cnswap: %lu ", proc_info.stat.kernel_3_5.cnswap);
-  fprintf(stdout,"exit_signal: %d\n", proc_info.stat.kernel_3_5.exit_signal);
+  fprintf(stdout,"exit_signal: %ld\n", proc_info.stat.kernel_3_5.exit_signal);
   fprintf(stdout,"processor: %lu ", proc_info.stat.kernel_3_5.processor);
   fprintf(stdout,"rt_priority: %u\n", proc_info.stat.kernel_3_5.rt_priority);
   fprintf(stdout,"policy: %u ", proc_info.stat.kernel_3_5.policy);
