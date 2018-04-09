@@ -17,10 +17,11 @@ SWTRPROCMGTUTILSLIB_TARFILE_NAME   = ${TARFILE_NAME}-${SWTRPROCMGTUTILSLIB_MAJOR
 
 SWTRPROCMGTUTILSLIB_SRCDIR_NAME   = ${SWTRPROCMGTUTILSLIB_NAME}-${SWTRPROCMGTUTILSLIB_MAJOR}.${SWTRPROCMGTUTILSLIB_MINOR}.${SWTRPROCMGTUTILSLIB_SUBVERSION}.${SWTRPROCMGTUTILSLIB_PRIVATE_BUILD_ID}.${SWTRPROCMGTUTILSLIB_BUILD_NUMBER}
 
-SWTRCOMMON_FILES          = CMakeLists.txt Makefile_rpms Makefile_doc
+SWTRCOMMON_FILES          = CMakeLists.txt Makefile_packages Makefile_doc
 SWTRPROCMGTUTILSLIB_DOC_FILES 	  = 
 SWTRPROCMGTUTILSLIB_FILES          = make_swtrstrlib_rpm.mk
 SWTRPROCMGTUTILSLIB_DIRS           = src_c
+
 
 swtrprocmgtutilslib_create_src:
 	@echo "Creating Source Distribution ${SWTRPROCMGTUTILSLIB_TARFILE_NAME}";
@@ -33,7 +34,7 @@ swtrprocmgtutilslib_create_src:
 	@tar -czf ${RPMBUILD_SOURCE_DIR}/${SWTRPROCMGTUTILSLIB_TARFILE_NAME} "${SWTRPROCMGTUTILSLIB_SRCDIR_NAME}"
 	@rm -r -f "${SWTRPROCMGTUTILSLIB_SRCDIR_NAME}";
 
-swtrprocmgtutilslib_create_rpm:
+swtrprocmgtutilslib_create_rpm: swtrprocmgtutilslib_create_src
 	@if ! test -d ${CURDIR}/${SPEC_DIR}; then \
 		mkdir -p ${CURDIR}/${SPEC_DIR}; \
 	fi;
