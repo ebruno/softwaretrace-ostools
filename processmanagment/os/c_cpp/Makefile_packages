@@ -24,16 +24,11 @@ SPEC_TEMPLATE_DIR = spec_template
 
 
 ifeq ($(NAME),"CentOS Linux")
-
-RPMBUILD_BASE  = rpmbuild
-
-RPMBUILD_DIRS  = BUILD BUILDROOT RPMS SOURCES SPECS SRPMS
-
-RPMBUILD_SOURCE_DIR = ${HOME}/${RPMBUILD_BASE}/SOURCES
-
-RPM_VERBOSE = 
-
-#RPM_VERBOSE = --vv
+     RPMBUILD_BASE  = rpmbuild
+     RPMBUILD_DIRS  = BUILD BUILDROOT RPMS SOURCES SPECS SRPMS
+     RPMBUILD_SOURCE_DIR = ${HOME}/${RPMBUILD_BASE}/SOURCES
+     RPM_VERBOSE = 
+#    RPM_VERBOSE = --vv
 
 ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_rpm.mk)","")
 else
@@ -44,21 +39,35 @@ ifeq ("$(wildcard ${CURDIR}/make_swtrprocmgtutils_rpm.mk)","")
 else
  include ${CURDIR}/make_swtrprocmgtutils_rpm.mk
 endif
+
+else ifeq ($(NAME),"Red Hat Enterprise Linux Server")
+     RPMBUILD_BASE  = rpmbuild
+     RPMBUILD_DIRS  = BUILD BUILDROOT RPMS SOURCES SPECS SRPMS
+     RPMBUILD_SOURCE_DIR = ${HOME}/${RPMBUILD_BASE}/SOURCES
+     RPM_VERBOSE = 
+#    RPM_VERBOSE = --vv
+
+ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_rpm.mk)","")
+else
+ include ${CURDIR}/make_swtrstrlib_rpm.mk
+endif
+
+ifeq ("$(wildcard ${CURDIR}/make_swtrprocmgtutils_rpm.mk)","")
+else
+ include ${CURDIR}/make_swtrprocmgtutils_rpm.mk
+endif
+
 else ifeq ($(NAME),"Ubuntu")
-
-DEBBUILD_BASE  = debbuild
-
-DEBBUILD_DIRS  = SOURCES
-
-DEBBUILD_SOURCE_DIR = ${HOME}/${DEBBUILD_BASE}/SOURCES
-
+     DEBBUILD_BASE  = debbuild
+     DEBBUILD_DIRS  = SOURCES
+     DEBBUILD_SOURCE_DIR = ${HOME}/${DEBBUILD_BASE}/SOURCES
 
 ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_ubuntu_deb.mk)","")
 else
  include ${CURDIR}/make_swtrstrlib_ubuntu_deb.mk
 endif
 else
-   ${error $NAME is not a supported system)
+   $(error $(NAME) is not a supported system)
 endif
 
 TEMP_DIRS = ${SPEC_DIR}
