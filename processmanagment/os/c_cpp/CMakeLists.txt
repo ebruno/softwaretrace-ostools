@@ -45,7 +45,7 @@ message("-- Building librarys ${SWTRLIB_BUILD_LIBS}")
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
     add_compile_options(-std=c99 ${CMAKE_C_FLAGS_DEBUG} -Wall)
-else (CMAKE_BUILD_TYPE MATCHES Release)
+elseif (CMAKE_BUILD_TYPE MATCHES Release)
    add_compile_options(-std=c99 -O3)
 elseif (CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
     add_compile_options(-std=c99 -O2 ${CMAKE_C_FLAGS_DEBUG})

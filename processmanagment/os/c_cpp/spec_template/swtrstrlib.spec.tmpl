@@ -21,6 +21,7 @@ Routines for string handling:
 	 left and right, trim
 	 strip character.
 
+%global debug_package %{nil}
 
 %prep
 %setup -q
@@ -41,6 +42,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 /usr/local/include/*
 /usr/local/lib/*
+
 %doc
 
 
