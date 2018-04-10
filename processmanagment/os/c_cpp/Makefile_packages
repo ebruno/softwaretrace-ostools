@@ -17,9 +17,9 @@ endif
 
 TARFILE_NAME   = softwaretrace-ostools-src
 
-CENTOS_NAME   = CentOS Linux
+CENTOS_NAME   = "CentOS Linux"
 
-RHEL_NAME = Red Hat Enterprise Linux Server
+RHEL_NAME = "Red Hat Enterprise Linux Server"
 
 SPEC_DIR = SPECS
 
