@@ -1,0 +1,49 @@
+
+#Maintainer: Your Name <eric@ebruno.org>
+pkgname=swtrstrlib
+pkgver=0.9.0.0.2
+pkgrel=1
+epoch=
+pkgdesc="Softwaretrace C string utilities."
+arch=(x86_64)
+url="https://github.com/ebruno/softwaretrace-ostools"
+license=('BSD')
+groups=()
+depends=()
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=ChangeLog
+source=("$pkgname-$pkgver.tar.gz"
+        )
+noextract=()
+md5sums=()
+validpgpkeys=()
+
+prepare() {
+	cd "$pkgname-$pkgver"
+#	patch -p1 -i "$srcdir/$pkgname-$pkgver.patch"
+}
+
+build() {
+	cd "$pkgname-$pkgver"
+	cmake -DCMAKE_BUILD_TYPE:STRING="ReleaseLibsOnly;BuildType" -DSWTRLIB_LIB_INSTALL_ROOT:STRING=/usr/local -DSWTRLIB_BUILD_LIBS:STRING="swtrstrlib" .
+	make
+}
+
+check() {
+#	cd "$pkgname-$pkgver"
+#	make -k check
+	echo "Skipping Check"
+}
+
+package() {
+	cd "$pkgname-$pkgver"
+	make DESTDIR="$pkgdir/" install
+}

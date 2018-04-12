@@ -80,6 +80,12 @@ add_library(swtrstrlib_static STATIC ${libsrc_string})
 set_target_properties(swtrstrlib swtrstrlib_static PROPERTIES VERSION ${SWTRSTRLIB_LIB_VERSION} SOVERSION ${SWTRSTRLIB_LIB_VERSION})
 message("-- Adding library swtrstrlib to install.")
 install(FILES src_c/swtrstrlib.h DESTINATION ${SWTRLIB_LIB_INSTALL_ROOT}/include)
+
+if (${OS_NAME} MATCHES "Arch Linux")
+message("-- Adding License file to install list")
+install(FILES LICENSE DESTINATION ${SWTRLIB_LIB_INSTALL_ROOT}/share/licenses/swtrstrlib)
+endif (${OS_NAME} MATCHES "Arch Linux")
+
 install(TARGETS swtrstrlib swtrstrlib_static
 		LIBRARY DESTINATION ${SWTRLIB_LIB_INSTALL_ROOT}/lib
 		ARCHIVE DESTINATION ${SWTRLIB_LIB_INSTALL_ROOT}/lib
@@ -126,5 +132,5 @@ add_custom_target(create_doc make -C ${CMAKE_BINARY_DIR} DOCDIR_ROOT=${DOCDIR_RO
 add_custom_target(dist_clean ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/demo_bin
 			     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/doc
 			     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/SPECS
-			     COMMAND rm -f *~ src_c/*~ src_cpp/*~ spec_templates/*~ 
-			     COMMAND rm -f -r ${CMAKE_BINARY_DIR}/CMakeFiles cmake_install.cmake CMakeCache.txt CTestTestfile.cmake Makefile)
+			     COMMAND rm -f *~ src_c/*~ src_cpp/*~ spec_templates/*~ *.xz *.gz
+			     COMMAND rm -f -r ${CMAKE_BINARY_DIR}/CMakeFiles cmake_install.cmake CMakeCache.txt CTestTestfile.cmake Makefile src)

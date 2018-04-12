@@ -21,6 +21,8 @@ CENTOS_NAME   = "CentOS Linux"
 
 RHEL_NAME = "Red Hat Enterprise Linux Server"
 
+ARCHLINUX_NAME = "Arch Linux"
+
 SPEC_DIR = SPECS
 
 SPEC_TEMPLATE_DIR = spec_template
@@ -81,30 +83,41 @@ else ifeq ($(NAME),Fedora)
          include ${CURDIR}/make_swtrprocmgtutils_rpm.mk
        endif
 else ifeq ($(NAME),Ubuntu)
-         DEBBUILD_BASE  = debbuild
-         DEBBUILD_DIRS  = SOURCES
-         DEBBUILD_SOURCE_DIR = ${HOME}/${DEBBUILD_BASE}/SOURCES
-         BUILDING_RPMS = No 
-         ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_ubuntu_deb.mk)","")
-         else
-           include ${CURDIR}/make_swtrstrlib_ubuntu_deb.mk
-         endif
+       DEBBUILD_BASE  = debbuild
+       DEBBUILD_DIRS  = SOURCES
+       DEBBUILD_SOURCE_DIR = ${HOME}/${DEBBUILD_BASE}/SOURCES
+       BUILDING_RPMS = No 
+       ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_ubuntu_deb.mk)","")
+       else
+         include ${CURDIR}/make_swtrstrlib_ubuntu_deb.mk
+       endif
+else ifeq ($(NAME),$(ARCHLINUX_NAME))
+       PACMANBUILD_BASE = ${CURDIR}/ARCHLINUXBUILD
+       ARCLINUX_SOURCE_DIR = ${CURDIR}
+       ARCLINUX_PACKAGE_DIR = packages
+       ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_archlinux.mk)","")
+       else
+         include ${CURDIR}/make_swtrstrlib_archlinux.mk
+       endif
+
+       ifeq ("$(wildcard ${CURDIR}/make_swtrprocmgtutils_archlinux.mk)","")
+       else
+         include ${CURDIR}/make_swtrprocmgtutils_rpm.mk
+       endif
 else
    $(error "$(NAME)" is not a supported operating system)
 endif
 
 $(info OS/Distro "$(NAME)" is supported, continuing.)
 
-TEMP_DIRS = ${SPEC_DIR}
+TEMP_DIRS = ${SPEC_DIR} ${CURDIR}/src ${CURDIR}/packages
 
 .PHONY:	create_rpmdirs clean
 
 
 all:
 
-
-#ifeq ($(BUILDING_RPMS),Yes)
-
+ifeq ($(BUILDING_RPMS),Yes)
 create_rpmdirs:
 	@echo "Creating RPM BUILD DIRS at ${HOME}/${RPMBUILD_BASE}";
 	@$(foreach subdir, ${RPMBUILD_DIRS}, if ! test -d ${HOME}/${RPMBUILD_BASE}/${subdir}; then mkdir -p ${HOME}/${RPMBUILD_BASE}/${subdir};fi;)
@@ -117,7 +130,7 @@ delete_rpmdirs:
 	@echo "Deleting RPM BUILD DIRS at ${HOME}/${RPMBUILD_BASE}";
 	@$(foreach subdir, ${RPMBUILD_DIRS}, if test -d ${HOME}/${RPMBUILD_BASE} then rm -r -f ${HOME}/${RPMBUILD_BASE};fi;)
 
-#else ifeq ($(NAME),Ubuntu)
+else
 create_debdirs:
 	@echo "Creating DEB BUILD DIRS at ${HOME}/${DEBBUILD_BASE}";
 	@$(foreach subdir, ${DEBBUILD_DIRS}, if ! test -d ${HOME}/${DEBBUILD_BASE}/${subdir}; then mkdir -p ${HOME}/${DEBBUILD_BASE}/${subdir};fi;)
@@ -130,9 +143,8 @@ delete_debdirs:
 	@echo "Deleting DEB BUILD DIRS at ${HOME}/${DEBBUILD_BASE}";
 	@$(foreach subdir, ${DEBBUILD_DIRS}, if test -d ${HOME}/${DEBBUILD_BASE} then rm -r -f ${HOME}/${DEBBUILD_BASE};fi;)
 
-#endif
+endif
 clean:
 	@echo "Cleaning"
 	@$(foreach item, ${TEMP_DIRS}, rm -r -f ${item};)
-
 dist_clean: clean
