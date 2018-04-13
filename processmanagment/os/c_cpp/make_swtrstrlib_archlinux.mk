@@ -18,6 +18,8 @@ SWTRSTRLIB_TARFILE_NAME   = ${SWTRSTRLIB_NAME}-${SWTRSTRLIB_MAJOR}.${SWTRSTRLIB_
 
 SWTRSTRLIB_SRCDIR_NAME   = ${SWTRSTRLIB_NAME}-${SWTRSTRLIB_MAJOR}.${SWTRSTRLIB_MINOR}.${SWTRSTRLIB_SUBVERSION}.${SWTRSTRLIB_PRIVATE_BUILD_ID}.${SWTRSTRLIB_BUILD_NUMBER}
 
+SWTRSTRLIB_ARCHLINUX_BUILDDIRS = sources srcpackages packages logs
+
 SWTRCOMMON_FILES          = CMakeLists.txt Makefile_packages Makefile_doc
 SWTRSTRLIB_DOC_FILES 	  = 
 SWTRSTRLIB_LICENSE_FILES  = ../../../LICENSE
@@ -28,8 +30,13 @@ swtrstrlib_all:
 		@echo "dummy_all"
 		@exit 0;
 
+swtrstrlib_create_distro: swtrstrlib_create_changelog swtrstrlib_create_src swtrstrlib_create_pkg
+
 swtrstrlib_create_src:
 	@echo "Creating Source Distribution ${SWTRSTRLIB_TARFILE_NAME}";
+	@if ! test -d ${PACMANBUILD_BASE}; then \
+               $(foreach item,${SWTRSTRLIB_ARCHLINUX_BUILDDIRS}, mkdir -p ${PACMANBUILD_BASE}/${item};) \
+	fi;
 	@if test -d "${SWTRSTRLIB_NAME}.${SWTRSTRLIB_MAJOR}.${SWTRSTRLIB_MINOR}.${SWTRSTRLIB_SUBVERSION}"; then \
 	   rm -r -f "${SWTRSTRLIB_NAME}.${SWTRSTRLIB_MAJOR}.${SWTRSTRLIB_MINOR}.${SWTRSTRLIB_SUBVERSION}"; \
 	fi;
@@ -49,24 +56,29 @@ swtrstrlib_create_src:
 	@tar -czf ${ARCLINUX_SOURCE_DIR}/${SWTRSTRLIB_TARFILE_NAME} "${SWTRSTRLIB_SRCDIR_NAME}"
 	@rm -r -f "${SWTRSTRLIB_SRCDIR_NAME}";
 
+swtrstrlib_create_changelog:
 
 swtrstrlib_create_pkg:
-		@cp archpkg_templates/PKGBUILD.proto ${CURDIR}/PKGBUILD;
-	        @export PKGDEST="${ARCLINUX_PACKAGE_DIR}"; \
-		export BUILDDIR="${PACMANBUILD_BASE}"; \
-		export SRCDEST="${PACMANBUILD_BASE}"; \
-		export SRCPKGDEST="${PACMANBUILD_BASE}"; \
-		export PACKAGER="Eric Bruno <eric@ebruno.org>"; \
-		makepkg -g >> PKGBUILD;
-		@if ! test -d ${ARCLINUX_PACKAGE_DIR}; then \
-		   mkdir -p ${ARCLINUX_PACKAGE_DIR}; \
+		@cp archpkg_templates/PKGBUILD.proto ${PACMANBUILD_BASE}/PKGBUILD;
+		@if ! test -d ${PACMANBUILD_BASE}; then \
+		   $(foreach item,${SWTRSTRLIB_ARCHLINUX_BUILDDIRS}, mkdir -p ${PACMANBUILD_BASE}/${item};) \
 		else \
-		   rm -f ${ARCLINUX_PACKAGE_DIR}/${SWTRSTRLIB_NAME}*.tar.xz; \
+		   rm -f ${PACMANBUILD_BASE}/${ARCLINUX_PACKAGE_DIR}/${SWTRSTRLIB_NAME}*.tar.xz; \
 		fi;
-	        export PKGDEST="${ARCLINUX_PACKAGE_DIR}"; \
+		@echo "Update checksums";
+	        @export PKGDEST="${PACMANBUILD_BASE}/${ARCLINUX_PACKAGE_DIR}"; \
 		export BUILDDIR="${PACMANBUILD_BASE}"; \
-		export SRCDEST="${PACMANBUILD_BASE}"; \
-		export SRCPKGDEST="${PACMANBUILD_BASE}"; \
+		export SRCDEST="${PACMANBUILD_BASE}/sources"; \
+		export SRCPKGDEST="${PACMANBUILD_BASE}/srcpackages"; \
+		export LOGDEST="${PACMANBUILD_BASE}/logs"; \
+		export PACKAGER="Eric Bruno <eric@ebruno.org>"; \
+		cd ${PACMANBUILD_BASE}; pwd; \
+		makepkg -g >> ${PACMANBUILD_BASE}/PKGBUILD; \
+	        export PKGDEST="${PACMANBUILD_BASE}/${ARCLINUX_PACKAGE_DIR}"; \
+		export BUILDDIR="${PACMANBUILD_BASE}"; \
+		export SRCDEST="${PACMANBUILD_BASE}/sources"; \
+		export SRCPKGDEST="${PACMANBUILD_BASE}/srcpackages"; \
+		export LOGDEST="${PACMANBUILD_BASE}/logs"; \
 		export PACKAGER="Eric Bruno <eric@ebruno.org>"; \
 		makepkg -C ${SWTRSTRLIB_PACMAN_OVERRIDE} updpkgsums
 
