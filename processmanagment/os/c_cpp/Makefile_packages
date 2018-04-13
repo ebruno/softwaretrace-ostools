@@ -93,7 +93,7 @@ else ifeq ($(NAME),Ubuntu)
        endif
 else ifeq ($(NAME),$(ARCHLINUX_NAME))
        PACMANBUILD_BASE = ${CURDIR}/ARCHLINUXBUILD
-       ARCLINUX_SOURCE_DIR = ${CURDIR}
+       ARCLINUX_SOURCE_DIR = ${PACMANBUILD_BASE}
        ARCLINUX_PACKAGE_DIR = packages
        ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_archlinux.mk)","")
        else
@@ -110,7 +110,7 @@ endif
 
 $(info OS/Distro "$(NAME)" is supported, continuing.)
 
-TEMP_DIRS = ${SPEC_DIR} ${CURDIR}/src ${CURDIR}/packages
+TEMP_DIRS = ${SPEC_DIR} ${CURDIR}/src ${PACMANBUILD_BASE}
 
 .PHONY:	create_rpmdirs clean
 
