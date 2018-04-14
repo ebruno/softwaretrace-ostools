@@ -101,8 +101,10 @@ else ifeq ($(NAME),$(ARCHLINUX_NAME))
        endif
 
        ifeq ("$(wildcard ${CURDIR}/make_swtrprocmgtutils_archlinux.mk)","")
+          $(info make_swtrprocmgtutils_archlinux.mk not found, skipping.)
        else
-         include ${CURDIR}/make_swtrprocmgtutils_rpm.mk
+          $(info Including make_swtrprocmgtutils_archlinux.mk)
+         include ${CURDIR}/make_swtrprocmgtutils_archlinux.mk
        endif
 else
    $(error "$(NAME)" is not a supported operating system)

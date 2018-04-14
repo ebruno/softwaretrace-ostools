@@ -26,13 +26,23 @@ SWTRSTRLIB_LICENSE_FILES  = ../../../LICENSE
 SWTRSTRLIB_FILES          = make_swtrstrlib_ubuntu_deb.mk
 SWTRSTRLIB_DIRS           = src_c
 
+SWTRSTRLIB_CHANGE_LOG = ChangeLog_archlinux
+
+
 swtrstrlib_all:
 		@echo "dummy_all"
 		@exit 0;
 
-swtrstrlib_create_distro: swtrstrlib_create_changelog swtrstrlib_create_src swtrstrlib_create_pkg
+swtrstrlib_create_distro: swtrstrlib_create_buildarea swtrstrlib_create_changelog swtrstrlib_create_src swtrstrlib_create_pkg
 
-swtrstrlib_create_src:
+swtrstrlib_create_buildarea:
+	@if ! test -d ${PACMANBUILD_BASE}; then \
+               $(foreach item,${SWTRSTRLIB_ARCHLINUX_BUILDDIRS}, mkdir -p ${PACMANBUILD_BASE}/${item};) \
+	fi;
+
+
+
+swtrstrlib_create_src: swtrstrlib_create_buildarea
 	@echo "Creating Source Distribution ${SWTRSTRLIB_TARFILE_NAME}";
 	@if ! test -d ${PACMANBUILD_BASE}; then \
                $(foreach item,${SWTRSTRLIB_ARCHLINUX_BUILDDIRS}, mkdir -p ${PACMANBUILD_BASE}/${item};) \
@@ -56,13 +66,19 @@ swtrstrlib_create_src:
 	@tar -czf ${ARCLINUX_SOURCE_DIR}/${SWTRSTRLIB_TARFILE_NAME} "${SWTRSTRLIB_SRCDIR_NAME}"
 	@rm -r -f "${SWTRSTRLIB_SRCDIR_NAME}";
 
-swtrstrlib_create_changelog:
 
-swtrstrlib_create_pkg:
-		@cp archpkg_templates/PKGBUILD.proto ${PACMANBUILD_BASE}/PKGBUILD;
-		@if ! test -d ${PACMANBUILD_BASE}; then \
-		   $(foreach item,${SWTRSTRLIB_ARCHLINUX_BUILDDIRS}, mkdir -p ${PACMANBUILD_BASE}/${item};) \
-		else \
+swtrstrlib_create_changelog:
+			cp ${SWTRSTRLIB_CHANGE_LOG} ${PACMANBUILD_BASE}/ChangeLog
+
+
+swtrstrlib_create_pkg: swtrstrlib_create_buildarea swtrstrlib_create_changelog
+		@cp archpkg_templates/PKGBUILD_${SWTRSTRLIB_NAME}.proto ${PACMANBUILD_BASE}/PKGBUILD;
+		@sed -i -e "s/XMAJOR/${SWTRSTRLIB_MAJOR}/g" ${PACMANBUILD_BASE}/PKGBUILD;
+		@sed -i -e "s/XMINOR/${SWTRSTRLIB_MINOR}/g" ${PACMANBUILD_BASE}/PKGBUILD;
+		@sed -i -e "s/XSUBVERSION/${SWTRSTRLIB_SUBVERSION}/g" ${PACMANBUILD_BASE}/PKGBUILD;
+		@sed -i -e "s/XPRIVATE_BUILD_ID/${SWTRSTRLIB_PRIVATE_BUILD_ID}/g" ${PACMANBUILD_BASE}/PKGBUILD;
+		@sed -i -e "s/XBUILD_NUMBER/${SWTRSTRLIB_BUILD_NUMBER}/g" ${PACMANBUILD_BASE}/PKGBUILD;
+		@if ! test -d ${PACMANBUILD_BASE}/${ARCLINUX_PACKAGE_DIR}; then \
 		   rm -f ${PACMANBUILD_BASE}/${ARCLINUX_PACKAGE_DIR}/${SWTRSTRLIB_NAME}*.tar.xz; \
 		fi;
 		@echo "Update checksums";
