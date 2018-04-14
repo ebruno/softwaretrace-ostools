@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/utsname.h>
-#include "swtrpocmgt.h"
+#include "swtrprocmgt.h"
 
 #ifdef __cplusplus
 extern "C" {
