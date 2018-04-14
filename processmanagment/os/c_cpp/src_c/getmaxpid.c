@@ -11,7 +11,7 @@
 #include <glob.h>
 #include <string.h>
 
-#include "swtrpocmgt.h"
+#include "swtrprocmgt.h"
 
 /*! Get max PID allowed by the system.
     The max pid is stored in /proc/sys/kernel/pid_max

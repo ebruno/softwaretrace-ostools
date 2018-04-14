@@ -14,7 +14,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <sys/utsname.h>
-#include "swtrpocmgt.h"
+#include "swtrprocmgt.h"
 #include "swtrstrlib.h"
 
 /*! Count all children of a pid that is in the specified state.
