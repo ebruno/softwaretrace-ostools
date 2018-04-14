@@ -2,7 +2,7 @@
   \brief Initialize control block.
  */
 #include <string.h>
-#include "swtrpocmgt.h"
+#include "swtrprocmgt.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
