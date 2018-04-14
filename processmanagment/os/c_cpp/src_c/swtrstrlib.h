@@ -5,9 +5,13 @@
 
 #if !defined (__SWTRSTRLIB_H__)
 #define __SWTRSTRLIB_H__
+
 #include <sys/types.h>
 
 #include <stdbool.h>
+
+#include "swtrcommon.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
