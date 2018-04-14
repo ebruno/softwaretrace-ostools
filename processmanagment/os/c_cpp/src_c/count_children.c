@@ -13,7 +13,7 @@
 #include <glob.h>
 #include <string.h>
 #include <stdbool.h>
-#include "swtrpocmgt.h"
+#include "swtrprocmgt.h"
 
 /*! Count all children of a pid that is in the specified state.
    The function searchs for all /proc/&ltpid&gt/stat files.
