@@ -11,7 +11,7 @@
 #include <glob.h>
 #include <string.h>
 #include <sys/wait.h>
-#include "swtrpocmgt.h"
+#include "swtrprocmgt.h"
 
 /*! Reap the status processes in a zombie state. 
 
