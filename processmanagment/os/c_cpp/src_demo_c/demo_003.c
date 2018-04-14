@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#include "swtrpocmgt.h"
+#include "swtrprocmgt.h"
 #include "swtrstrlib.h"
 /*! \brief Create child processes and leave them in a zombie state. 
   Each child will exit with a status of zero.
