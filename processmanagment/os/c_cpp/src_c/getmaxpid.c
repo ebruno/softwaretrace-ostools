@@ -43,11 +43,9 @@ int swtrprcmgt_set_maxpid(SWTPROC_MGT *ctrl) {
   int mib[namelength];
   int maxproc;
   size_t length;
-#else
-#error "Operating System is currently not supported."    
 #endif      
   if (ctrl != NULL) {
-#if defined(__linux__)    
+#if defined(__linux__)
     switch (ctrl->version_id) {
     case SWTRPCCMGT_STRUCT_V1:
       sprintf(proc_pattern,proc_fmt_pattern,ctrl->mgt.v1.proc_system_root);
