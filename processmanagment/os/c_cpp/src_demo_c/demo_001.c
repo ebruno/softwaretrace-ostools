@@ -44,7 +44,11 @@ int main(int argc, char **argv) {
   fprintf(stdout,"The number of zombies should be equal to number of children.\n");  
   count = swtrprcmgt_count_children(&ctrl,my_pid,SWTRPOCMGT_ZOMBIE_C);
   fprintf(stdout,"Number of children that are zombies: %d\n",count);
+#if defined (__Linux__)
   fprintf(stdout,"Enter the command 'ps -aef | grep %d | grep defunct'\nin another window to see the zombie/defunct processes assocated with this pid\n",getpid());
+#elif defined (__FreeBSD__)
+  fprintf(stdout,"Enter the command 'ps -aj | grep %d | grep defunct'\nin another window to see the zombie/defunct processes assocated with this pid\n",getpid());
+#endif  
   fprintf(stdout,"Waiting 60 seconds before continuing...\n");
   sleep(60);
   fprintf(stdout,"Reap the status of all the children that are zombies.");
