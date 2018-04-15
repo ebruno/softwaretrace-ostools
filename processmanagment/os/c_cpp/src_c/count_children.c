@@ -3,7 +3,7 @@
     <p>Count all children of a process that are in the specified state.</p>
     
  */
-
+#if defined (__linux__)
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -27,9 +27,7 @@
                                      \ref SWTRPOCMGT_UNINTEREDISKSLEEP_C
                                      \ref SWTRPOCMGT_TRACE_STOPPED_C
                                      \ref SWTRPOCMGT_PAGING_C
-
-
-
+				     \ref SWTRPROCMG_ALL_STATES
   @return Count of children  or -1 of on an error.
  
   Note: The function is only interested in the pid, ppid and state fields.
@@ -117,5 +115,5 @@ int swtrprcmgt_count_children(SWTPROC_MGT *ctrl, pid_t pid, char state) {
   }
   return result;
 }
-
+#endif
  

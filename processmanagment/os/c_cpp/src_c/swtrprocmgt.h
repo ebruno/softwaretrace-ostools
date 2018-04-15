@@ -10,7 +10,9 @@
 #include <stdbool.h>
 
 #include "swtrcommon.h"
-
+#if defined (__FreeBSD__)
+#include <sys/proc.h>
+#endif
 
 
 #ifdef __cplusplus
@@ -19,12 +21,25 @@ extern "C" {
   /*! \name Process Status
       @{
    */
+#if defined (__linux__)
+
 #define SWTRPOCMGT_RUNNING_C 'R'              /**< \brief Running */
 #define SWTRPOCMGT_ZOMBIE_C  'Z'              /**< \brief Zombie/defunct */
 #define SWTRPOCMGT_SLEEPING_C  'S'            /**< \brief Sleeping */
 #define SWTRPOCMGT_UNINTEREDISKSLEEP_C  'D'   /**< \brief Uniterruptable Disk Sleep */
 #define SWTRPOCMGT_TRACE_STOPPED_C  'T'       /**< \brief Trace/Stopped */
 #define SWTRPOCMGT_PAGING_C  'W'              /**< \brief Paging */
+#elif defined (__FreeBSD__)
+#define SWTRPOCMGT_RUNNING_C SIDL                           /**< \brief Running */
+#define SWTRPOCMGT_ZOMBIE_C  SZOMB                          /**< \brief Zombie/defunct */
+#define SWTRPOCMGT_SLEEPING_C  SSLEEP                       /**< \brief Sleeping */
+#define SWTRPOCMGT_PROCESS_BEING_CREATED_BY_FORK_C SIDL     /**< \brief Uniterruptable Disk Sleep */
+#define SWTRPOCMGT_TRACE_STOPPED_C  SSTOP                   /**< \brief Trace/Stopped */
+#define SWTRPOCMGT_WAITING_FOR_INTERRUPT_C  SWAIT           /**< \brief waiting for interrupt. */
+#define SWTRPOCMGT_BLOCKED_ON_LOCK_C SLOCK                  /**< \brief blocked on a lock. */
+#else
+  #error "Operating System currently not supported."
+#endif
   /*!
     @}
    */
@@ -45,7 +60,13 @@ extern "C" {
 #define SWTPROC_STAT_INFO_V2 2
 #define SWTPROC_STAT_INFO_CURRENT SWTPROC_STAT_INFO_V1
 
+#if defined(__linux__)
 #define SWTRPCCMGT_PROCFS_ROOT "/proc"
+#elif defined(__FreeBSD__)
+#define SWTRPCCMGT_PROCFS_ROOT ""
+#else
+#error "Operating System is currently not supported."
+#endif   
 /*! Max length of the comm field
  This value needs to be >= TASK_COMM_LEN in linux/sched.h 
 */
@@ -59,9 +80,7 @@ extern "C" {
   /*! Format string for parsing the stat record. Kernel V3.3 and higher. */    
 #define SWTRPOCMGT_STAT_FMT_KV33 "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %d %d %u %u %llu %lu %ld %lu %lu %lu" 
   /*! Format string for parsing the stat record. Kernel V3.5 and higher. */
-/*                               1                                       2                                       3                                     4                                       5 */
-/*   1  2  3  4  5  6  7  8  9   0   1   2   3   4   5   6   7   8   9   0   1    2   3   4   5   6   7   8   9  0    1   2   3   4   5   6   7  8  9  0  1    2  3    4   5   6   7  8    9   0   1  2 */
-/* "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %d %d %u %u %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %d" */
+
 #define SWTRPOCMGT_STAT_FMT "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %d %d %u %u %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %d" 
   /*! Dummy state to get all child processes */
 #define SWTRPROCMG_ALL_STATES 'A'

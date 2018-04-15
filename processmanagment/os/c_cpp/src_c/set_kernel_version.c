@@ -13,13 +13,18 @@ int swtrprcmgt_set_kernel_version(SWTPROC_MGT *ctrl) {
   int result = SWTRPCCMGT_SUCCESS;
   struct utsname sysinfo;
   char *tmp_ptr = NULL;
+#if defined(__FreeBSD__)
+  char scan_fmt[] = "%d.%d%s";
+#elif defined(__linux__)  
   char scan_fmt[] = "%d.%d.%d%s";
+#else
+#error("Operating System is currntly not supported.")  
+#endif  
   char tmp_buf[SWTRPOCMGT_SMALL_WRKBUF+1];
   int major = 0;
   int minor = 0;
   int subversion = 0;
   uname(&sysinfo);
-  // look for the third non-numberic character.
   memset(tmp_buf,'\0',(SWTRPOCMGT_SMALL_WRKBUF+1)*sizeof(char));
   sscanf(sysinfo.release,scan_fmt,&major,&minor,&subversion,&tmp_buf);
   switch(ctrl->version_id) {

@@ -51,12 +51,21 @@ elseif (CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
     add_compile_options(-std=c99 -O2 ${CMAKE_C_FLAGS_DEBUG})
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
+if (CMAKE_SYSTEM_NAME MATCHES Linux)
 set (libsrc src_c/getmaxpid.c
     src_c/init_ctrl.c
     src_c/getprocstat.c
     src_c/count_children.c
     src_c/set_kernel_version.c
     src_c/reapzombie_status.c)
+elseif (CMAKE_SYSTEM_NAME MATCHES FreeBSD)    
+set (libsrc src_c/getmaxpid.c
+    src_c/init_ctrl.c
+    src_c/getprocstat.c
+    src_c/freebsd_count_children.c
+    src_c/set_kernel_version.c
+    src_c/freebsd_reapzombie_status.c)
+endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 
 set (libsrc_string src_c/lremove_char.c
      src_c/rremove_char.c
@@ -98,6 +107,8 @@ if (${SWTRLIB_BUILD_LIBS} MATCHES "swtrprocmgt")
    add_library(swtrprocmgt SHARED ${libsrc})
    add_library(swtrprocmgt_static STATIC ${libsrc})
    set_target_properties(swtrprocmgt swtrprocmgt_static PROPERTIES VERSION ${SWTRPROCMGT_LIB_VERSION} SOVERSION ${SWTRPROCMGT_LIB_VERSION})
+   target_link_libraries(swtrprocmgt procstat)
+   target_link_libraries(swtrprocmgt_static procstat)
    message("-- Adding library swtrprocmgt to install.")
    install(FILES src_c/swtrpocmgt.h DESTINATION ${SWTRLIB_LIB_INSTALL_ROOT}/include)
    install(TARGETS swtrprocmgt swtrprocmgt_static
@@ -116,11 +127,13 @@ if (NOT ("${CMAKE_BUILD_TYPE}" STREQUAL "ReleaseLibsOnly;BuildType"))
    set_target_properties(demo_002 PROPERTIES INCLUDE_DIRECTORIES ${CMAKE_BINARY_DIR}/src_c)
    target_link_libraries(demo_002 swtrprocmgt swtrstrlib)
 
+if (CMAKE_SYSTEM_NAME MATCHES Linux)
    add_executable(demo_003 src_demo_c/demo_003.c)
    set_target_properties(demo_003 PROPERTIES INCLUDE_DIRECTORIES ${CMAKE_BINARY_DIR}/src_c)
    target_link_libraries(demo_003 swtrprocmgt swtrstrlib)
    install(TARGETS demo_001 DESTINATION test_bin)
 #   install(TARGETS ${SWTRLIB_BUILD_LIBS} DESTINATION LIBRARY DESTINATION lib INCLUDES DESTINATION include)
+endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 endif (NOT ("${CMAKE_BUILD_TYPE}" STREQUAL "ReleaseLibsOnly;BuildType"))
 
 
@@ -132,5 +145,6 @@ add_custom_target(create_doc make -C ${CMAKE_BINARY_DIR} DOCDIR_ROOT=${DOCDIR_RO
 add_custom_target(dist_clean ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/demo_bin
 			     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/doc
 			     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/SPECS
-			     COMMAND rm -f *~ src_c/*~ src_cpp/*~ spec_templates/*~ *.xz *.gz
+			     COMMAND rm -f *~ src_c/*~ src_cpp/*~ spec_templates/*~  *.xz *.gz
+			     COMMAND rm -f */*.so* */*.a
 			     COMMAND rm -f -r ${CMAKE_BINARY_DIR}/CMakeFiles cmake_install.cmake CMakeCache.txt CTestTestfile.cmake Makefile src)

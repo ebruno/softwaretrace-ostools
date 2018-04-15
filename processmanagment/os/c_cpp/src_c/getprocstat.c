@@ -1,3 +1,4 @@
+#if defined (__linux__) 
 /*! \file 
    \brief Load /proc/&lt;pid&gt;/stat in to a structure.
     <p>Reads the stat file and parses it using sprintf</p>
@@ -218,5 +219,5 @@ int swtrprcmgt_get_process_stat(SWTPROC_MGT *ctrl, pid_t pid, SWTPROC_STAT_INFO 
   };
   return result;
 };
-
+#endif
  

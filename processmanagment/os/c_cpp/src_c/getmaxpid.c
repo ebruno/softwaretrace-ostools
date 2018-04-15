@@ -10,13 +10,18 @@
 #include <unistd.h>
 #include <glob.h>
 #include <string.h>
-
+#if defined (__FreeBSD__)
+#include <sys/sysctl.h>
+#endif
 #include "swtrprocmgt.h"
 
 /*! Get max PID allowed by the system.
     The max pid is stored in /proc/sys/kernel/pid_max
     This function reads the value and stores in max_pid in the control block.
     if an error occurs the value \ref SWTRPOCMGT_DEFAULT_MAX_PID is set.
+
+    For FreeBSD sysctl is used it can also be used on Linux to obtain the 
+    max pid value but we use the proc file system under Linux for consistency.
 
   @param ctrl  Pointer Control Block for the library.
 
@@ -33,7 +38,16 @@ int swtrprcmgt_set_maxpid(SWTPROC_MGT *ctrl) {
   int tmp_handle = -1;
   int tmp_status = 0;
   pid_t max_pid = 0;
+#if defined(__FreeBSD__)
+  int namelength = 2;
+  int mib[namelength];
+  int maxproc;
+  size_t length;
+#else
+#error "Operating System is currently not supported."    
+#endif      
   if (ctrl != NULL) {
+#if defined(__linux__)    
     switch (ctrl->version_id) {
     case SWTRPCCMGT_STRUCT_V1:
       sprintf(proc_pattern,proc_fmt_pattern,ctrl->mgt.v1.proc_system_root);
@@ -60,6 +74,21 @@ int swtrprcmgt_set_maxpid(SWTPROC_MGT *ctrl) {
 	  }
 	}
       };
+    };
+#elif defined (__FreeBSD__)
+      mib[0] = CTL_KERN;
+      mib[1] = KERN_MAXPROC;
+      length = sizeof(maxproc);
+      tmp_status = sysctl(mib, namelength, &maxproc, &length, NULL, 0);
+      if (tmp_status != 1) {
+	max_pid = SWTRPOCMGT_DEFAULT_MAX_PID;
+      } else {
+	max_pid = (pid_t) maxproc;
+	result = SWTRPCCMGT_SUCCESS;
+      };	
+#else
+#error "Operating System is currently not supported."    
+#endif      
       switch (ctrl->version_id) {
       case SWTRPCCMGT_STRUCT_V1:
 	ctrl->mgt.v1.max_pid = max_pid;
@@ -71,7 +100,6 @@ int swtrprcmgt_set_maxpid(SWTPROC_MGT *ctrl) {
       result = SWTRPCCMGT_FAILURE;
       break;
       };
-    };
   };
   return result;
 };
