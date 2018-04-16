@@ -1,3 +1,18 @@
+# Compiler Information #
+## Verified Compilers ##
+The libraries/tools have been built and verifed using the following compilers:
+
+| Compiler                 | Verfied/Supported  | Operating System                 |
+|--------------------------| :-----------------:| ---------------------------------|
+|Clang/LLVM	               | Yes	            | FreeBSD                          |
+|GNU GCC/G++               | Yes                | RHEL, CentOS, Fedora, ArchLinux  | 
+|Hewlett-Packard C         | No	                |                                  |
+|IBM XL C/C++	           | No                 |                                  |
+|Intel ICC/ICPC	           | No                 |                                  |
+|Oracle Solaris Studio     | No                 |                                  |
+|Portland Group PGCC/PGCPP | No                 |                                  |
+
+## Obtaining Predefined Macros ##
 |Compiler                  | C macros                            | C++ macros  |
 | -------------------------| ------------------------------------| -----------------------------------|
 |Clang/LLVM	               | clang -dM -E -x c /dev/null	     | clang++ -dM -E -x c++ /dev/null
@@ -11,3 +26,4 @@
 References:
 
 http://nadeausoftware.com/articles/2011/12/c_c_tip_how_list_compiler_predefined_macros
+

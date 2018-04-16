@@ -83,7 +83,8 @@ int swtrprcmgt_reapzombie_status(SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROCESS_IN
 		  if (fields_loaded == required_count_fields) {
 		    if ((state == cur_state) && (pid == ppid)) {
 		      if (waitpid(cpid,&zombie_status,WNOHANG) == cpid) {
-			/*! TODO: return process id and raw status if child_info is not NULL 
+			/*! \todo 
+			  return process id and raw status if child_info is not NULL 
 		        */
 			if (child_info == NULL) {
 			  result ++;
