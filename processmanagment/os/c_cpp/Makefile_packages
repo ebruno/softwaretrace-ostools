@@ -8,20 +8,31 @@ RELEASE_INFO_FILE = /etc/os-release
 # NAME="CentOS Linux"
 # VERSION="7 (Core)"
 
-ifeq ("$(wildcard ${RELEASE_INFO_FILE})","")
-  ${error Unable to locate ${RELEASE_INFO_FILE})
-else
-  include ${RELEASE_INFO_FILE}
-endif
+KERNEL_NAME  = $(shell uname -s)
 
-
-TARFILE_NAME   = softwaretrace-ostools-src
+FEDORA_NAME   = Fedora
 
 CENTOS_NAME   = "CentOS Linux"
 
 RHEL_NAME = "Red Hat Enterprise Linux Server"
 
 ARCHLINUX_NAME = "Arch Linux"
+
+FREEBSD_NAME   = FreeBSD
+
+ifeq ($(KERNEL_NAME),Linux)
+ifeq ("$(wildcard ${RELEASE_INFO_FILE})","")
+  $(error Unable to locate ${RELEASE_INFO_FILE})
+else
+  include ${RELEASE_INFO_FILE}
+endif
+else
+NAME  = ${KERNEL_NAME}
+endif
+
+
+TARFILE_NAME   = softwaretrace-ostools-src
+
 
 SPEC_DIR = SPECS
 
