@@ -42,13 +42,16 @@ else (DEFINED SWTRLIB_BUILD_LIBS)
 endif (DEFINED SWTRLIB_BUILD_LIBS)
 
 message("-- Building librarys ${SWTRLIB_BUILD_LIBS}")
-
+# The Unix distros have some sight differences that cause compiler warnings.
+# Pass the OS_NAME as define so the appropriate adjustments 
+# can be made at compile time.
+add_definitions(-D${OS_NAME}) 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
     add_compile_options(-std=c99 ${CMAKE_C_FLAGS_DEBUG} -Wall)
 elseif (CMAKE_BUILD_TYPE MATCHES Release)
    add_compile_options(-std=c99 -O3)
 elseif (CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
-    add_compile_options(-std=c99 -O2 ${CMAKE_C_FLAGS_DEBUG})
+   add_compile_options(-std=c99 -O2 ${CMAKE_C_FLAGS_DEBUG})
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
 if (CMAKE_SYSTEM_NAME MATCHES Linux)

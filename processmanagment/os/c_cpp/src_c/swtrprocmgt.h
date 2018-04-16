@@ -73,15 +73,27 @@ extern "C" {
 #define SWTRPCCMGT_TASK_COMM_LEN 32	
 
   /*! Format string for parsing the stat record. Pre Kernel V3.3 */    
+#if defined (Ubuntu)
+#define SWTRPOCMGT_STAT_FMT_PRE_KV33 "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %ld %ld %u %u %llu %lu %ld"
+#else
 #define SWTRPOCMGT_STAT_FMT_PRE_KV33 "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %d %d %u %u %llu %lu %ld"
+#endif
   /* Additional Fields Linux 3.3 */
 #define SWTRPOCMGT_STAT_FMT_KV33_EXTRA "%lu %lu %lu"
 #define SWTRPOCMGT_STAT_FMT_KV35_EXTRA "%lu %lu %lu %lu %d"
-  /*! Format string for parsing the stat record. Kernel V3.3 and higher. */    
+  /*! Format string for parsing the stat record. Kernel V3.3 and higher. */
+#if defined (Ubuntu)
+#define SWTRPOCMGT_STAT_FMT_KV33 "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %ld %ld %u %u %llu %lu %ld %lu %lu %lu" 
+#else
 #define SWTRPOCMGT_STAT_FMT_KV33 "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %d %d %u %u %llu %lu %ld %lu %lu %lu" 
+#endif
   /*! Format string for parsing the stat record. Kernel V3.5 and higher. */
 
+#if defined (Ubuntu)
+#define SWTRPOCMGT_STAT_FMT "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %ld %ld %u %u %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %d" 
+#else
 #define SWTRPOCMGT_STAT_FMT "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %d %d %u %u %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %d" 
+#endif
   /*! Dummy state to get all child processes */
 #define SWTRPROCMG_ALL_STATES 'A'
   /*! Small work buf size. */
