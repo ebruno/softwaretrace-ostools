@@ -1,6 +1,6 @@
 /*! \file 
-   \brief Count Child Processes.
-    <p>Count all children of a process that are in the specified state.</p>
+   \brief FreeBSD version Reap status of all of the processes children that are in zombie/defunct state..
+    <p>Finds all of the children of a process that are in the zombie state and uses waitpid to get status. This implementation uses libprocstat instead of the /proc file system.</p>
     
  */
 #if defined (__FreeBSD__)
@@ -19,9 +19,9 @@
 #include <string.h>
 #include "swtrprocmgt.h"
 
-/*! Count all children of a pid that is in the specified state.
-   The function searchs for all /proc/&ltpid&gt/stat files.
-   It opens each file to determine if pid is the parent pid of the process and the process is state.
+/*! \brief FreeBSD version Reap status of all of the processes children that are in zombie/defunct state..
+    <p>Finds all of the children of a process that are in the zombie state and uses waitpid to get status. This implementation uses libprocstat instead of the /proc file system.</p>
+   This uses libprocstat to find all of a processe's children that are in a zombie/defunct state and reaps the status use waitpid. 
 
   @param ctrl  Pointer to common parameters
   @param pid   pid of the pocess to locate child processes of.

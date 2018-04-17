@@ -15,20 +15,20 @@
 #include <stdbool.h>
 #include "swtrprocmgt.h"
 
-/*! Count all children of a pid that is in the specified state.
+/*! \brief Count all children of a pid that is in the specified state.
    The function searchs for all /proc/&ltpid&gt/stat files.
    It opens each file to determine if pid is the parent pid of the process and the process is state.
 
-  @param ctrl  Pointer to common parameters
-  @param pid   pid of the pocess to locate child processes of.
-  @param state One of the following: \ref SWTRPOCMGT_RUNNING_C 
+  \param ctrl  Pointer to common parameters
+  \param pid   pid of the pocess to locate child processes of.
+  \param state One of the following: \ref SWTRPOCMGT_RUNNING_C 
                                      \ref SWTRPOCMGT_ZOMBIE_C
                                      \ref SWTRPOCMGT_SLEEPING_C
                                      \ref SWTRPOCMGT_UNINTEREDISKSLEEP_C
                                      \ref SWTRPOCMGT_TRACE_STOPPED_C
                                      \ref SWTRPOCMGT_PAGING_C
 				     \ref SWTRPROCMG_ALL_STATES
-  @return Count of children  or -1 of on an error.
+  \return Count of children  or -1 of on an error.
  
   Note: The function is only interested in the pid, ppid and state fields.
   <br>pid is field 1

@@ -1,6 +1,8 @@
 /*! \file 
-   \brief Count Child Processes.
-    <p>Count all children of a process that are in the specified state.</p>
+   \brief FreeBSD version Count Child Processes.
+    <p>Count all children of a process that are in the specified state.
+    This implementation uses libprocstat instead of the /proc file system.
+    </p>
     
  */
 #if defined (__FreeBSD__)
