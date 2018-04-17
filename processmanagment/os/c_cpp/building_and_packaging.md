@@ -7,10 +7,10 @@ Supported Operating Systems are show below:
 	* RedHat Enterprise Linux 7.N
 	* Ubuntu 16.N
 	
-Cmake version 2.8 is the mininum version supported.	
+Cmake version 2.8 is the minimum version supported.	
 The cmake will create build environment for the c and c++ versions of the tools.
 ### Building ###
-After checking out the code from github from the following steps:
+After checking out the code from github perform the following steps:
 
     cd softwaretrace-ostools/processmanagment/os/c_cpp
     
