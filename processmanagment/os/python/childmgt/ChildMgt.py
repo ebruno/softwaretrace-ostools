@@ -77,7 +77,7 @@ class ChildMgt(object):
             uninterruptible disk sleep, Z is zombie, T is traced or stopped (on a signal), and W is paging.
         """
         result = {'R':[],'S':[],'D':[],'Z':[],'T':[],'W':[]}
-        if type(state) is types.StringType:
+        if type(state) is bytes:
             state_list = [state]
         else:
             state_list = state
