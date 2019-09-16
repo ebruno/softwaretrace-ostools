@@ -212,4 +212,7 @@ class ChildMgt(object):
     
     def getVersion(self,as_dictionary=False):
         result = self._version
-        if as_dictonary == True:
+        if as_dictionary == True:
+            result = {'major': self._major, 'minor': self._minor, 'subversion': self._subversion }
+
+        return result
