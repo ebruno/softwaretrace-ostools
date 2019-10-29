@@ -1,0 +1,25 @@
+BASEDIR   =  .
+
+DOCDIR_ROOT = ${BASEDIR}
+BASE_DOCDIR    =  doc
+
+DOXYGEN_TEMPLATES = childmgt
+
+all:
+
+.PHONY: create_doc_c create_doc_cpp
+
+create_doc_c: 
+	@echo "Creating Documentation"
+	@if ! test -d ${DOCDIR_ROOT}/${BASE_DOCDIR}; then \
+	mkdir -p ${DOCDIR_ROOT}/${BASE_DOCDIR}; \
+	fi;
+	$(foreach item, ${DOXYGEN_TEMPLATES},(cat Doxyfile_${item}_c; echo "OUTPUT_DIRECTORY=${DOCDIR_ROOT}/${BASE_DOCDIR}/${item}_c" ) | doxygen -)
+
+create_doc_ccp: 
+	@echo "Creating Documentation"
+	@if ! test -d ${DOCDIR_ROOT}/${BASE_DOCDIR}; then \
+	mkdir -p ${DOCDIR_ROOT}/${BASE_DOCDIR}; \
+	fi;
+	$(foreach item, ${DOXYGEN_TEMPLATES},(cat Doxyfile_${item}_cpp; echo "OUTPUT_DIRECTORY=${DOCDIR_ROOT}/${BASE_DOCDIR}/${item}_cpp" ) | doxygen -)
+

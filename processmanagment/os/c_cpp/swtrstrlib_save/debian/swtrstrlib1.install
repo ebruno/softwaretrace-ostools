@@ -1,0 +1,3 @@
+opt/softwaretrace/local/lib/*/lib*.so.*
+opt/softwaretrace/local/lib/*/lib*.so.*
+opt/softwaretrace/local/include/*.h
