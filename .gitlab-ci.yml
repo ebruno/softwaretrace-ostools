@@ -1,0 +1,9 @@
+stages:
+  - lint
+  - sanity
+  - build
+  - publish
+
+include:
+   - '.gitlab-ci/lint.yml'
+   - '.gitlab-ci/sanity.yml'

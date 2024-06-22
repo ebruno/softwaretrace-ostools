@@ -1,0 +1,17 @@
+lint:
+  stage: lint
+  script:
+    - |
+      env;
+  tags:
+    - redhat
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/lint.yml
+         - ./**/Makefile
+         - spec/**/*_spec.sh
+         - lib/**/*.sh
