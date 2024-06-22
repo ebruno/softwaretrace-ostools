@@ -1,0 +1,23 @@
+sanity:
+  stage: sanity
+  script:
+    - |
+      make -C system_management sanity_all
+  tags:
+    - redhat
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/sanity.yml
+         - ./**/Makefile
+         - spec/**/*_spec.sh
+         - lib/**/*.sh
+  artifacts:
+    when: always
+    paths:
+      - ./**/report/*.xml
+    reports:
+      junit: ./**/report/*.xml
