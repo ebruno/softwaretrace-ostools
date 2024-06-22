@@ -21,6 +21,8 @@ create_doc:
 clean: 
 	@echo "Cleaning...";
 	@rm -f *.~;
+	@find . -name "*.pyc" -exec rm -f {} \;
+	@find . -name "#*#" -exec rm -f {} \;
 
 dist_clean: clean
 	@rm -r -f ${TEMP_DIRS}

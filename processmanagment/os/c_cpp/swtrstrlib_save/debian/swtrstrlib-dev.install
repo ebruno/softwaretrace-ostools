@@ -1,0 +1,4 @@
+opt/softwaretrace/local/include/* 
+opt/softwaretrace/local/lib/*   
+#usr/local/lib/*/pkgconfig/*
+#usr/local/share/pkgconfig/*

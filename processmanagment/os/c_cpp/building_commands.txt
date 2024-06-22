@@ -1,0 +1,2 @@
+bzr dh-make swtrstrlib 0.9.0.0.2 ~/debbuild/SOURCES/softwaretrace-ostools-src-0.9.0.0.2.tar.gz
+
