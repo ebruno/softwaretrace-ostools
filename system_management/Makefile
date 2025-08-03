@@ -1,6 +1,8 @@
 # OS independant Makefile.
 include common.mk
 
+SHELL := /bin/bash
+
 LIB_LINUX_BASH = lib/linux/bash
 LIB_REDHAT_BASH = lib/redhat/bash
 LIB_DEBIAN_BASH = lib/debian/bash
