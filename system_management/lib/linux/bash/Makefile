@@ -1,5 +1,7 @@
 include ../../../common.mk
 
+SHELL := /bin/bash
+
 SHELLCHECK_OUTPUT_FORMAT = tty
 
 SHELLCHECK = $(shell which shellcheck)

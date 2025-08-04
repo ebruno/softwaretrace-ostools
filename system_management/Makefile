@@ -1,6 +1,8 @@
 # OS independant Makefile.
 include common.mk
 
+SHELL := /bin/bash
+
 LIB_LINUX_BASH = lib/linux/bash
 LIB_REDHAT_BASH = lib/redhat/bash
 LIB_DEBIAN_BASH = lib/debian/bash
@@ -34,7 +36,7 @@ lint:
 	$(foreach item, $(LIB_LINUX_BASH), make SHELLCHECK_OUTPUT_FORMAT=$(SHELLCHECK_OUTPUT_FORMAT) -C ${item} .lint;)
 
 sanity_all:
-	 @$(SHELLSPEC) -f $(SHELLSPEC_OUTPUT_FORMAT) -o $(SHELLSPEC_REPORT_FORMAT)
+	 @$(SHELL) $(SHELLSPEC) -f $(SHELLSPEC_OUTPUT_FORMAT) -o $(SHELLSPEC_REPORT_FORMAT)
 
 sanity: $(wildcard lib/*/bash/*.sh)
 	@final_sanity=0; \

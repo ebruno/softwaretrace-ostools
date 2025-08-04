@@ -1,10 +1,13 @@
 sanity:
   stage: sanity
+  parallel:
+    matrix:
+      - RUNNER_TAG: [redhat,debian]
   script:
     - |
       make -C system_management sanity_all
   tags:
-    - redhat
+     - $RUNNER_TAG
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
