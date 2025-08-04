@@ -20,10 +20,9 @@ jobs:
     runs-on: debian
     steps:
       - name: system management sanity
-        run: |
-          pwd;
-          ls;
-          make -C system_management sanity_all;
+        run: pwd;
+        run: ls;
+        run: make -C system_management sanity_all;
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
