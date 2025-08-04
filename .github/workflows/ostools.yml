@@ -21,9 +21,8 @@ jobs:
     steps:
       - name: system management sanity
         run: |
-             pwd >> $GITHUB_OUTPUT;
-             ls >> $GITHUB_OUTPUT;
-             make -C system_management sanity_all >> $GITHUB_OUTPUT;
+             ls -l;
+             make -C system_management sanity_all;
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
