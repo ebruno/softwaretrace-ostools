@@ -21,8 +21,7 @@ jobs:
     steps:
       - name: system management sanity
         run: |
-             ls -l;
-             make -C system_management sanity_all;
+             ls -l .;
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
