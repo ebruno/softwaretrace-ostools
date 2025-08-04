@@ -1,0 +1,18 @@
+name: OS Tools Sanity
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - ./**/Makefile
+      - spec/**/*_spec.sh
+      - lib/**/*.sh
+      - '.github/workflows/**'
+
+jobs:
+  lint:
+    runs-on: debian
+    steps:
+      - name: Check env
+        run: env;
