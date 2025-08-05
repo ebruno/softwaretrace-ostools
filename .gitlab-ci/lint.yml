@@ -5,9 +5,14 @@ lint:
       - RUNNER_TAG: [redhat,debian]
   script:
     - |
-      env;
+       make -C system_management lint_all;
+  allow_failure:
+    exit_codes:
+      - 1
+
   tags:
-    - $RUNNER_TAG
+     - $RUNNER_TAG
+
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
