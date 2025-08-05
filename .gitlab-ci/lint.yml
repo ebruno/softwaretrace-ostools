@@ -11,7 +11,8 @@ lint:
       - 1
 
   tags:
-    - $RUNNER_TAG
+     - $RUNNER_TAG
+
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
