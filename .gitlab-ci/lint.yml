@@ -6,7 +6,9 @@ lint:
   script:
     - |
        make -C system_management lint_all;
-  allow_failure: true
+  allow_failure:
+    exit_codes:
+      - 1
 
   tags:
     - $RUNNER_TAG
