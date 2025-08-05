@@ -27,7 +27,7 @@ swtr_log_msg_to_journald() {
     local -i local_status=1;
     local -i test_status=1;
     local -A loglevels;
-    loglevels=([emerg]="0" [alert]="1" [crit]="2" [error]="3" [warning]="4", [notice]="5" [info]="6" [debug]="7");
+    loglevels=([emerg]="0" [alert]="1" [crit]="2" [error]="3" [warning]="4" [notice]="5" [info]="6" [debug]="7");
     if [ $# -ge ${required_parameters} ]; then
 	systemd_cat_options="";
 	if [ -n "${3}" ]; then
@@ -51,14 +51,16 @@ swtr_log_msg_to_journald() {
 	    local -l loglevel="${1}";
 	    loglevel_id="${loglevels[${loglevel}]}"
 	    if [ ${test_status} -eq 1 ] && [ "${2}" = "text" ]; then
+		# shellcheck disable=SC2086
 		systemd-cat ${systemd_cat_options} printf "<%s> %s\n" "${loglevel_id}" "${4}";
 	    elif [ ${test_status} -eq 1 ] && [ "${2}" = "json" ]; then
+		# shellcheck disable=SC2086
 		systemd-cat ${systemd_cat_options} printf "<%s>{\"LOGLEVEL\":\"%s\",\"msg\":\"%s\"}\n" "${loglevel_id}" "${1}" "${4}";
 	    elif [ ${test_status} -eq 0 ] && [ "${2}" = "text" ]; then
 		msg="$(printf "<%s> %s\n" "${loglevel_id}" "${5}")";
 		local_array+=("${msg}");
 	    elif [ ${test_status} -eq 0 ] && [ "${2}" = "json" ]; then
-		msg="$(printf "{\"LOGLEVEL\":\"<%s>\",\"msg\":\"%s\"}\n" "${loglevel_id}" "${1}" "${5}")";
+		msg="$(printf "<%s>{\"LOGLEVEL\":\"<%s>\",\"msg\":\"%s\"}\n" "${loglevel_id}" "${1}" "${5}")";
 		local_array+=("${msg}");
 	    else
 		echo "[ERROR] ${FUNCNAME[0]} in ${BASH_SOURCE[0]} at line ${BASH_LINENO[0]} unsupported output format \"${2}\"." 1>&2;
@@ -89,6 +91,7 @@ swtr_log_msg() {
 	    swtr_is_vartype "-a" "${tmp_info[0]}";
 	    test_status=${?};
 	    if [ ${test_status} -eq 0 ]; then
+		# shellcheck disable=SC2178
 		local -n local_array="${3}";
 		local_status=0;
 	    else
