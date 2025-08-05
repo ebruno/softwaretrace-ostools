@@ -19,8 +19,10 @@ jobs:
   sanity:
     runs-on: debian
     steps:
-      - name: system management sanity
+      - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: system management sanity
         run: |
           make -C system_management sanity_all;
 
