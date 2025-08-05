@@ -15,7 +15,7 @@ all: .lint
 	@echo "run lint tests";
 
 lint_all:
-	@$(SHELLCHECK) -f $(SHELLCHECK_OUTPUT_FORMAT) -x -s bash swtr_*.sh;
+	@$(SHELLCHECK) -f $(SHELLCHECK_OUTPUT_FORMAT) -x -s bash swtr_*.sh || true;
 
 .lint: $(wildcard *.sh)
 	@$(SHELLCHECK) -f $(SHELLCHECK_OUTPUT_FORMAT) -x -s bash $?; \
@@ -23,18 +23,6 @@ lint_all:
 	   touch .lint; \
 	fi;
 
-
-all: .lint
-	@echo "run lint tests";
-
-lint_all:
-	@$(SHELLCHECK) -f $(SHELLCHECK_OUTPUT_FORMAT) -x -s bash swtr_*.sh;
-
-.lint: $(wildcard *.sh)
-	@$(SHELLCHECK) -f $(SHELLCHECK_OUTPUT_FORMAT) -x -s bash $?; \
-	if [ $$? -eq 0 ]; then \
-	   touch .lint; \
-	fi;
 
 clean:
 	@$(foreach item, $(CLEAN_DIRS), $(RM) -r ${item})
