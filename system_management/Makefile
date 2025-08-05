@@ -24,16 +24,14 @@ SHELLSPEC = $(shell which shellspec)
 SHELLSPEC_LOAD_PATH =
 
 
-.PHONY: sanity_all clean distclean
+.PHONY: sanity_all clean distclean lint lint_all
 
-all:
-	@echo "OS independant makefile running on: $(ID) $(VERSION_ID)"
+all: lint
 
 lint_all:
-	$(foreach item, $(LIB_LINUX_BASH), make SHELLCHECK_OUTPUT_FORMAT=$(SHELLCHECK_OUTPUT_FORMAT) -C ${item} lint_all;);
-
+	@$(foreach item, $(LIB_LINUX_BASH), make SHELLCHECK_OUTPUT_FORMAT=$(SHELLCHECK_OUTPUT_FORMAT) -C ${item} lint_all;)
 lint:
-	$(foreach item, $(LIB_LINUX_BASH), make SHELLCHECK_OUTPUT_FORMAT=$(SHELLCHECK_OUTPUT_FORMAT) -C ${item} .lint;)
+	@$(foreach item, $(LIB_LINUX_BASH), make SHELLCHECK_OUTPUT_FORMAT=$(SHELLCHECK_OUTPUT_FORMAT) -C ${item} .lint;)
 
 sanity_all:
 	 @$(SHELL) $(SHELLSPEC) -f $(SHELLSPEC_OUTPUT_FORMAT) -o $(SHELLSPEC_REPORT_FORMAT)

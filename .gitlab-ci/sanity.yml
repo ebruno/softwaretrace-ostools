@@ -8,6 +8,7 @@ sanity:
       make -C system_management sanity_all
   tags:
      - $RUNNER_TAG
+
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
