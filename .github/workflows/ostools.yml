@@ -14,8 +14,12 @@ jobs:
   lint:
     runs-on: debian
     steps:
-      - name: Check env
-        run: env;
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: lint_all
+        id:   lint1
+        continue-on-error: true
+        run: make lint_all;
   sanity:
     runs-on: debian
     steps:
