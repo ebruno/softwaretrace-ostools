@@ -34,7 +34,7 @@ lint:
 	@$(foreach item, $(LIB_LINUX_BASH), make SHELLCHECK_OUTPUT_FORMAT=$(SHELLCHECK_OUTPUT_FORMAT) -C ${item} .lint;)
 
 sanity_all:
-	 @$(SHELL) $(SHELLSPEC) -f $(SHELLSPEC_OUTPUT_FORMAT) -o $(SHELLSPEC_REPORT_FORMAT)
+	 @$(SHELLSPEC) -s $(SHELL) -f $(SHELLSPEC_OUTPUT_FORMAT) -o $(SHELLSPEC_REPORT_FORMAT)
 
 sanity: $(wildcard lib/*/bash/*.sh)
 	@final_sanity=0; \
@@ -42,7 +42,7 @@ sanity: $(wildcard lib/*/bash/*.sh)
 	tmpname="`basename "$${item}"`"; \
 	tmpname="$${tmpname/.sh/}"; \
 	SPEC_PATH="**/$${tmpname}_spec.sh"; \
-	$(SHELLSPEC) -f $(SHELLSPEC_OUTPUT_FORMAT) -P "$${SPEC_PATH}"; \
+	$(SHELLSPEC) -s $(SHELL) -f $(SHELLSPEC_OUTPUT_FORMAT) -P "$${SPEC_PATH}"; \
 	if [ $$? -ne 0 ]; then \
 	   final_sanity=1; \
 	fi; \
