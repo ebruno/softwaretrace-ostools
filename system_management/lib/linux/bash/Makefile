@@ -9,7 +9,7 @@ SHELLCHECK = $(shell which shellcheck)
 CLEAN_DIRS  =
 CLEAN_FILES = .lint
 
-.PHONY: sanity_all clean distclean
+.PHONY: sanity_all clean distclean lint_all lint
 
 all: .lint
 	@echo "run lint tests";
