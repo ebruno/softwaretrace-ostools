@@ -19,7 +19,8 @@ jobs:
       - name: lint_all
         id:   lint1
         continue-on-error: true
-        run: make lint_all;
+        run: |
+          make -C system_management lint_all;
   sanity:
     runs-on: debian
     steps:
