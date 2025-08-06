@@ -1,0 +1,50 @@
+name: OS Process Managment Lint
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+         - .gitlab-ci.yml
+         - .gitlab-ci/lint.yml
+         - processmanagement/**/*.c
+         - processmanagement/**/*.cpp
+         - processmanagement/**/*.py
+         - processmanagement/os/requiremments.txt
+         - processmanagement/os/lint_code.sh
+         - common.mk
+
+jobs:
+  lint:
+    runs-on: debian
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: lint_all
+        id:   lint1
+        continue-on-error: true
+        run: |
+          cd processmanagment/os;
+          ./lint_code.sh;
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit reports
+          path: ./**/reports/*.junit
+
+      - name: Publish Test Reports
+        uses: mikepenz/action-junit-report@v4
+        if: always()
+        with:
+          report_paths: ./**/reports/*.junit
+
+   lint_python:
+     runs-on: debian
+     steps:
+      - uses: actions/checkout@v4
+      - name: Run Ruff with specific version and source
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: check -o github
+          src: src/*.py procmgt/*.py childmgt/*.py wsgi/*.py

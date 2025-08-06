@@ -1,4 +1,4 @@
-name: OS Tools Sanity
+name: OS Tools System Management Sanity
 
 on:
   push:
