@@ -1,4 +1,4 @@
-name: OS Process Managment Lint
+name: OS Process Management Lint
 
 on:
   push:
@@ -20,8 +20,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: lint_all
-        id:   lint1
+      - name: lint_cpp
+        id:   lint2
         continue-on-error: true
         run: |
           cd processmanagment/os;
@@ -39,7 +39,7 @@ jobs:
         with:
           report_paths: ./**/reports/*.junit
 
-   lint_python:
+  lint_python:
      runs-on: debian
      steps:
       - uses: actions/checkout@v4
