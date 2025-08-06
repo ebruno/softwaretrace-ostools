@@ -8,7 +8,7 @@ LIB_REDHAT_BASH = lib/redhat/bash
 LIB_DEBIAN_BASH = lib/debian/bash
 
 BUILD_DIR      = build
-CLEAN_DIRS     =
+CLEAN_DIRS     = report
 CLEAN_FILES    = .lint .sanity sanity sanity_spec
 DISTCLEAN_DIRS =
 
