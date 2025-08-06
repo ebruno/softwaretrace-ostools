@@ -29,7 +29,7 @@ lint_processmanagement:
   stage: lint
   parallel:
     matrix:
-      - RUNNER_TAG: [debian]
+      - RUNNER_TAG: [debian,redhat]
   script:
     - |
        cd processmanagment/os;
