@@ -1,0 +1,3 @@
+cppcheck-junit
+autopep8
+ruff
