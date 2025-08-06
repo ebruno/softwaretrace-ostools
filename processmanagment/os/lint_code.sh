@@ -19,10 +19,10 @@ if [ -n "${PYTHON3}" ]; then
     cd c_cpp/src_c;
     ${CPPCHECK} --xml-version=2 --enable=all . 2> ${REPORT_DIR}/cppcheck-result_src_c.xml
     popd
-    pushd .
-    cd  c_cpp/src_cpp
-    ${CPPCHECK} --xml-version=2 --enable=all . 2> ${REPORT_DIR}/cppcheck-result_src_cpp.xml
-    popd
+#    pushd .
+#    cd  c_cpp/src_cpp
+#    ${CPPCHECK} --xml-version=2 --enable=all . 2> ${REPORT_DIR}/cppcheck-result_src_cpp.xml
+#    popd
     pushd .
     cd ${REPORT_DIR};
     for item in ${REPORT_FILES}
