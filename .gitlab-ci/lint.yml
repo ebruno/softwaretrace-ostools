@@ -32,7 +32,7 @@ lint_processmanagement:
       - RUNNER_TAG: [debian]
   script:
     - |
-       cd processmangement/os;
+       cd processmanagment/os;
        ./lint_code.sh;
 
   tags:
