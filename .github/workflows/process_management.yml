@@ -5,7 +5,7 @@ on:
     branches:
       - '**'
     paths:
-         - '.github/workflows/**'
+         - .github/workflows/**
          - processmanagement/**/*.c
          - processmanagement/**/*.cpp
          - processmanagement/**/*.py
