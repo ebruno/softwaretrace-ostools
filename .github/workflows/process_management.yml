@@ -5,8 +5,7 @@ on:
     branches:
       - '**'
     paths:
-         - .gitlab-ci.yml
-         - .gitlab-ci/lint.yml
+         - '.github/workflows/**'
          - processmanagement/**/*.c
          - processmanagement/**/*.cpp
          - processmanagement/**/*.py
