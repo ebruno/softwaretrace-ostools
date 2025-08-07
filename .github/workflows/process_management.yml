@@ -48,5 +48,4 @@ jobs:
         with:
           version: latest
           args: check -o github
-          src: >-
-            ./processmanagment/os/python
+          src: "./processmanagment/os/python"
