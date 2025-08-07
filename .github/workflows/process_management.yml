@@ -45,9 +45,7 @@ jobs:
       - name: Run Ruff with specific version and source.
         uses: astral-sh/ruff-action@v3
         with:
+          version: latest
           args: check -o github
           src: >-
-            ./processmanagment/os/python/src/*.py .
-            ./processmanagment/os/python/procmgt/*.py
-            ./processmanagment/os/python/childmgt/*.py
-            ./processmanagment/os/python/wsgi/*.py
+            ./processmanagment/os/python

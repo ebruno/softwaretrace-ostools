@@ -33,9 +33,11 @@ if [ -n "${PYTHON3}" ]; then
     pushd .
     cd python
     env;
-    ruff check --output-format gitlab src/*.py procmgt/*.py childmgt/*.py wsgi/*.py > ${REPORT_DIR}/python_code_gitlab.json;
-    ruff check --output-format github src/*.py procmgt/*.py childmgt/*.py wsgi/*.py > ${REPORT_DIR}/python_code_github.txt;
-    ruff check --output-format junit src/*.py procmgt/*.py childmgt/*.py wsgi/*.py > ${REPORT_DIR}/python_code_junit.junit;
+    if [ -z "${GITHUB_WORKSPACE}" ]; then
+	ruff check --output-format gitlab src/*.py procmgt/*.py childmgt/*.py wsgi/*.py > ${REPORT_DIR}/python_code_gitlab.json;
+	ruff check --output-format github src/*.py procmgt/*.py childmgt/*.py wsgi/*.py > ${REPORT_DIR}/python_code_github.txt;
+	ruff check --output-format junit src/*.py procmgt/*.py childmgt/*.py wsgi/*.py > ${REPORT_DIR}/python_code_junit.junit;
+    fi;
     deactivate;
     popd
     rm -r -f lint_tools;
