@@ -46,4 +46,4 @@ jobs:
       - name: Show Test Summary
         uses: test-summary/action@v2
         with:
-          paths: ./**/reports/*.xml
+          paths: ./**/report/*.xml
