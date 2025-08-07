@@ -15,7 +15,7 @@ on:
 
 jobs:
   lint:
-    runs-on: debian
+    runs-on: [debian,fedora]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -42,7 +42,7 @@ jobs:
         with:
           paths: ./**/reports/*.junit
   lint_python:
-     runs-on: debian
+     runs-on: [debian,fedora]
      steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
