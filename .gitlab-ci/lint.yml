@@ -25,7 +25,7 @@ lint_system_management:
          - ./system_management/lib/**/*.sh
          - common.mk
 
-lint_processmanagement:
+lint_c_processmanagement:
   stage: lint
   parallel:
     matrix:
@@ -33,7 +33,7 @@ lint_processmanagement:
   script:
     - |
        cd processmanagment/os;
-       ./lint_code.sh;
+       ./lint_code.sh -c;
 
   tags:
      - $RUNNER_TAG
@@ -55,7 +55,38 @@ lint_processmanagement:
     when: always
     paths:
       - ./**/reports/cppcheck*.junit
-      - ./**/reports/python_code*.*
     reports:
       junit: ./**/reports/cppcheck*.junit
+
+lint_python_processmanagement:
+  stage: lint
+  parallel:
+    matrix:
+      - RUNNER_TAG: [debian,redhat]
+  script:
+    - |
+       cd processmanagment/os;
+       ./lint_code.sh -p;
+
+  tags:
+     - $RUNNER_TAG
+
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/lint.yml
+         - processmanagement/**/*.c
+         - processmanagement/**/*.cpp
+         - processmanagement/**/*.py
+         - processmanagement/os/requiremments.txt
+         - processmanagement/os/lint_code.sh
+         - common.mk
+  artifacts:
+    when: always
+    paths:
+      - ./**/reports/python_code*.*
+    reports:
       codequality: ./**/reports/python_code_gitlab.json
