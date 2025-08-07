@@ -47,5 +47,5 @@ jobs:
         continue-on-error: true
         with:
           version: latest
-          args: check -o github
+          args: check
           src: "./processmanagment/os/python"
