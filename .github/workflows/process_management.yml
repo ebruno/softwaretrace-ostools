@@ -46,4 +46,4 @@ jobs:
         uses: astral-sh/ruff-action@v3
         with:
           args: check -o github
-          src: src/*.py procmgt/*.py childmgt/*.py wsgi/*.py
+          src: processmanagment/os/python/src/*.py processmanagment/os/python/procmgt/*.py processmanagment/os/python/childmgt/*.py processmanagment/os/python/wsgi/*.py
