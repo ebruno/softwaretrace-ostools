@@ -13,7 +13,7 @@ on:
 
 jobs:
   lint:
-    runs-on: debian
+    runs-on: fedora
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -23,7 +23,7 @@ jobs:
         run: |
           make -C system_management lint_all;
   sanity:
-    runs-on: debian
+    runs-on: fedora
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
