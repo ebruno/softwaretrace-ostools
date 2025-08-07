@@ -41,7 +41,8 @@ jobs:
   lint_python:
      runs-on: debian
      steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
       - name: Run Ruff with specific version and source.
         uses: astral-sh/ruff-action@v3
         continue-on-error: true
