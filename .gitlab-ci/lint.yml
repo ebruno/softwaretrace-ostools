@@ -58,4 +58,4 @@ lint_processmanagement:
       - ./**/reports/python_code*.*
     reports:
       junit: ./**/reports/cppcheck*.junit
-      codequality: ./**/reports/python*.json
+      codequality: ./**/reports/python_code_gitlab.json
