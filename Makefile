@@ -1,5 +1,5 @@
 # OS independant Makefile.
-include ../common.mk
+include common.mk
 
 SHELL		:= /bin/bash
 
