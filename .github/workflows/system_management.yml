@@ -13,7 +13,17 @@ on:
 
 jobs:
   lint:
-    runs-on: [debian,fedora]
+    runs-on: debian
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: lint_all
+        id:   lint1
+        continue-on-error: true
+        run: |
+          make -C system_management lint_all;
+  lint_fedora:
+    runs-on: fedora
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -23,7 +33,28 @@ jobs:
         run: |
           make -C system_management lint_all;
   sanity:
-    runs-on: [debian,fedora]
+    runs-on: debian
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: system management sanity
+        run: |
+          make -C system_management sanity_all;
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit reports
+          path: ./**/report/*.xml
+
+      - name: Publish Test Reports
+        uses: mikepenz/action-junit-report@v4
+        if: always()
+        with:
+          report_paths: ./**/report/*.xml
+  sanity_fedora:
+    runs-on: fedora
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
