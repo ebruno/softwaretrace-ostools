@@ -42,8 +42,12 @@ jobs:
      runs-on: debian
      steps:
       - uses: actions/checkout@v4
-      - name: Run Ruff with specific version and source
+      - name: Run Ruff with specific version and source.
         uses: astral-sh/ruff-action@v3
         with:
           args: check -o github
-          src: processmanagment/os/python/src/*.py processmanagment/os/python/procmgt/*.py processmanagment/os/python/childmgt/*.py processmanagment/os/python/wsgi/*.py
+          src: >-
+            ./processmanagment/os/python/src/*.py .
+            ./processmanagment/os/python/procmgt/*.py
+            ./processmanagment/os/python/childmgt/*.py
+            ./processmanagment/os/python/wsgi/*.py
