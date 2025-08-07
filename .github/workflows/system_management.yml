@@ -43,3 +43,7 @@ jobs:
         if: always()
         with:
           report_paths: ./**/report/*.xml
+      - name: Show Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: ./**/reports/*.xml
