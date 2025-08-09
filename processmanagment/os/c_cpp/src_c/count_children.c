@@ -1,9 +1,10 @@
-/*! \file 
+/*! \file
    \brief Count Child Processes.
     <p>Count all children of a process that are in the specified state.</p>
-    
+
  */
 #if defined (__linux__)
+// cppcheck-suppress-begin missingIncludeSystem
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -14,6 +15,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "swtrprocmgt.h"
+ // cppcheck-suppress-end missingIncludeSystem
 
 /*! \brief Count all children of a pid that is in the specified state.
    The function searchs for all /proc/&ltpid&gt/stat files.
@@ -21,32 +23,33 @@
 
   \param ctrl  Pointer to common parameters
   \param pid   pid of the pocess to locate child processes of.
-  \param state One of the following: \ref SWTRPOCMGT_RUNNING_C 
-                                     \ref SWTRPOCMGT_ZOMBIE_C
-                                     \ref SWTRPOCMGT_SLEEPING_C
-                                     \ref SWTRPOCMGT_UNINTEREDISKSLEEP_C
-                                     \ref SWTRPOCMGT_TRACE_STOPPED_C
-                                     \ref SWTRPOCMGT_PAGING_C
+  \param state One of the following: \ref SWTRPOCMGT_RUNNING_C
+				     \ref SWTRPOCMGT_ZOMBIE_C
+				     \ref SWTRPOCMGT_SLEEPING_C
+				     \ref SWTRPOCMGT_UNINTEREDISKSLEEP_C
+				     \ref SWTRPOCMGT_TRACE_STOPPED_C
+				     \ref SWTRPOCMGT_PAGING_C
 				     \ref SWTRPROCMG_ALL_STATES
   \return Count of children  or -1 of on an error.
- 
+
   Note: The function is only interested in the pid, ppid and state fields.
   <br>pid is field 1
   <br>comm is field 2
   <br>state is field 3
   <br>ppid is field 4
-  
-  70409 (someproc) S 66024 
-  
+
+  70409 (someproc) S 66024
+
 */
-int swtrprcmgt_count_children(SWTPROC_MGT *ctrl, pid_t pid, char state) {
-  bool continue_processing = false;   
+int swtrprcmgt_count_children(const SWTPROC_MGT *ctrl, pid_t pid, char state) {
+// cppcheck-suppress-begin [variableScope, unreadVariable, constVariablePointer]
+  bool continue_processing = false;
   char *field_start = NULL;
   char *tmp_ptr = NULL;
   char comm[SWTRPOCMGT_SMALL_WRKBUF+1] = "";
-  char cur_state = '\0'; 
-  char field_fmt[SWTRPOCMGT_SMALL_WRKBUF+1] = "%d %s %c %d";
-  char glob_fmt_pattern[SWTRPOCMGT_SMALL_WRKBUF+1] = "%s/[0-9]*/stat";
+  char cur_state = '\0';
+  const char field_fmt[SWTRPOCMGT_SMALL_WRKBUF+1] = "%d %s %c %d";
+  const char glob_fmt_pattern[SWTRPOCMGT_SMALL_WRKBUF+1] = "%s/[0-9]*/stat";
   char glob_pattern[SWTRPOCMGT_SMALL_WRKBUF+1] = "";
   char stat_info[SWTRPOCMGT_MAX_WRKBUF+1] = "";
   glob_t pglob;
@@ -58,6 +61,7 @@ int swtrprcmgt_count_children(SWTPROC_MGT *ctrl, pid_t pid, char state) {
   int required_count_fields = 4;
   int tmp_handle = -1;
   int field_count = 0;
+// cppcheck-suppress-end [variableScope, unreadVariable, constVariablePointer]
   pid_t cpid = 0;
   pid_t ppid = 0;
   if (ctrl != NULL) {
@@ -89,17 +93,17 @@ int swtrprcmgt_count_children(SWTPROC_MGT *ctrl, pid_t pid, char state) {
 		  if (field_count == required_count_fields) {
 		    if ((state == SWTRPROCMG_ALL_STATES) && (pid == ppid)) {
 		      result++;
-		    } 
+		    }
 		    else if ((state == cur_state) && (pid == ppid)) {
 		      result++;
-		    } 
+		    }
 		  }
 		  continue;
-		} 
+		}
 		else if (*(tmp_ptr) == SWTRPOCMGT_STRING_TERMINATOR_C) {
 		  continue_processing = false;
 		  continue;
-		} 
+		}
 		else if (*(tmp_ptr) == ' ') {
 		  field_id++;
 		}
@@ -107,7 +111,7 @@ int swtrprcmgt_count_children(SWTPROC_MGT *ctrl, pid_t pid, char state) {
 	      }
 	    }
 	  }
-	  *(base_entry)++;	
+	  *(base_entry)++;
 	};
 	globfree(&pglob);
       }
@@ -116,4 +120,3 @@ int swtrprcmgt_count_children(SWTPROC_MGT *ctrl, pid_t pid, char state) {
   return result;
 }
 #endif
- 

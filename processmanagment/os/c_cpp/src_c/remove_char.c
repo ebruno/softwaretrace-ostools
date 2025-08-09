@@ -1,8 +1,10 @@
 /*! \file
   \brief Strip all occurrences of a character from a buffer.
  */
+// cppcheck-suppress-begin missingIncludeSystem
 #include <string.h>
 #include "swtrstrlib.h"
+// cppcheck-suppress-end missingIncludeSystem
 /*!
   \brief Strip all occurrences of a character from a buffer.
   The buffer is packed in place.
