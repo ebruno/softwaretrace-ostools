@@ -4,6 +4,7 @@
  */
 
 #if !defined (__SWTRSTRLIB_H__)
+// cppcheck-suppress-begin missingIncludeSystem
 #define __SWTRSTRLIB_H__
 
 #include <sys/types.h>
@@ -11,6 +12,7 @@
 #include <stdbool.h>
 
 #include "swtrcommon.h"
+// cppcheck-suppress-end missingIncludeSystem
 
 #ifdef __cplusplus
 extern "C" {

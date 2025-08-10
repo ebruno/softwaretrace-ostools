@@ -10,6 +10,8 @@ FULLPATH=$(readlink -f $0);
 FULL_DIRPATH=$(dirname ${FULLPATH});
 REPORT_FILES="cppcheck-result_src_c cppcheck-result_src_cpp"
 REPORT_DIR="${FULL_DIRPATH}/reports";
+CPPCHECK_OPTIONS="--xml-version=2 --inline-suppr --enable=all --check-level=exhaustive ";
+CPPCHECK_EXTRAS="";
 display_help() {
   echo "lint_code.sh [-h] [-c] [-C] [-p]"
   echo "-h - display this message."
@@ -73,19 +75,27 @@ if [ ${exit_status} -eq 0 ]; then
 	fi;
     else
 	if [ -z "${PYTHON3}" ]; then
-	    echo "[WARNING] Python3 not installed, skipping python checks." 1>%2;
+	    echo "[WARNING] Python3 not installed, skipping python checks." 1>&2;
 	fi;
+    fi;
+    OS_NAME=$(uname -o);
+    if [[ ${OS_NAME} =~ Linux$ ]]; then
+	CPPCHECK_EXTRAS="-U __FreeBSD__ -D __linux__";
+    else
+	CPPCHECK_EXTRAS="-U __linux__";
     fi;
     if [ ${lint_c} -eq 0 ]; then
 	pushd .
 	cd c_cpp/src_c;
-	${CPPCHECK} --xml-version=2 --enable=all . 2> ${REPORT_DIR}/cppcheck-result_src_c.xml
+	echo "[INFO] command line=${CPPCHECK} ${CPPCHECK_OPTIONS} ${CPPCHECK_EXTRAS} . 2> ${REPORT_DIR}/cppcheck-result_src_cpp.xml" 1>&2;
+	${CPPCHECK} --xml-version=2 ${CPPCHECK_OPTIONS} ${CPPCHECK_EXTRAS} . 2> ${REPORT_DIR}/cppcheck-result_src_c.xml
 	popd
     fi;
     if [ ${lint_cpp} -eq 0 ]; then
 	pushd .
 	cd  c_cpp/src_cpp
-	${CPPCHECK} --xml-version=2 --enable=all . 2> ${REPORT_DIR}/cppcheck-result_src_cpp.xml
+	echo "[INFO] command line=${CPPCHECK} ${CPPCHECK_OPTIONS} ${CPPCHECK_EXTRAS} . 2> ${REPORT_DIR}/cppcheck-result_src_cpp.xml" 1>&2;
+	${CPPCHECK} ${CPPCHECK_OPTIONS} ${CPPCHECK_EXTRAS} . 2> ${REPORT_DIR}/cppcheck-result_src_cpp.xml
 	popd
     fi;
     pushd .
