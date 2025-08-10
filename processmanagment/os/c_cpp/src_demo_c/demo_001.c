@@ -8,7 +8,7 @@
 
 #include "swtrprocmgt.h"
 
-/*! \brief Create child processes and leave them in a zombie state. 
+/*! \brief Create child processes and leave them in a zombie state.
   Each child will exit with a status of zero.
 
   @param count Number or zombies to create.
@@ -23,7 +23,7 @@ void create_zombies(int count) {
       sleep(2);
       fprintf(stdout,"Child %d pid %d, terminating.\n",index,getpid());
       exit(0);
-    }    
+    }
   }
 
 }
@@ -41,14 +41,14 @@ int main(int argc, char **argv) {
   // Wait for the children to exit
   fprintf(stdout,"Waiting for children to exit.\n");
   sleep(num_zombies * 2);
-  fprintf(stdout,"The number of zombies should be equal to number of children.\n");  
+  fprintf(stdout,"The number of zombies should be equal to number of children.\n");
   count = swtrprcmgt_count_children(&ctrl,my_pid,SWTRPOCMGT_ZOMBIE_C);
   fprintf(stdout,"Number of children that are zombies: %d\n",count);
-#if defined (__Linux__)
+#if defined (__linux__)
   fprintf(stdout,"Enter the command 'ps -aef | grep %d | grep defunct'\nin another window to see the zombie/defunct processes assocated with this pid\n",getpid());
 #elif defined (__FreeBSD__)
   fprintf(stdout,"Enter the command 'ps -aj | grep %d | grep defunct'\nin another window to see the zombie/defunct processes assocated with this pid\n",getpid());
-#endif  
+#endif
   fprintf(stdout,"Waiting 60 seconds before continuing...\n");
   sleep(60);
   fprintf(stdout,"Reap the status of all the children that are zombies.");

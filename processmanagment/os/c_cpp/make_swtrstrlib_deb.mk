@@ -1,4 +1,3 @@
-
 SWTRSTRLIB_NAME           = swtrstrlib
 
 SWTRSTRLIB_MAJOR          = 0
@@ -20,8 +19,8 @@ SWTRSTRLIB_SRCDIR_NAME   = ${SWTRSTRLIB_NAME}-${SWTRSTRLIB_MAJOR}.${SWTRSTRLIB_M
 
 
 SWTRCOMMON_FILES          = CMakeLists.txt Makefile_packages Makefile_doc
-SWTRSTRLIB_DOC_FILES 	  = 
-SWTRSTRLIB_FILES          = make_swtrstrlib_ubuntu_deb.mk
+SWTRSTRLIB_DOC_FILES	  =
+SWTRSTRLIB_FILES          = make_swtrstrlib_deb.mk
 SWTRSTRLIB_DIRS           = src_c
 
 swtrstrlib_all:
