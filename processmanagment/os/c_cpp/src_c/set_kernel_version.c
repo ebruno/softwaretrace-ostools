@@ -10,7 +10,7 @@
 extern "C" {
 #endif
 
-int swtrprcmgt_set_kernel_version(const SWTPROC_MGT *ctrl) {
+int swtrprcmgt_set_kernel_version(SWTPROC_MGT *ctrl) {
 
   int result = SWTRPCCMGT_SUCCESS;
   struct utsname sysinfo;

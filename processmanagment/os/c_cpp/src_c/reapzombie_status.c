@@ -109,7 +109,7 @@ int swtrprcmgt_reapzombie_status(const SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROC
 	      }
 	    }
 	  }
-	  (*base_entry)++;
+	  *base_entry++;
 	};
 	globfree(&pglob);
       }

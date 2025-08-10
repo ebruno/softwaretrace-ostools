@@ -333,7 +333,7 @@ extern int swtrprcmgt_get_process_stat(const SWTPROC_MGT *ctrl,pid_t pid,SWTPROC
 extern int swtrprcmgt_init_ctrl(SWTPROC_MGT *ctrl,int version);
 extern int swtrprcmgt_reapzombie_status(const SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROCESS_INFO **child_info);
 extern int swtrprcmgt_set_maxpid(SWTPROC_MGT *ctrl);
-extern int swtrprcmgt_set_kernel_version(const SWTPROC_MGT *ctrl);
+extern int swtrprcmgt_set_kernel_version(SWTPROC_MGT *ctrl);
 
 #ifdef __cplusplus
 }
