@@ -29,7 +29,7 @@
   @return 0 or -1 if an error occurs.
 
 */
-int swtrprcmgt_set_maxpid(const SWTPROC_MGT *ctrl) {
+int swtrprcmgt_set_maxpid(SWTPROC_MGT *ctrl) {
   const char field_fmt[] = "%d";
   const char proc_fmt_pattern[SWTRPOCMGT_SMALL_WRKBUF+1] = "%s/sys/kernel/pid_max";
   char proc_pattern[SWTRPOCMGT_SMALL_WRKBUF+1] = "";

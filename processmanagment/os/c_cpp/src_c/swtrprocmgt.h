@@ -330,9 +330,9 @@ typedef struct SWTPROC_MGT  {
 
 extern int swtrprcmgt_count_children(const SWTPROC_MGT *ctrl, pid_t pid, char state);
 extern int swtrprcmgt_get_process_stat(const SWTPROC_MGT *ctrl,pid_t pid,SWTPROC_STAT_INFO *proc_info);
-extern int swtrprcmgt_init_ctrl(const SWTPROC_MGT *ctrl,int version);
+extern int swtrprcmgt_init_ctrl(SWTPROC_MGT *ctrl,int version);
 extern int swtrprcmgt_reapzombie_status(const SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROCESS_INFO **child_info);
-extern int swtrprcmgt_set_maxpid(const SWTPROC_MGT *ctrl);
+extern int swtrprcmgt_set_maxpid(SWTPROC_MGT *ctrl);
 extern int swtrprcmgt_set_kernel_version(const SWTPROC_MGT *ctrl);
 
 #ifdef __cplusplus

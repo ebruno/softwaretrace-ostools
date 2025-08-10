@@ -20,7 +20,7 @@ extern "C" {
 
        \return  \ref SWTRPCCMGT_SUCCESS or \ref SWTRPCCMGT_FAILURE
    */
-  int swtrprcmgt_init_ctrl(const SWTPROC_MGT *ctrl,int version) {
+  int swtrprcmgt_init_ctrl(SWTPROC_MGT *ctrl,int version) {
   int result = SWTRPCCMGT_SUCCESS;
 
   if (ctrl != NULL) {
