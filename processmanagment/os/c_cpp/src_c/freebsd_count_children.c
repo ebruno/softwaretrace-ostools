@@ -1,11 +1,12 @@
-/*! \file 
+/*! \file
    \brief FreeBSD version Count Child Processes.
     <p>Count all children of a process that are in the specified state.
     This implementation uses libprocstat instead of the /proc file system.
     </p>
-    
+
  */
 #if defined (__FreeBSD__)
+// cppcheck-suppress-begin missingIncludeSystem
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -20,6 +21,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "swtrprocmgt.h"
+// cppcheck-suppress-end missingIncludeSystem
 
 /*! Count all children of a pid that is in the specified state.
    The function searchs for all /proc/&ltpid&gt/stat files.
@@ -27,21 +29,22 @@
 
   @param ctrl  Pointer to common parameters
   @param pid   pid of the pocess to locate child processes of.
-  @param state One of the following: \ref SWTRPOCMGT_RUNNING_C 
-                                     \ref SWTRPOCMGT_ZOMBIE_C
-                                     \ref SWTRPOCMGT_SLEEPING_C
-                                     \ref SWTRPOCMGT_UNINTEREDISKSLEEP_C
-                                     \ref SWTRPOCMGT_TRACE_STOPPED_C
-                                     \ref SWTRPOCMGT_PAGING_C
+  @param state One of the following: \ref SWTRPOCMGT_RUNNING_C
+				     \ref SWTRPOCMGT_ZOMBIE_C
+				     \ref SWTRPOCMGT_SLEEPING_C
+				     \ref SWTRPOCMGT_UNINTEREDISKSLEEP_C
+				     \ref SWTRPOCMGT_TRACE_STOPPED_C
+				     \ref SWTRPOCMGT_PAGING_C
 
 
 
   @return Count of children  or -1 of on an error.
- 
+
   Note: The function is only interested in the pid, ppid and state fields.
-  
+
 */
-int swtrprcmgt_count_children(SWTPROC_MGT *ctrl, pid_t pid, char state) {
+int swtrprcmgt_count_children(const SWTPROC_MGT *ctrl, pid_t pid, char state) {
+// cppcheck-suppress-begin [variableScope, constVariablePointer]
   int arg = 0;
   int result = SWTRPCCMGT_FAILURE;
   int what = KERN_PROC_PROC;
@@ -50,6 +53,7 @@ int swtrprcmgt_count_children(SWTPROC_MGT *ctrl, pid_t pid, char state) {
   struct procstat *proc_ctrl = NULL;
   unsigned int count;
   int child_count = 0;
+// cppcheck-suppress-end [variableScope, constVariablePointer]
 
   if (ctrl != NULL) {
     if (pid <= ctrl->mgt.v1.max_pid) {
@@ -77,4 +81,3 @@ int swtrprcmgt_count_children(SWTPROC_MGT *ctrl, pid_t pid, char state) {
   return result;
 }
 #endif
- 

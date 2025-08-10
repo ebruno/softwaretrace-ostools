@@ -1,25 +1,26 @@
+// cppcheck-suppress-begin missingIncludeSystem
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/utsname.h>
 #include "swtrprocmgt.h"
+// cppcheck-suppress-end missingIncludeSystem
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int swtrprcmgt_set_kernel_version(SWTPROC_MGT *ctrl) {
+int swtrprcmgt_set_kernel_version(const SWTPROC_MGT *ctrl) {
 
   int result = SWTRPCCMGT_SUCCESS;
   struct utsname sysinfo;
-  char *tmp_ptr = NULL;
 #if defined(__FreeBSD__)
   char scan_fmt[] = "%d.%d%s";
-#elif defined(__linux__)  
-  char scan_fmt[] = "%d.%d.%d%s";
+#elif defined(__linux__)
+  const char scan_fmt[] = "%d.%d.%d%s";
 #else
-#error("Operating System is currntly not supported.")  
-#endif  
+#error("Operating System is currntly not supported.")
+#endif
   char tmp_buf[SWTRPOCMGT_SMALL_WRKBUF+1];
   int major = 0;
   int minor = 0;

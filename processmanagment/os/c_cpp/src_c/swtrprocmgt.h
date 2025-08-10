@@ -5,6 +5,7 @@
 
 #if !defined (__SWTRPROCMGT_H__)
 #define __SWTRPROCMGT_H__
+// cppcheck-suppress-begin missingIncludeSystem
 #include <sys/types.h>
 
 #include <stdbool.h>
@@ -14,6 +15,7 @@
 #include <sys/proc.h>
 #endif
 
+// cppcheck-suppress-end missingIncludeSystem
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,13 +68,13 @@ extern "C" {
 #define SWTRPCCMGT_PROCFS_ROOT ""
 #else
 #error "Operating System is currently not supported."
-#endif   
+#endif
 /*! Max length of the comm field
- This value needs to be >= TASK_COMM_LEN in linux/sched.h 
+ This value needs to be >= TASK_COMM_LEN in linux/sched.h
 */
-#define SWTRPCCMGT_TASK_COMM_LEN 32	
+#define SWTRPCCMGT_TASK_COMM_LEN 32
 
-  /*! Format string for parsing the stat record. Pre Kernel V3.3 */    
+  /*! Format string for parsing the stat record. Pre Kernel V3.3 */
 #if defined (Ubuntu)
 #define SWTRPOCMGT_STAT_FMT_PRE_KV33 "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %ld %ld %u %u %llu %lu %ld"
 #else
@@ -83,16 +85,16 @@ extern "C" {
 #define SWTRPOCMGT_STAT_FMT_KV35_EXTRA "%lu %lu %lu %lu %d"
   /*! Format string for parsing the stat record. Kernel V3.3 and higher. */
 #if defined (Ubuntu)
-#define SWTRPOCMGT_STAT_FMT_KV33 "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %ld %ld %u %u %llu %lu %ld %lu %lu %lu" 
+#define SWTRPOCMGT_STAT_FMT_KV33 "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %ld %ld %u %u %llu %lu %ld %lu %lu %lu"
 #else
-#define SWTRPOCMGT_STAT_FMT_KV33 "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %d %d %u %u %llu %lu %ld %lu %lu %lu" 
+#define SWTRPOCMGT_STAT_FMT_KV33 "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %d %d %u %u %llu %lu %ld %lu %lu %lu"
 #endif
   /*! Format string for parsing the stat record. Kernel V3.5 and higher. */
 
 #if defined (Ubuntu)
-#define SWTRPOCMGT_STAT_FMT "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %ld %ld %u %u %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %d" 
+#define SWTRPOCMGT_STAT_FMT "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %ld %ld %u %u %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %d"
 #else
-#define SWTRPOCMGT_STAT_FMT "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %d %d %u %u %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %d" 
+#define SWTRPOCMGT_STAT_FMT "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %d %d %u %u %llu %lu %ld %lu %lu %lu %lu %lu %lu %lu %d"
 #endif
   /*! Dummy state to get all child processes */
 #define SWTRPROCMG_ALL_STATES 'A'
@@ -131,7 +133,7 @@ extern "C" {
   int tpgid;
   unsigned int flags;
   unsigned long minflt;
-  unsigned long cminflt; 
+  unsigned long cminflt;
   unsigned long majflt;
   unsigned long cmajflt;
   unsigned long utime;
@@ -177,7 +179,7 @@ extern "C" {
   int tpgid;
   unsigned int flags;
   unsigned long minflt;
-  unsigned long cminflt; 
+  unsigned long cminflt;
   unsigned long majflt;
   unsigned long cmajflt;
   unsigned long utime;
@@ -226,7 +228,7 @@ extern "C" {
   int tpgid;
   unsigned int flags;
   unsigned long minflt;
-  unsigned long cminflt; 
+  unsigned long cminflt;
   unsigned long majflt;
   unsigned long cmajflt;
   unsigned long utime;
@@ -292,7 +294,7 @@ extern "C" {
   } proc;
 } SWTPROC_PROCESS_INFO;
 
-  /*! Structure for passing common parameters to functions. 
+  /*! Structure for passing common parameters to functions.
    */
 typedef struct SWTPROC_MGT  {
   int version_id;           /*!< \brief Version ID of the structure. */
@@ -322,16 +324,16 @@ typedef struct SWTPROC_MGT  {
     } v2;
   } mgt;
 } SWTPROC_MGT;
-#define SWTPROC_INIT_MGTCTRL(a) swtrprcmgt_init_ctrl(a,SWTRPCCMGT_STRUCT_CURRENT_VERSION)  
-#define SWTPROC_INIT_MGTCTRL_V1(a) swtrprcmgt_init_ctrl(a,SWTRPCCMGT_STRUCT_V1)  
-#define SWTPROC_INIT_MGTCTRL_V2(a) swtrprcmgt_init_ctrl(a,SWTRPCCMGT_STRUCT_V2)  
+#define SWTPROC_INIT_MGTCTRL(a) swtrprcmgt_init_ctrl(a,SWTRPCCMGT_STRUCT_CURRENT_VERSION)
+#define SWTPROC_INIT_MGTCTRL_V1(a) swtrprcmgt_init_ctrl(a,SWTRPCCMGT_STRUCT_V1)
+#define SWTPROC_INIT_MGTCTRL_V2(a) swtrprcmgt_init_ctrl(a,SWTRPCCMGT_STRUCT_V2)
 
-extern int swtrprcmgt_count_children(SWTPROC_MGT *ctrl, pid_t pid, char state);
-extern int swtrprcmgt_get_process_stat(SWTPROC_MGT *ctrl,pid_t pid,SWTPROC_STAT_INFO *proc_info);
+extern int swtrprcmgt_count_children(const SWTPROC_MGT *ctrl, pid_t pid, char state);
+extern int swtrprcmgt_get_process_stat(const SWTPROC_MGT *ctrl,pid_t pid,SWTPROC_STAT_INFO *proc_info);
 extern int swtrprcmgt_init_ctrl(SWTPROC_MGT *ctrl,int version);
-extern int swtrprcmgt_reapzombie_status(SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROCESS_INFO **child_info);
+extern int swtrprcmgt_reapzombie_status(const SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROCESS_INFO **child_info);
 extern int swtrprcmgt_set_maxpid(SWTPROC_MGT *ctrl);
-extern int swtrprcmgt_set_kernel_version(SWTPROC_MGT *ctrl);
+extern int swtrprcmgt_set_kernel_version(const SWTPROC_MGT *ctrl);
 
 #ifdef __cplusplus
 }

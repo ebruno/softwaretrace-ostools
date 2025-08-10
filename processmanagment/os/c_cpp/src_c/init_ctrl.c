@@ -1,25 +1,28 @@
 /*! \file
   \brief Initialize process management control block.
-  
+
  */
+// cppcheck-suppress-begin missingIncludeSystem
 #include <string.h>
 #include "swtrprocmgt.h"
+// cppcheck-suppress-end missingIncludeSystem
+
 #ifdef __cplusplus
 extern "C" {
 #endif
   /*!  \brief Initialize the process managment control block.
        Under under Linux the /proc file system is used.
-       Under FreeBSD the sysctl mibs are used my the 
+       Under FreeBSD the sysctl mibs are used my the
        underlying routines.
- 
+
        \param ctrl      Pointer to control block.
        \param version   Version of the control block to initialize.
 
-       \return  \ref SWTRPCCMGT_SUCCESS or \ref SWTRPCCMGT_FAILURE  
+       \return  \ref SWTRPCCMGT_SUCCESS or \ref SWTRPCCMGT_FAILURE
    */
   int swtrprcmgt_init_ctrl(SWTPROC_MGT *ctrl,int version) {
   int result = SWTRPCCMGT_SUCCESS;
-  
+
   if (ctrl != NULL) {
     memset(ctrl,0,sizeof(struct SWTPROC_MGT));
     ctrl->version_id = version;

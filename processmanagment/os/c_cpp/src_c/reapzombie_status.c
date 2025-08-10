@@ -2,6 +2,7 @@
    \brief Locate all child processes in the zombie state and reap the exit status..
  */
 
+// cppcheck-suppress-begin missingIncludeSystem
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -12,32 +13,34 @@
 #include <string.h>
 #include <sys/wait.h>
 #include "swtrprocmgt.h"
+// cppcheck-suppress-end missingIncludeSystem
 
-/*! Reap the status processes in a zombie state. 
+/*! Reap the status processes in a zombie state.
 
   @param ctrl  Pointer to common parameters
   @param pid   pid of the pocess to locate child processes of.
   @param child_info Pointer to the base of an array to hold pointers to \ref SWTPROC_PROCESS_INFO structures.
-                    If NULL this will not be populated.
+		    If NULL this will not be populated.
   @return Count of the number of child status reaped  or -1 on an error.
- 
+
   Note: The function is only interested in the pid ppid and state fields.
   pid is field 1
   comm is field 2
   state is field 3
   ppid is field 4
   sample:
-  70409 (someproc) S 66024 
-  
+  70409 (someproc) S 66024
+
 */
-int swtrprcmgt_reapzombie_status(SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROCESS_INFO **child_info) {
-  bool continue_processing = false;   
+int swtrprcmgt_reapzombie_status(const SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROCESS_INFO **child_info) {
+// cppcheck-suppress-begin [variableScope, unreadVariable, constVariablePointer]
+  bool continue_processing = false;
   char *field_start = NULL;
   char *tmp_ptr = NULL;
   char comm[SWTRPOCMGT_SMALL_WRKBUF+1] = "";
-  char cur_state = '\0'; 
-  char field_fmt[SWTRPOCMGT_SMALL_WRKBUF+1] = "%d %s %c %d";
-  char glob_fmt_pattern[SWTRPOCMGT_SMALL_WRKBUF+1] = "%s/[0-9]*/stat";
+  char cur_state = '\0';
+  const char field_fmt[SWTRPOCMGT_SMALL_WRKBUF+1] = "%d %s %c %d";
+  const char glob_fmt_pattern[SWTRPOCMGT_SMALL_WRKBUF+1] = "%s/[0-9]*/stat";
   char glob_pattern[SWTRPOCMGT_SMALL_WRKBUF+1] = "";
   char state = SWTRPOCMGT_ZOMBIE_C;
   char stat_info[SWTRPOCMGT_MAX_WRKBUF+1] = "";
@@ -51,10 +54,9 @@ int swtrprcmgt_reapzombie_status(SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROCESS_IN
   int tmp_handle = -1;
   int fields_loaded = 0;
   int zombie_status = 0;
-  int count_entries = 0;
-  int count_free_entries = 0;
   pid_t cpid = 0;
   pid_t ppid = 0;
+// cppcheck-suppress-end [variableScope, unreadVariable, constVariablePointer]
   if (ctrl != NULL) {
     if (pid <= ctrl->mgt.v1.max_pid) {
       sprintf(glob_pattern,glob_fmt_pattern,ctrl->mgt.v1.proc_system_root);
@@ -83,9 +85,9 @@ int swtrprcmgt_reapzombie_status(SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROCESS_IN
 		  if (fields_loaded == required_count_fields) {
 		    if ((state == cur_state) && (pid == ppid)) {
 		      if (waitpid(cpid,&zombie_status,WNOHANG) == cpid) {
-			/*! \todo 
-			  return process id and raw status if child_info is not NULL 
-		        */
+			/*! \todo
+			  return process id and raw status if child_info is not NULL
+			*/
 			if (child_info == NULL) {
 			  result ++;
 			} else {
@@ -95,11 +97,11 @@ int swtrprcmgt_reapzombie_status(SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROCESS_IN
 		    }
 		  }
 		  continue;
-		} 
+		}
 		else if (*(tmp_ptr) == SWTRPOCMGT_STRING_TERMINATOR_C) {
 		  continue_processing = false;
 		  continue;
-		} 
+		}
 		else if (*(tmp_ptr) == ' ') {
 		  field_id++;
 		}
@@ -107,7 +109,7 @@ int swtrprcmgt_reapzombie_status(SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROCESS_IN
 	      }
 	    }
 	  }
-	  *base_entry++;	
+	  (*base_entry)++;
 	};
 	globfree(&pglob);
       }
@@ -115,5 +117,3 @@ int swtrprcmgt_reapzombie_status(SWTPROC_MGT *ctrl, pid_t pid,SWTPROC_PROCESS_IN
   }
   return result;
 }
-
- 

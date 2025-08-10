@@ -1,7 +1,7 @@
 /*! \file
    \brief Set the Max PID allowed for this system in control block.
  */
-
+// cppcheck-suppress-begin missingIncludeSystem
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -14,23 +14,24 @@
 #include <sys/sysctl.h>
 #endif
 #include "swtrprocmgt.h"
+// cppcheck-suppress-end missingIncludeSystem
 
 /*! Get max PID allowed by the system.
     The max pid is stored in /proc/sys/kernel/pid_max
     This function reads the value and stores in max_pid in the control block.
     if an error occurs the value \ref SWTRPOCMGT_DEFAULT_MAX_PID is set.
 
-    For FreeBSD sysctl is used it can also be used on Linux to obtain the 
+    For FreeBSD sysctl is used it can also be used on Linux to obtain the
     max pid value but we use the proc file system under Linux for consistency.
 
   @param ctrl  Pointer Control Block for the library.
 
   @return 0 or -1 if an error occurs.
-     
+
 */
 int swtrprcmgt_set_maxpid(SWTPROC_MGT *ctrl) {
-  char field_fmt[] = "%d";
-  char proc_fmt_pattern[SWTRPOCMGT_SMALL_WRKBUF+1] = "%s/sys/kernel/pid_max";
+  const char field_fmt[] = "%d";
+  const char proc_fmt_pattern[SWTRPOCMGT_SMALL_WRKBUF+1] = "%s/sys/kernel/pid_max";
   char proc_pattern[SWTRPOCMGT_SMALL_WRKBUF+1] = "";
   char info[SWTRPOCMGT_MAX_WRKBUF+1] = "";
   int bytes_read = 0;
@@ -38,12 +39,12 @@ int swtrprcmgt_set_maxpid(SWTPROC_MGT *ctrl) {
   int tmp_handle = -1;
   int tmp_status = 0;
   pid_t max_pid = 0;
-#if defined(__FreeBSD__)
+ #if defined(__FreeBSD__)
   int namelength = 2;
   int mib[namelength];
   int maxproc;
   size_t length;
-#endif      
+#endif
   if (ctrl != NULL) {
 #if defined(__linux__)
     switch (ctrl->version_id) {
@@ -83,10 +84,10 @@ int swtrprcmgt_set_maxpid(SWTPROC_MGT *ctrl) {
       } else {
 	max_pid = (pid_t) maxproc;
 	result = SWTRPCCMGT_SUCCESS;
-      };	
+      };
 #else
-#error "Operating System is currently not supported."    
-#endif      
+#error "Operating System is currently not supported."
+#endif
       switch (ctrl->version_id) {
       case SWTRPCCMGT_STRUCT_V1:
 	ctrl->mgt.v1.max_pid = max_pid;
@@ -101,5 +102,3 @@ int swtrprcmgt_set_maxpid(SWTPROC_MGT *ctrl) {
   };
   return result;
 };
-
- 
