@@ -1,6 +1,6 @@
 RELEASE_INFO_FILE = /etc/os-release
 # /etc/os-release has the following information that we need.
-# NAME and version 
+# NAME and version
 # For example:
 # NAME="Ubuntu"
 # VERSION="16.04.4 LTS (Xenial Xerus)"
@@ -22,6 +22,8 @@ FREEBSD_NAME   = FreeBSD
 
 UBUNTU_NAME    = "Ubuntu"
 
+DEBIAN_NAME    = "Debian GNU/Linux"
+
 ifeq ($(KERNEL_NAME),Linux)
 ifeq ("$(wildcard ${RELEASE_INFO_FILE})","")
   $(error Unable to locate ${RELEASE_INFO_FILE})
@@ -41,18 +43,18 @@ SPEC_DIR = SPECS
 SPEC_TEMPLATE_DIR = spec_template
 
 BUILDING_RPMS = Yes
-$(info Checking to see if OS/Distro "$(NAME)" is supported)
+$(info Checking to see if OS/Distro $(NAME) is supported)
 
 ifeq ($(NAME),$(CENTOS_NAME))
      RPMBUILD_BASE  = rpmbuild
      RPMBUILD_DIRS  = BUILD BUILDROOT RPMS SOURCES SPECS SRPMS
      RPMBUILD_SOURCE_DIR = ${HOME}/${RPMBUILD_BASE}/SOURCES
-     RPM_VERBOSE = 
+     RPM_VERBOSE =
 #    RPM_VERBOSE = --vv
      BUILDING_RPMS = Yes
 
     ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_rpm.mk)","")
-    else 
+    else
        include ${CURDIR}/make_swtrstrlib_rpm.mk
     endif
 
@@ -65,7 +67,7 @@ else ifeq ($(NAME),$(RHEL_NAME))
      RPMBUILD_BASE  = rpmbuild
      RPMBUILD_DIRS  = BUILD BUILDROOT RPMS SOURCES SPECS SRPMS
      RPMBUILD_SOURCE_DIR = ${HOME}/${RPMBUILD_BASE}/SOURCES
-     RPM_VERBOSE = 
+     RPM_VERBOSE =
 #    RPM_VERBOSE = --vv
      BUILDING_RPMS = Yes
 
@@ -82,27 +84,37 @@ else ifeq ($(NAME),Fedora)
        RPMBUILD_BASE  = rpmbuild
        RPMBUILD_DIRS  = BUILD BUILDROOT RPMS SOURCES SPECS SRPMS
        RPMBUILD_SOURCE_DIR = ${HOME}/${RPMBUILD_BASE}/SOURCES
-       RPM_VERBOSE = 
+       RPM_VERBOSE =
 #      RPM_VERBOSE = --vv
        BUILDING_RPMS = Yes
 
        ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_rpm.mk)","")
        else
-         include ${CURDIR}/make_swtrstrlib_rpm.mk
+	 include ${CURDIR}/make_swtrstrlib_rpm.mk
        endif
 
        ifeq ("$(wildcard ${CURDIR}/make_swtrprocmgtutils_rpm.mk)","")
        else
-         include ${CURDIR}/make_swtrprocmgtutils_rpm.mk
+	 include ${CURDIR}/make_swtrprocmgtutils_rpm.mk
        endif
 else ifeq ($(NAME),${UBUNTU_NAME})
        DEBBUILD_BASE  = debbuild
        DEBBUILD_DIRS  = SOURCES
        DEBBUILD_SOURCE_DIR = $(CURDIR)/${DEBBUILD_BASE}/SOURCES
-       BUILDING_RPMS = No 
+       BUILDING_RPMS = No
        ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_ubuntu_deb.mk)","")
        else
-         include ${CURDIR}/make_swtrstrlib_ubuntu_deb.mk
+	 include ${CURDIR}/make_swtrstrlib_ubuntu_deb.mk
+       endif
+else ifeq ($(NAME),${DEBIAN_NAME})
+       DEBBUILD_BASE  = debbuild
+       DEBBUILD_DIRS  = SOURCES
+       DEBBUILD_SOURCE_DIR = $(CURDIR)/${DEBBUILD_BASE}/SOURCES
+       BUILDING_RPMS = No
+       ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_deb.mk)","")
+	  $(info make_swtrstrlib_deb.mk not found, skipping.)
+       else
+	 include ${CURDIR}/make_swtrstrlib_deb.mk
        endif
 else ifeq ($(NAME),$(ARCHLINUX_NAME))
        PACMANBUILD_BASE = ${CURDIR}/ARCHLINUXBUILD
@@ -110,20 +122,20 @@ else ifeq ($(NAME),$(ARCHLINUX_NAME))
        ARCLINUX_PACKAGE_DIR = packages
        ifeq ("$(wildcard ${CURDIR}/make_swtrstrlib_archlinux.mk)","")
        else
-         include ${CURDIR}/make_swtrstrlib_archlinux.mk
+	 include ${CURDIR}/make_swtrstrlib_archlinux.mk
        endif
 
        ifeq ("$(wildcard ${CURDIR}/make_swtrprocmgtutils_archlinux.mk)","")
-          $(info make_swtrprocmgtutils_archlinux.mk not found, skipping.)
+	  $(info make_swtrprocmgtutils_archlinux.mk not found, skipping.)
        else
-          $(info Including make_swtrprocmgtutils_archlinux.mk)
-         include ${CURDIR}/make_swtrprocmgtutils_archlinux.mk
+	  $(info Including make_swtrprocmgtutils_archlinux.mk)
+	 include ${CURDIR}/make_swtrprocmgtutils_archlinux.mk
        endif
 else
-   $(error "$(NAME)" is not a supported operating system)
+   $(error $(NAME) is not a supported operating system)
 endif
 
-$(info OS/Distro "$(NAME)" is supported, continuing.)
+$(info OS/Distro $(NAME) is supported, continuing.)
 
 TEMP_DIRS = ${SPEC_DIR} ${CURDIR}/src ${PACMANBUILD_BASE}
 
