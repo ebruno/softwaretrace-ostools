@@ -14,13 +14,13 @@ message("---- CMAKE_HOST_SYSTEM_NAME ${CMAKE_HOST_SYSTEM_NAME}")
 message("---- CMAKE_HOST_UNIX ${CMAKE_HOST_UNIX}")
 
 if (EXISTS "/etc/os-release")
-  file(STRINGS "/etc/os-release" OS_RELEASE_INFO REGEX "^NAME=*")
+  file(STRINGS "/etc/os-release" OS_RELEASE_INFO REGEX "^ID=*")
   message("---- OS_RELEASE_INFO ${OS_RELEASE_INFO}")
-  if (OS_RELEASE_INFO MATCHES "NAME=")
+  if (OS_RELEASE_INFO MATCHES "ID=")
     string(REPLACE "\"" "" OS_RELEASE_INFO "${OS_RELEASE_INFO}")
     string(STRIP "${OS_RELEASE_INFO}"  OS_RELEASE_INFO)
     string(SUBSTRING "${OS_RELEASE_INFO}" 5 -1 OS_NAME)
-  endif(OS_RELEASE_INFO MATCHES "NAME=")
+  endif(OS_RELEASE_INFO MATCHES "ID=")
 else (EXISTS "/etc/os-release")
     set(OS_NAME ${CMAKE_HOST_SYSTEM_NAME})
 endif(EXISTS "/etc/os-release")
@@ -41,7 +41,7 @@ else (DEFINED SWTRLIB_BUILD_LIBS)
   set (SWTRLIB_BUILD_LIBS "swtrstrlib swtrprocmgt")
 endif (DEFINED SWTRLIB_BUILD_LIBS)
 
-message("-- Building librarys ${SWTRLIB_BUILD_LIBS}")
+message("-- Building libraries ${SWTRLIB_BUILD_LIBS}")
 # The Unix distros have some sight differences that cause compiler warnings.
 # Pass the OS_NAME as define so the appropriate adjustments
 # can be made at compile time.
@@ -53,7 +53,6 @@ elseif (CMAKE_BUILD_TYPE MATCHES Release)
 elseif (CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
    add_compile_options(-std=c17 -O2 ${CMAKE_C_FLAGS_DEBUG})
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
-
 if (CMAKE_SYSTEM_NAME MATCHES Linux)
 set (libsrc src_c/getmaxpid.c
     src_c/init_ctrl.c
@@ -70,14 +69,14 @@ set (libsrc src_c/getmaxpid.c
     src_c/freebsd_reapzombie_status.c)
 endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 
-set (libsrc_string src_c/lremove_char.c
-     src_c/rremove_char.c
+set (libsrc_string src_c/rremove_char.c
+     src_c/lremove_char.c
      src_c/remove_char.c
     )
 set (SWTRSTRLIB_LIB_VERSION_MAJOR 0)
 set (SWTRSTRLIB_LIB_VERSION_MINOR 9)
-set (SWTRSTRLIB_LIB_VERSION_SUBVERSION 0)
-set (SWTRSTRLIB_LIB_VERSION 0.9.0)
+set (SWTRSTRLIB_LIB_VERSION_SUBVERSION 5)
+set (SWTRSTRLIB_LIB_VERSION 0.9.5)
 if (DEFINED SWTRLIB_LIB_INSTALL_ROOT)
   message("-- CMDLINE OVERRIDE INSTALL ROOT: ${SWTRLIB_LIB_INSTALL_ROOT}")
 else (DEFINED SWTRLIB_LIB_INSTALL_ROOT)
@@ -104,7 +103,7 @@ install(TARGETS swtrstrlib swtrstrlib_static
 	)
 endif (${SWTRLIB_BUILD_LIBS} MATCHES "swtrstrlib")
 
-set (SWTRPROCMGT_LIB_VERSION 0.9.0)
+set (SWTRPROCMGT_LIB_VERSION 0.9.5)
 if (${SWTRLIB_BUILD_LIBS} MATCHES "swtrprocmgt")
    message("-- Adding library swtrprocmgt to build.")
    add_library(swtrprocmgt SHARED ${libsrc})
@@ -123,6 +122,13 @@ endif (CMAKE_SYSTEM_NAME MATCHES FreeBSD)
 endif(${SWTRLIB_BUILD_LIBS} MATCHES "swtrprocmgt")
 
 if (NOT ("${CMAKE_BUILD_TYPE}" STREQUAL "ReleaseLibsOnly;BuildType"))
+   set(HEADERS_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src_c")
+   set(HEADERS_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/src_c")
+   message("-- moving ${HEADERS_SOURCE_DIR} to ${HEADERS_BUILD_DIR}")
+   file(COPY "${HEADERS_SOURCE_DIR}/"
+     DESTINATION "${HEADERS_BUILD_DIR}"
+     FILES_MATCHING
+     PATTERN "*.h")
    message("-- Adding demo programs")
    add_executable(demo_001 src_demo_c/demo_001.c)
    set_target_properties(demo_001 PROPERTIES INCLUDE_DIRECTORIES ${CMAKE_BINARY_DIR}/src_c)
