@@ -10,7 +10,7 @@ RELEASE_INFO_FILE = /etc/os-release
 
 KERNEL_NAME  = $(shell uname -s)
 
-FEDORA_NAME   = Fedora
+FEDORA_NAME   = "Fedora Linux"
 
 CENTOS_NAME   = "CentOS Linux"
 
@@ -80,7 +80,7 @@ else ifeq ($(NAME),$(RHEL_NAME))
      else
       include ${CURDIR}/make_swtrprocmgtutils_rpm.mk
      endif
-else ifeq ($(NAME),Fedora)
+else ifeq ($(NAME),$(FEDORA_NAME))
        RPMBUILD_BASE  = rpmbuild
        RPMBUILD_DIRS  = BUILD BUILDROOT RPMS SOURCES SPECS SRPMS
        RPMBUILD_SOURCE_DIR = ${HOME}/${RPMBUILD_BASE}/SOURCES
