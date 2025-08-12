@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.25)
-project(swtrprocmgt C)
+cmake_minimum_required(VERSION 3.20)
+project(swtrprocmgtdemo C)
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "")
      set(CMAKE_BUILD_TYPE "Release" "BuildType")
 endif ("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -18,7 +18,7 @@ if (EXISTS "/etc/os-release")
   message("---- OS_RELEASE_INFO ${OS_RELEASE_INFO}")
   if (OS_RELEASE_INFO MATCHES "ID=")
     string(STRIP "${OS_RELEASE_INFO}"  OS_RELEASE_INFO)
-    string(SUBSTRING "${OS_RELEASE_INFO}" 5 -1 OS_NAME)
+    string(SUBSTRING "${OS_RELEASE_INFO}" 3 -1 OS_NAME)
   endif(OS_RELEASE_INFO MATCHES "ID=")
 else (EXISTS "/etc/os-release")
     set(OS_NAME ${CMAKE_HOST_SYSTEM_NAME})
@@ -27,8 +27,8 @@ message("---- OS_NAME '${OS_NAME}'")
 
 message("-- ${CMAKE_BUILD_TYPE}")
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src_c)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src_c)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/demo_bin)
 set (DOXYGEN_TEMPLATES childmgt)
 set (DOCDIR_ROOT ${CMAKE_BINARY_DIR})
@@ -37,21 +37,26 @@ set (BASE_DOCDIR doc)
 if (DEFINED SWTRLIB_BUILD_LIBS)
   message("-- CMDLINE OVERRIDE BUILDING LIBS: ${SWTRLIB_BUILD_LIBS}")
 else (DEFINED SWTRLIB_BUILD_LIBS)
-  set (SWTRLIB_BUILD_LIBS "swtrstrlib swtrprocmgt")
+  set (SWTRLIB_BUILD_LIBS "swtrprocmgt;swtrstrlib")
 endif (DEFINED SWTRLIB_BUILD_LIBS)
 
 message("-- Building libraries ${SWTRLIB_BUILD_LIBS}")
-# The Unix distros have some sight differences that cause compiler warnings.
-# Pass the OS_NAME as define so the appropriate adjustments
-# can be made at compile time.
-add_definitions(-D${OS_NAME})
+list(LENGTH SWTRLIB_BUILD_LIBS num_libs)
+if (num_libs EQUAL 1)
+  set (CMAKE_INSTALL_PREFIX "usr")
+else(num_libs EQUAL 1)
+  set (CMAKE_INSTALL_PREFIX "opt/swtrlibprocmgt")
+endif(num_libs EQUAL 1)
+
+
 if (CMAKE_BUILD_TYPE MATCHES Debug)
-    add_compile_options(-std=c17 ${CMAKE_C_FLAGS_DEBUG} -Wall)
+    add_compile_options(-std=c99 ${CMAKE_C_FLAGS_DEBUG} -Wall)
 elseif (CMAKE_BUILD_TYPE MATCHES Release)
-   add_compile_options(-std=c17 -O3)
+   add_compile_options(-std=c99 -O3)
 elseif (CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
-   add_compile_options(-std=c17 -O2 ${CMAKE_C_FLAGS_DEBUG})
+    add_compile_options(-std=c99 -O2 ${CMAKE_C_FLAGS_DEBUG})
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
+
 if (CMAKE_SYSTEM_NAME MATCHES Linux)
 set (libsrc src_c/getmaxpid.c
     src_c/init_ctrl.c
@@ -68,58 +73,54 @@ set (libsrc src_c/getmaxpid.c
     src_c/freebsd_reapzombie_status.c)
 endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 
-set (libsrc_string src_c/rremove_char.c
-     src_c/lremove_char.c
-     src_c/remove_char.c
+set (SWTRPROCMGT_LIB_VERSION_MAJOR 0)
+set (SWTRPROCMGT_LIB_VERSION_MINOR 9)
+set (SWTRPROCMGT_LIB_VERSION_SUBVERSION 5)
+set (SWTRPROCMGT_LIB_VERSION 0.9.5)
+
+set (libsrc_string swtrstrlib/src_c/lremove_char.c
+     swtrstrlib/src_c/rremove_char.c
+     swtrstrlib/src_c/remove_char.c
     )
 set (SWTRSTRLIB_LIB_VERSION_MAJOR 0)
 set (SWTRSTRLIB_LIB_VERSION_MINOR 9)
 set (SWTRSTRLIB_LIB_VERSION_SUBVERSION 5)
 set (SWTRSTRLIB_LIB_VERSION 0.9.5)
-if (DEFINED SWTRLIB_LIB_INSTALL_ROOT)
-  message("-- CMDLINE OVERRIDE INSTALL ROOT: ${SWTRLIB_LIB_INSTALL_ROOT}")
-else (DEFINED SWTRLIB_LIB_INSTALL_ROOT)
-  set (SWTRLIB_LIB_INSTALL_ROOT ${CMAKE_BINARY_DIR})
-endif (DEFINED SWTRLIB_LIB_INSTALL_ROOT )
-message("-- INSTALL ROOT: ${SWTRLIB_LIB_INSTALL_ROOT}")
-
-if (${SWTRLIB_BUILD_LIBS} MATCHES "swtrstrlib")
+if ("swtrstrlib" IN_LIST SWTRLIB_BUILD_LIBS)
 message("-- Adding library swtrstrlib to build.")
 add_library(swtrstrlib SHARED ${libsrc_string})
 add_library(swtrstrlib_static STATIC ${libsrc_string})
 set_target_properties(swtrstrlib swtrstrlib_static PROPERTIES VERSION ${SWTRSTRLIB_LIB_VERSION} SOVERSION ${SWTRSTRLIB_LIB_VERSION})
 message("-- Adding library swtrstrlib to install.")
-install(FILES src_c/swtrstrlib.h DESTINATION ${SWTRLIB_LIB_INSTALL_ROOT}/include)
-
-if (${OS_NAME} MATCHES "Arch Linux")
-message("-- Adding License file to install list")
-install(FILES LICENSE DESTINATION ${SWTRLIB_LIB_INSTALL_ROOT}/share/licenses/swtrstrlib)
-endif (${OS_NAME} MATCHES "Arch Linux")
-
 install(TARGETS swtrstrlib swtrstrlib_static
-		LIBRARY DESTINATION ${SWTRLIB_LIB_INSTALL_ROOT}/lib
-		ARCHIVE DESTINATION ${SWTRLIB_LIB_INSTALL_ROOT}/lib
+		LIBRARY DESTINATION lib
+		ARCHIVE DESTINATION lib
+		COMPONENT SWTRSTRLIB
 	)
-endif (${SWTRLIB_BUILD_LIBS} MATCHES "swtrstrlib")
+install(FILES swtrstrlib/src_c/swtrstrlib.h DESTINATION include COMPONENT SWTRSTRLIB)
+endif ("swtrstrlib" IN_LIST SWTRLIB_BUILD_LIBS)
 
-set (SWTRPROCMGT_LIB_VERSION 0.9.5)
-if (${SWTRLIB_BUILD_LIBS} MATCHES "swtrprocmgt")
-   message("-- Adding library swtrprocmgt to build.")
-   add_library(swtrprocmgt SHARED ${libsrc})
-   add_library(swtrprocmgt_static STATIC ${libsrc})
-   set_target_properties(swtrprocmgt swtrprocmgt_static PROPERTIES VERSION ${SWTRPROCMGT_LIB_VERSION} SOVERSION ${SWTRPROCMGT_LIB_VERSION})
-if (CMAKE_SYSTEM_NAME MATCHES FreeBSD)
-   target_link_libraries(swtrprocmgt procstat)
-   target_link_libraries(swtrprocmgt_static procstat)
-endif (CMAKE_SYSTEM_NAME MATCHES FreeBSD)
-   message("-- Adding library swtrprocmgt to install.")
-   install(FILES src_c/swtrpocmgt.h DESTINATION ${SWTRLIB_LIB_INSTALL_ROOT}/include)
-   install(TARGETS swtrprocmgt swtrprocmgt_static
-		   LIBRARY DESTINATION ${SWTRLIB_LIB_INSTALL_ROOT}/lib
-		  ARCHIVE DESTINATION ${SWTRLIB_LIB_INSTALL_ROOT}/lib
-	  )
-endif(${SWTRLIB_BUILD_LIBS} MATCHES "swtrprocmgt")
+if (DEFINED SWTRLIB_LIB_INSTALL_ROOT)
+  message("-- CMDLINE OVERRIDE INSTALL ROOT: ${SWTRLIB_LIB_INSTALL_ROOT}")
+else (DEFINED SWTRLIB_LIB_INSTALL_ROOT)
+  set (SWTRLIB_LIB_INSTALL_ROOT ${CMAKE_BINARY_DIR})
+endif (DEFINED SWTRLIB_LIB_INSTALL_ROOT )
 
+message("-- INSTALL ROOT: ${SWTRLIB_LIB_INSTALL_ROOT}")
+
+if ("swtrprocmgt" IN_LIST SWTRLIB_BUILD_LIBS)
+message("-- Adding library swtrprocmgt to build.")
+add_library(swtrprocmgt SHARED ${libsrc})
+add_library(swtrprocmgt_static STATIC ${libsrc})
+set_target_properties(swtrprocmgt swtrprocmgt_static PROPERTIES VERSION ${SWTRPROCMGT_LIB_VERSION} SOVERSION ${SWTRPROCMGT_LIB_VERSION})
+message("-- Adding library swtrprocmgt to install.")
+install(TARGETS swtrprocmgt swtrprocmgt_static
+		LIBRARY DESTINATION lib
+		ARCHIVE DESTINATION lib
+		COMPONENT SWTRPROCLIB
+	)
+install(FILES src_c/swtrprocmgt.h DESTINATION include COMPONENT SWTRPROCLIB)
+endif ("swtrprocmgt" IN_LIST SWTRLIB_BUILD_LIBS)
 if (NOT ("${CMAKE_BUILD_TYPE}" STREQUAL "ReleaseLibsOnly;BuildType"))
    set(HEADERS_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src_c")
    set(HEADERS_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/src_c")
@@ -129,6 +130,7 @@ if (NOT ("${CMAKE_BUILD_TYPE}" STREQUAL "ReleaseLibsOnly;BuildType"))
      FILES_MATCHING
      PATTERN "*.h")
    message("-- Adding demo programs")
+   set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
    add_executable(demo_001 src_demo_c/demo_001.c)
    set_target_properties(demo_001 PROPERTIES INCLUDE_DIRECTORIES ${CMAKE_BINARY_DIR}/src_c)
    target_link_libraries(demo_001 swtrprocmgt swtrstrlib)
@@ -141,20 +143,36 @@ if (CMAKE_SYSTEM_NAME MATCHES Linux)
    add_executable(demo_003 src_demo_c/demo_003.c)
    set_target_properties(demo_003 PROPERTIES INCLUDE_DIRECTORIES ${CMAKE_BINARY_DIR}/src_c)
    target_link_libraries(demo_003 swtrprocmgt swtrstrlib)
-   install(TARGETS demo_001 DESTINATION test_bin)
+   install(TARGETS demo_001 DESTINATION demo_bin)
+   install(TARGETS demo_002 DESTINATION demo_bin)
+   install(TARGETS demo_003 DESTINATION demo_bin)
 #   install(TARGETS ${SWTRLIB_BUILD_LIBS} DESTINATION LIBRARY DESTINATION lib INCLUDES DESTINATION include)
 endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 endif (NOT ("${CMAKE_BUILD_TYPE}" STREQUAL "ReleaseLibsOnly;BuildType"))
 
-
-add_custom_target(create_doc make -C ${CMAKE_BINARY_DIR} DOCDIR_ROOT=${DOCDIR_ROOT} BASE_DOCDIR=${BASE_DOCDIR} -f ${CMAKE_BINARY_DIR}/Makefile_doc create_doc_c
-			     COMMAND make -C ${CMAKE_BINARY_DIR} DOCDIR_ROOT=${DOCDIR_ROOT} BASE_DOCDIR=${BASE_DOCDIR} -f ${CMAKE_BINARY_DIR}/Makefile_doc create_doc_cpp
-			     COMMENT "Documentation Generation"
-		 )
-
-add_custom_target(dist_clean ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/demo_bin
-			     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/doc
-			     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/SPECS
-			     COMMAND rm -f *~ src_c/*~ src_cpp/*~ spec_templates/*~  *.xz *.gz
-			     COMMAND rm -f */*.so* */*.a
-			     COMMAND rm -f -r ${CMAKE_BINARY_DIR}/CMakeFiles cmake_install.cmake CMakeCache.txt CTestTestfile.cmake Makefile src)
+if (OS_NAME MATCHES debian)
+  message("-- Configure to build a ${OS_NAME} package.")
+  set(CPACK_GENERATOR "DEB")
+  list(LENGTH SWTRLIB_BUILD_LIBS num_libs)
+  if (num_libs EQUAL 1)
+    list(GET SWTRLIB_BUILD_LIBS 0 pkg_name)
+    set(CPACK_PACKAGE_NAME ${pkg_name})
+  else(num_libs EQUAL 1)
+    set (CMAKE_SET_DESTDIR ON)
+    set(CPACK_PACKAGING_INSTALL_PREFIX "/opt/swtrlibprocmgt")
+  endif(num_libs EQUAL 1)
+  set(CPACK_PACKAGE_VERSION_MAJOR ${SWTRPROCMGT_LIB_VERSION_MAJOR})
+  set(CPACK_PACKAGE_VERSION_MINOR ${SWTRPROCMGT_LIB_VERSION_MINOR})
+  set(CPACK_PACKAGE_VERSION_PATCH ${SWTRPROCMGT_LIB_VERSION_SUBVERSION})
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Eric Bruno <eric@ebruno.org>")
+  set(CPACK_PACKAGE_CONTACT "Eric Bruno <eric@ebruno.org>")
+  set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "SoftwareTrace String library")
+  set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/Description.txt") # Create this file
+  message("-- CPACK_DEBIAN_PACKAGE_MAINTAINER ${CPACK_DEBIAN_PACKAGE_MAINTAINER}")
+  list(LENGTH SWTRLIB_BUILD_LIBS num_libs)
+  include (CPack)
+  set(CPACK_COMPONENTS_ALL "SWTRSTRLIB;SWTRPROCMGT")
+  set(CPACK_DEB_COMPONENT_INSTALL ON)
+  cpack_add_component(SWTRSTRLIB DISPLAY_NAME "Softwaretrace string library" DESCRIPTION "Softwaretrace string library")
+  cpack_add_component(SWTRPROCMGT DISPLAY_NAME "Softwaretrace process management library" DESCRIPTION "Softwaretrace process management library")
+endif (OS_NAME MATCHES debian)
