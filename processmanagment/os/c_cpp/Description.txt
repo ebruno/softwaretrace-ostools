@@ -1,0 +1,4 @@
+Process Management Demo
+Contains routines to help manage child processes
+Note: count_children and reapzombie status use glob which is thread unsafe.
+MT-Unsafe race:utent env sig:ALRM timer locale
