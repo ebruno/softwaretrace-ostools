@@ -176,3 +176,15 @@ if (OS_NAME MATCHES debian)
   cpack_add_component(SWTRSTRLIB DISPLAY_NAME "Softwaretrace string library" DESCRIPTION "Softwaretrace string library")
   cpack_add_component(SWTRPROCMGT DISPLAY_NAME "Softwaretrace process management library" DESCRIPTION "Softwaretrace process management library")
 endif (OS_NAME MATCHES debian)
+
+add_custom_target(create_doc make -C ${CMAKE_BINARY_DIR} DOCDIR_ROOT=${DOCDIR_ROOT} BASE_DOCDIR=${BASE_DOCDIR} -f ${CMAKE_BINARY_DIR}/Makefile_doc create_doc_c
+			     COMMAND make -C ${CMAKE_BINARY_DIR} DOCDIR_ROOT=${DOCDIR_ROOT} BASE_DOCDIR=${BASE_DOCDIR} -f ${CMAKE_BINARY_DIR}/Makefile_doc create_doc_cpp
+			     COMMENT "Documentation Generation"
+		 )
+
+add_custom_target(dist_clean ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/demo_bin
+			     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/doc
+			     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/SPECS
+			     COMMAND rm -f *~ src_c/*~ src_cpp/*~ spec_templates/*~  *.xz *.gz
+			     COMMAND rm -f */*.so* */*.a
+			     COMMAND rm -f -r ${CMAKE_BINARY_DIR}/CMakeFiles cmake_install.cmake CMakeCache.txt CTestTestfile.cmake Makefile src)
