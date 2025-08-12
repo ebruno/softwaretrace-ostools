@@ -4,6 +4,11 @@
  */
 
 #if !defined (__SWTRSTRLIB_H__)
+#if defined (__FreeBSD__) || defined (__linux__)
+#define SWTRLIB_CURRENT_OS_SUPPORTED 1
+#else
+#error "Unsupported Operating System"
+#endif
 // cppcheck-suppress-begin missingIncludeSystem
 #define __SWTRSTRLIB_H__
 
@@ -11,7 +16,6 @@
 
 #include <stdbool.h>
 
-#include "swtrcommon.h"
 // cppcheck-suppress-end missingIncludeSystem
 
 #ifdef __cplusplus
