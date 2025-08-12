@@ -87,7 +87,7 @@ if (OS_NAME MATCHES debian)
   set(CPACK_PACKAGE_CONTACT "Eric Bruno <eric@ebruno.org>")
   set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "SoftwareTrace String library")
   set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/Description.txt") # Create this file
-  #set(CMAKE_INSTALL_PREFIX "usr")
+  set(CMAKE_INSTALL_PREFIX "usr")
   message("-- CPACK_DEBIAN_PACKAGE_MAINTAINER: ${CPACK_DEBIAN_PACKAGE_MAINTAINER}")
 #  message("-- CPACK_PACKAGE_NAME ${CPACK_PACKAGE_NAME}")
   include (CPack)
