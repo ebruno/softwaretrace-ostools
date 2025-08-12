@@ -1,7 +1,7 @@
 ## Building and Packaging ##
 Supported Operating Systems are show below:
 	* ArchLinux 4.N
-	* CentOS 7.N
+	* Debian 12.N
 	* Fedora 27.N
 	* FreeBSD 11.N (FreeBSD version 9.N should also work)
 	* RedHat Enterprise Linux 7.N
@@ -17,33 +17,34 @@ After checking out the code from github perform the following steps:
 	To create build system for the release version enter:
 	mkdir build
 	cmake ..<cr>
-	-- The C compiler identification is GNU 4.8.5
-
-	-- Check for working C compiler: /usr/bin/cc
-	-- Check for working C compiler: /usr/bin/cc -- works
+	-- The C compiler identification is GNU 12.2.0
 	-- Detecting C compiler ABI info
 	-- Detecting C compiler ABI info - done
+	-- Check for working C compiler: /usr/bin/cc - skipped
+	-- Detecting C compile features
+	-- Detecting C compile features - done
 	---- CMAKE_INSTALL_LOCALSTATEDIR
 	---- CMAKE_INSTALL_SYSCONFDIR
 	---- CMAKE_LIBRARY_PATH
-	---- CMAKE_SYSTEM Linux-3.10.0-693.21.1.el7.x86_64
+	---- CMAKE_SYSTEM Linux-6.1.0-11-amd64
 	---- CMAKE_SYSTEM_NAME Linux
-	---- CMAKE_HOST_SYSTEM Linux-3.10.0-693.21.1.el7.x86_64
+	---- CMAKE_HOST_SYSTEM Linux-6.1.0-11-amd64
 	---- CMAKE_HOST_SYSTEM_NAME Linux
 	---- CMAKE_HOST_UNIX 1
-	---- OS_RELEASE_INFO NAME="CentOS Linux"
-	---- OS_NAME 'CentOS Linux'
+	---- OS_RELEASE_INFO ID=debian
+	---- OS_NAME 'bian'
 	-- Release;BuildType
-	-- Building librarys swtrstrlib swtrprocmgt
-	-- INSTALL ROOT: /home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp
+	-- Building libraries swtrstrlib swtrprocmgt
+	-- INSTALL ROOT: /home/ebruno/source_code/softwaretrace-ostools/processmanagment/os/c_cpp/build
 	-- Adding library swtrstrlib to build.
 	-- Adding library swtrstrlib to install.
 	-- Adding library swtrprocmgt to build.
 	-- Adding library swtrprocmgt to install.
+	-- moving /home/ebruno/source_code/softwaretrace-ostools/processmanagment/os/c_cpp/src_c to /home/ebruno/source_code/softwaretrace-ostools/processmanagment/os/c_cpp/build/src_c
 	-- Adding demo programs
 	-- Configuring done
 	-- Generating done
-	-- Build files have been written to: /home/ebruno/softwaretrace-ostools/processmanagment/os/c_cpp
+	-- Build files have been written to: /home/ebruno/source_code/softwaretrace-ostools/processmanagment/os/c_cpp/build
 
 	make<cr>
 
@@ -121,23 +122,16 @@ After checking out the code from github perform the following steps:
 To clean up after a build enter make clean, to clean up to a pristine state enter make dist_clean.
 
 ### Packaging ###
-To build a package use the make file Makefile_packages
+To build a package use the cpack.
 cmake will be run as part of package creation process.
 
-	make -f Makefile_packages <rule name>
-	For example if specify the ArchLinux rule on CentOS the following will be displayed:
-	[user@system c_cpp]$ make -f Makefile_packages swtrstrlib_create_distro
-
-	Checking to see if OS/Distro ""CentOS Linux"" is supported
-	OS/Distro ""CentOS Linux"" is supported, continuing.
-	make: *** No rule to make target `swtrstrlib_create_distro'.  Stop.
 
 Note rules only work on stated operating system.
 
 | Operation System       | packaging rule name       |
 |------------------------|---------------------------|
-| RHEL,CentOS, Fedora    | swtrstrlib\_create_rpm, swtrprocmgtutilslib\_create\_rpm    |
-| Ubuntu                 | swtrstrlib\_create\_pkg, swtrprocmgtutilslib\_create\_pkg    |
-| Debian                 | swtrstrlib\_create\_pkg, swtrprocmgtutilslib\_create\_pkg    |
-| ArchLinux              | swtrstrlib\_create\_distro, swtrprocmgtutils\_create\_distro |
-| FreeBSD                | \todo Provide packaging for FreeBSD
+| RHEL, Fedora           | cpack -G RPM              |
+| Ubuntu                 | cpack -G DEB              |
+| Debian                 | cpack -G DEB              |
+| ArchLinux              | cpack -G Archive          |
+| FreeBSD                | cpack -G FreeBSD          |
