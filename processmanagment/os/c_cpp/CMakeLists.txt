@@ -130,7 +130,7 @@ if (NOT ("${CMAKE_BUILD_TYPE}" STREQUAL "ReleaseLibsOnly;BuildType"))
       FILES_MATCHING
       PATTERN "*.h")
     message("-- Adding demo programs")
-    set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
+    set(CMAKE_INSTALL_RPATH /${CMAKE_INSTALL_PREFIX}/lib)
     add_executable(demo_001 src_demo_c/demo_001.c)
     set_target_properties(demo_001 PROPERTIES INCLUDE_DIRECTORIES ${CMAKE_BINARY_DIR}/src_c)
     target_link_libraries(demo_001 swtrprocmgt swtrstrlib)
