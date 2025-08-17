@@ -46,5 +46,4 @@ package() {
 	cd "${srcdir}/$pkgname-$pkgver";
 	make install;
 	cp -r ${srcdir}/$pkgname-$pkgver/opt ${pkgdir};
-	ls ${pkgdir};
 }
