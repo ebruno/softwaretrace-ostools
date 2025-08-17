@@ -30,7 +30,6 @@ build_archlinux:
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
       find . -name "*x86_64.tar.zst" -exec cp {} packages/archlinux/x86_64
-
   tags:
     - archlinux
   rules:
