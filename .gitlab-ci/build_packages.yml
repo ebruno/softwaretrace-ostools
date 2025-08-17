@@ -42,7 +42,7 @@ build_archlinux:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/build_packages.yml
+         - .gitlab-ci/*.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
