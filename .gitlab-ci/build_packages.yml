@@ -22,19 +22,22 @@ build_archlinux:
         make BUILD_ID=${CI_PIPELINE_IID} -f Makefile_packages update_version;
       fi;
       make -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      ls -l ARCHLINUXBUILD/package;
+      ls -l ARCHLINUXBUILD/packages;
+      echo "[INFO] Copy to ${ARTIFACTDIR}";
+      find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtutils -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrstrlib -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
-      find . -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
       ls -l "${ARTIFACTDIR}";
   needs: ["sanity"]
   tags:
