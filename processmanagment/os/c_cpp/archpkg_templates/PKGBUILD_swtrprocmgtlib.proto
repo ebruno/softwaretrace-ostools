@@ -43,7 +43,6 @@ check() {
 }
 
 package() {
-	echo "**** pkgdir=${pkgdir}"
 	cd "${srcdir}/$pkgname-$pkgver";
 	make install;
 	cp -r ${srcdir}/$pkgname-$pkgver/usr ${pkgdir};
