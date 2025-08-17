@@ -1,5 +1,8 @@
 build_archlinux:
   stage: package
+  parallel:
+    matrix:
+      - RUNNER_TAG: [archlinux]
   before_script:
     - |
       if [ ! -f /usr/bin/make ]; then
@@ -30,8 +33,9 @@ build_archlinux:
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
       find . -name "*x86_64.tar.zst" -exec cp {} packages/archlinux/x86_64
+  needs: ["sanity"]
   tags:
-    - archlinux
+    - $RUNNER_TAG
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
