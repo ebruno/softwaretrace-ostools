@@ -21,9 +21,8 @@ build_archlinux:
       if [ -n "${CI_PIPELINE_IID}" ]; then
         make BUILD_ID=${CI_PIPELINE_IID} -f Makefile_packages update_version;
       fi;
-      make -f Makefile_packages swtrprocmgtutils_create_distro
-      ls -l ARCHLINUXBUILD/packages;
       echo "[INFO] Copy packages to ${ARTIFACTDIR}";
+      make -f Makefile_packages swtrprocmgtutils_create_distro
       find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtutils -f Makefile_packages swtrprocmgtutils_create_distro
@@ -37,6 +36,7 @@ build_archlinux:
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
       find ARCHLINUXBUILD -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      echo "[INFO] list packages in ${ARTIFACTDIR}";
       ls -l "${ARTIFACTDIR}";
   needs: ["sanity"]
   tags:
