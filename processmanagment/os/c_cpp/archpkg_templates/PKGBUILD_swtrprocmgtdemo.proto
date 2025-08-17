@@ -1,0 +1,50 @@
+#Maintainer: Your Name <eric@ebruno.org>
+pkgname=swtrprocmgtdemo
+pkgver=XMAJOR.XMINOR.XSUBVERSION.XPRIVATE_BUILD_ID.XBUILD_NUMBER
+pkgrel=1
+epoch=
+pkgdesc="Softwaretrace Process Management Utilites Demo."
+arch=(x86_64)
+url="https://github.com/ebruno/softwaretrace-ostools"
+license=('BSD')
+groups=()
+depends=()
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=ChangeLog
+source=("$pkgname-$pkgver.tar.gz"
+	)
+noextract=()
+md5sums=()
+validpgpkeys=()
+
+prepare() {
+	cd "$pkgname-$pkgver"
+#	patch -p1 -i "$srcdir/$pkgname-$pkgver.patch"
+}
+
+build() {
+	cd "$pkgname-$pkgver"
+	cmake .;
+	make
+}
+
+check() {
+#	cd "$pkgname-$pkgver"
+#	make -k check
+	echo "Skipping Check"
+}
+
+package() {
+	cd "${srcdir}/$pkgname-$pkgver";
+	make install;
+	cp -r ${srcdir}/$pkgname-$pkgver/opt ${pkgdir};
+	ls ${pkgdir};
+}
