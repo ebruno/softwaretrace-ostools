@@ -17,6 +17,8 @@ build_archlinux:
   script:
     - |
       ls;
+      pwd;
+      echo ${HOME};
       cd processmanagment/os/c_cpp;
       if [ -n "${CI_PIPELINE_IID}" ]; then
         make BUILD_ID=${CI_PIPELINE_IID} -f Makefile_packages update_version;
