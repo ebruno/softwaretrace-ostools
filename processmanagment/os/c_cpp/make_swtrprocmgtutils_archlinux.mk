@@ -9,17 +9,24 @@ SWTRPROCMGTLIB_NAME             = swtrprocmgtlib
 ifeq ($(strip $(SWTRPROCMGTUTILS_CURPKG)),)
 	SWTRPROCMGTUTILS_CURPKG  = $(SWTRPROCMGTDEMO_NAME)
 endif
-SWTRPROCMGTUTILS_MAJOR          = 0
+VERSION_FILE	=	version.mk
+ifeq (,$(wildcard $(VERSION_FILE)))
+MAJOR = 0
+MINOR = 9
+SUBVERSION = 5
+BUILD_NUM = 2
+PRIVATE_BUILD_ID=0
+else
+include version.mk
+BUILD_NUM=$(BUILD_ID)
+endif
 
-SWTRPROCMGTUTILS_MINOR          = 9
-
-SWTRPROCMGTUTILS_SUBVERSION     = 5
-
-SWTRPROCMGTUTILS_PRIVATE_BUILD_ID     = 0
-
-SWTRPROCMGTUTILS_BUILD_NUMBER     = 2
-
-SWTRPROCMGTUTILS_RELEASE_KEY     = 0
+SWTRPROCMGTUTILS_MAJOR			= $(MAJOR)
+SWTRPROCMGTUTILS_MINOR			= $(MINOR)
+SWTRPROCMGTUTILS_SUBVERSION		= $(SUBVERSION)
+SWTRPROCMGTUTILS_PRIVATE_BUILD_ID	= $(PRIVATE_BUILD_ID)
+SWTRPROCMGTUTILS_BUILD_NUMBER		= $(BUILD_NUM)
+SWTRPROCMGTUTILS_RELEASE_KEY		= 0
 
 
 #swtrprocmgtutils_0.9.0.0.2.orig.tar.gz
@@ -105,3 +112,11 @@ swtrprocmgtutils_create_pkg: swtrprocmgtutils_create_buildarea swtrprocmgtutils_
 		export LOGDEST="${PACMANBUILD_BASE}/logs"; \
 		export PACKAGER="Eric Bruno <eric@ebruno.org>"; \
 		makepkg -C ${SWTRPROCMGTUTILS_PACMAN_OVERRIDE} updpkgsums;
+
+update_version:
+	@echo "Updating Version to $(MAJOR).$(MINOR).$(SUBVERSION).$(PRIVATE_BUILD_ID).$(BUILD_NUM)";
+	@if [ -n "$(BUILD_ID)" ]; then \
+	   printf "MAJOR = %d\nMINOR = %d\nSUBVERSION = %d\nPRIVATE_BUILD_ID=%d\nBUILD_ID = %d\n" $(MAJOR) $(MINOR) $(SUBVERSION) $(PRIVATE_BUILD_ID) $(BUILD_NUM) > $(VERSION_FILE); \
+	else \
+	   printf "MAJOR = %d\nMINOR = %d\nSUBVERSION = %d\nPRIVATE_BUILD_ID=%d\nBUILD_ID = %d\n" $(MAJOR) $(MINOR) $(SUBVERSION) $(PRIVATE_BUILD_ID) 0 > $(VERSION_FILE); \
+	fi;
