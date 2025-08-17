@@ -2,6 +2,7 @@ stages:
   - lint
   - sanity
   - build
+  - package
   - publish
 
 include:
