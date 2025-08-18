@@ -40,6 +40,8 @@
       find ARCHLINUXBUILD -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
       echo "[INFO] list packages in ${ARTIFACTDIR}";
       ls -l "${ARTIFACTDIR}";
+      find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec basename {}; pacman -Ql {} \;
+
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
@@ -96,6 +98,7 @@ build_archlinux_container:
       find ARCHLINUXBUILD -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
       echo "[INFO] list packages in ${ARTIFACTDIR}";
       ls -l "${ARTIFACTDIR}";
+      find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec basename {}; pacman -Ql {} \;
   needs: ["sanity_archlinux_container"]
   tags:
     - $RUNNER_TAG
@@ -168,7 +171,6 @@ build_deb_or_rpm_container:
         find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec basename {}; rpm -qlp {} \;
       elif [[ ${ID} =~ debian|ubuntu ]]; then
         find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec basename {}; dpkg -c {} \;
-      else
       fi;
   needs: ["sanity"]
   tags:
