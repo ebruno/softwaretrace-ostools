@@ -89,5 +89,3 @@ build_archlinux_container:
   artifacts:
     paths:
       - packages/archlinux/x86_64/
-
-build_container_test:
