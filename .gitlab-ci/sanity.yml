@@ -45,7 +45,7 @@ sanity_archlinux_container:
       fi;
       echo "[INFO] Build and install demo package.";
       make -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "swtrprocmgtdemo-0*.tar.zst" -exec sudo pacman --noconfirm -Sp {} \;
+      find ARCHLINUXBUILD -name "swtrprocmgtdemo-0*.tar.zst" -exec sudo pacman --noconfirm -U {} \;
       rm -r -f ARCHLINUXBUILD/*;
       ls -lR /opt;
   needs: ["sanity"]

@@ -96,7 +96,7 @@ build_archlinux_container:
       find ARCHLINUXBUILD -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
       echo "[INFO] list packages in ${ARTIFACTDIR}";
       ls -l "${ARTIFACTDIR}";
-  needs: ["sanity"]
+  needs: ["sanity_archlinux_container"]
   tags:
     - $RUNNER_TAG
   rules:
