@@ -151,8 +151,8 @@ build_deb_or_rpm_container:
       rm -f -r *;
       for item in swtrprocmgt swtrstrlib;
       do
-         cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=swtrprocmgt ..
-         cpack;
+         echo "cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=${item} .."
+         echo "cpack";
          echo "[INFO] Copy packages"
          find . -name "*.deb"  -o -name "*.rpm" -exec cp {} "${ARTIFACTDIR}" \;
          rm -f -r *;
