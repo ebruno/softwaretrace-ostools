@@ -121,7 +121,7 @@ build_debian_container:
       user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [debian]
+      - RUNNER_TAG: [debian,redhat]
   before_script:
     - |
       if [ ! -d "packages" ]; then
@@ -136,20 +136,20 @@ build_debian_container:
       cd build
       cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
       cpack;
-      ls -l *.deb;
-      find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
+      ls -l [*.deb|*.rpm];
+      find . -name "[*.deb|*.rpm]" -exec cp {} "${ARTIFACTDIR}" \;
       rm -f -r *;
       cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
       cpack;
-      ls -l *.deb;
-      find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
+      ls -l [*.deb|*.rpm];
+      find . -name "[*.deb|*.rpm]" -exec cp {} "${ARTIFACTDIR}" \;
       rm -f -r *;
       for item in swtrprocmgt swtrstrlib;
       do
          cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=swtrprocmgt ..
          cpack;
-         ls -l *.deb;
-         find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
+         ls -l [*.deb|*.rpm];
+         find . -name "[*.deb|*.rpm]" -exec cp {} "${ARTIFACTDIR}" \;
          rm -f -r *;
       done;
       echo "[INFO] list packages in ${ARTIFACTDIR}";
