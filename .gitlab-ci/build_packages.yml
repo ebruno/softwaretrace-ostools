@@ -64,13 +64,18 @@ build_archlinux_container:
       - RUNNER_TAG: [fedoracontainers,debcontainer]
   before_script:
     -|
-      which make;
-      which cmake;
-      which makepkg;
-
+      if [ ! -f /usr/bin/make ]; then
+        sudo pacman -Sy make;
+      fi;
+      if [ ! -f /usr/bin/cmake ]; then
+        sudo pacman -Sy cmake;
+      fi;
+      if [ ! -d "packages" ]; then
+         mkdir -p packages/archlinux/x86_64
+      fi;
   script:
     -|
-      echo "test of contents"
+      echo "test of container contents";
       ls -l;
   needs: ["sanity"]
   tags:
