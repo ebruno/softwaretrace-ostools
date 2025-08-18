@@ -136,6 +136,7 @@ build_debian_container:
       cd build
       cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
       make;
+      ls -l
       find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
       rm -f -r *;
       cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
