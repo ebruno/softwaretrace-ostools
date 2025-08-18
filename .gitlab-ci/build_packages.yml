@@ -58,7 +58,8 @@ build_archlinux:
 
 build_archlinux_container:
   stage: package
-  image: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+  image: docker pull archlinux:multilib-devel-20250810.0.398652
+#  image: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
   parallel:
     matrix:
       - RUNNER_TAG: [fedoracontainers,debcontainer]
