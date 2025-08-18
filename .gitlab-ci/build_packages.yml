@@ -136,25 +136,25 @@ build_deb_or_rpm_container:
          export QA_RPATHS=$(( 0x0001|0x0010|0x0002 ));
       fi;
       cd processmanagment/os/c_cpp;
-      echo "[INFO] Copy packages to ${ARTIFACTDIR}";
+      echo "[INFO] Packages will be moved to ${ARTIFACTDIR}";
       mkdir build
       cd build
       cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
       cpack;
-      echo "[INFO] Copy packages"
-      find . -name "*.deb"  -o -name "*.rpm" -exec cp {} "${ARTIFACTDIR}" \;
+      echo "[INFO] Copy packages ...";
+      find . -name "*.deb"  -o -name "*.rpm" -exec cp -v {} "${ARTIFACTDIR}" \;
       rm -f -r *;
       cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
       cpack;
-      echo "[INFO] Copy packages"
-      find . -name "*.deb"  -o -name "*.rpm" -exec cp {} "${ARTIFACTDIR}" \;
+      echo "[INFO] Copy packages ...";
+      find . -name "*.deb"  -o -name "*.rpm" -exec cp -v {} "${ARTIFACTDIR}" \;
       rm -f -r *;
       for item in swtrprocmgt swtrstrlib;
       do
-         echo "cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=${item} .."
-         echo "cpack";
-         echo "[INFO] Copy packages"
-         find . -name "*.deb"  -o -name "*.rpm" -exec cp {} "${ARTIFACTDIR}" \;
+         cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=${item} ..;
+         cpack;
+         echo "[INFO] Copy packages ..."
+         find . -name "*.deb"  -o -name "*.rpm" -exec cp -v {} "${ARTIFACTDIR}" \;
          rm -f -r *;
       done;
       echo "[INFO] list packages in ${ARTIFACTDIR}";
