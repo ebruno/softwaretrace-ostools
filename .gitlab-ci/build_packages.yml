@@ -135,17 +135,21 @@ build_debian_container:
       mkdir build
       cd build
       cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
+      make;
       find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
-      rm -f -f *;
+      rm -f -r *;
       cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
+      make;
       find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
-      rm -f -f *;
+      rm -f -r *;
       cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=swtrprocmgt ..
+      make;
       find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
-      rm -f -f *;
+      rm -f -r *;
       cmake -DBUILD_ID=${CI_PIPELINE_IID}-DCMAKE_BUILD_TYPE=ReleaseLibsOnly SWTRPROCMGTUTILS_CURPKG=swtrstrlib ..;
+      make;
       find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
-      rm -f -f *;
+      rm -f -r *;
       echo "[INFO] list packages in ${ARTIFACTDIR}";
       ls -l "${ARTIFACTDIR}";
   needs: ["sanity"]
