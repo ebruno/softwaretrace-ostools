@@ -113,3 +113,55 @@ build_archlinux_container:
   artifacts:
     paths:
       - packages/archlinux/x86_64/
+build_debian_container:
+  stage: package
+  image:
+    name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+    docker:
+      user: builduser
+  parallel:
+    matrix:
+      - RUNNER_TAG: [debian]
+  before_script:
+    - |
+      if [ ! -d "packages" ]; then
+         mkdir -p packages/archlinux/x86_64
+      fi;
+  script:
+    - |
+      ARTIFACTDIR="${PWD}/packages/archlinux/x86_64";
+      cd processmanagment/os/c_cpp;
+      echo "[INFO] Copy packages to ${ARTIFACTDIR}";
+      mkdir build
+      cd build
+      cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
+      find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -f -f *;
+      cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
+      find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -f -f *;
+      cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=swtrprocmgt ..
+      find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -f -f *;
+      cmake -DBUILD_ID=${CI_PIPELINE_IID}-DCMAKE_BUILD_TYPE=ReleaseLibsOnly SWTRPROCMGTUTILS_CURPKG=swtrstrlib ..;
+      find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -f -f *;
+      echo "[INFO] list packages in ${ARTIFACTDIR}";
+      ls -l "${ARTIFACTDIR}";
+  needs: ["sanity"]
+  tags:
+    - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
+  artifacts:
+    paths:
+      - packages/archlinux/x86_64/
