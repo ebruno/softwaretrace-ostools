@@ -1,4 +1,6 @@
-build_archlinux:
+# disable by setting as hidden job.
+# Normally use the container base job.
+.build_archlinux:
   stage: package
   parallel:
     matrix:
@@ -62,18 +64,11 @@ build_archlinux_container:
     name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
     docker:
       user: builduser
-  #entrypoint: ["/usr/bin/bash", "-c", "ln -snf /bin/bash /bin/sh && /bin/bash -c $0"]
   parallel:
     matrix:
-      - RUNNER_TAG: [fedoracontainers,debcontainer]
+      - RUNNER_TAG: [debcontainer]
   before_script:
     - |
-      if [ ! -f /usr/bin/make ]; then
-        sudo pacman -Sy make;
-      fi;
-      if [ ! -f /usr/bin/cmake ]; then
-        sudo pacman -Sy cmake;
-      fi;
       if [ ! -d "packages" ]; then
          mkdir -p packages/archlinux/x86_64
       fi;
