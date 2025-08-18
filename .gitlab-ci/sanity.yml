@@ -26,7 +26,7 @@ sanity:
     reports:
       junit: ./**/report/*.xml
 sanity_archlinux_container:
-  stage: package
+  stage: sanity
   image:
     name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
     docker:
