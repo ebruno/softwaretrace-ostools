@@ -59,6 +59,7 @@ build_archlinux:
 build_archlinux_container:
   stage: package
   image: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+  user: builduser
   #entrypoint: ["/usr/bin/bash", "-c", "ln -snf /bin/bash /bin/sh && /bin/bash -c $0"]
   parallel:
     matrix:
