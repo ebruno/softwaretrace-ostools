@@ -164,6 +164,12 @@ build_deb_or_rpm_container:
       done;
       echo "[INFO] list packages in ${ARTIFACTDIR}";
       ls -l "${ARTIFACTDIR}";
+      if [[ ${ID} =~ rhel|fedora ]]; then
+        find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec basename {}; rpm -qlp {} \;
+      elif [[ ${ID} =~ debian|ubuntu ]]; then
+        find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec basename {}; dpkg -c {} \;
+      else
+      fi;
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
