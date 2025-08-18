@@ -125,11 +125,11 @@ build_debian_container:
   before_script:
     - |
       if [ ! -d "packages" ]; then
-         mkdir -p packages/archlinux/x86_64
+         mkdir -p packages/debian/x86_64
       fi;
   script:
     - |
-      ARTIFACTDIR="${PWD}/packages/archlinux/x86_64";
+      ARTIFACTDIR="${PWD}/packages/debian/x86_64";
       cd processmanagment/os/c_cpp;
       echo "[INFO] Copy packages to ${ARTIFACTDIR}";
       mkdir build
@@ -140,16 +140,16 @@ build_debian_container:
       rm -f -r *;
       cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
       make;
+      ls -l;
       find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
       rm -f -r *;
-      cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=swtrprocmgt ..
-      make;
-      find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
-      rm -f -r *;
-      cmake -DBUILD_ID=${CI_PIPELINE_IID}-DCMAKE_BUILD_TYPE=ReleaseLibsOnly SWTRPROCMGTUTILS_CURPKG=swtrstrlib ..;
-      make;
-      find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
-      rm -f -r *;
+      for item in swtrprocmgt swtrstrlib;
+      do
+         cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=swtrprocmgt ..
+         make;
+         find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
+         rm -f -r *;
+      done;
       echo "[INFO] list packages in ${ARTIFACTDIR}";
       ls -l "${ARTIFACTDIR}";
   needs: ["sanity"]
@@ -168,4 +168,4 @@ build_debian_container:
          - ./processmanagement/os/c_cpp/**/*.c
   artifacts:
     paths:
-      - packages/archlinux/x86_64/
+      - packages/debian/x86_64/
