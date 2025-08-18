@@ -48,6 +48,8 @@ sanity_archlinux_container:
       find ARCHLINUXBUILD -name "swtrprocmgtdemo-0*.tar.zst" -exec sudo pacman --noconfirm -U {} \;
       rm -r -f ARCHLINUXBUILD/*;
       ls -lR /opt;
+      /opt/swtrprocmgtdemo/demo_bin/demo_001;
+      echo "[INFO] Sanity passed";
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
