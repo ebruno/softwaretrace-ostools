@@ -135,19 +135,20 @@ build_debian_container:
       mkdir build
       cd build
       cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
-      make;
-      ls -l
+      cpack;
+      ls -l *.deb;
       find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
       rm -f -r *;
       cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
-      make;
-      ls -l;
+      cpack;
+      ls -l *.deb;
       find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
       rm -f -r *;
       for item in swtrprocmgt swtrstrlib;
       do
          cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=swtrprocmgt ..
-         make;
+         cpack;
+         ls -l *.deb;
          find . -name "*.deb" -exec cp {} "${ARTIFACTDIR}" \;
          rm -f -r *;
       done;
