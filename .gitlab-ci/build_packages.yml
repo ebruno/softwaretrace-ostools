@@ -134,6 +134,11 @@ build_deb_or_rpm_container:
       ARTIFACTDIR="${PWD}/packages/${ID}/x86_64";
       if [[ ${ID} =~ rhel|fedora ]]; then
          export QA_RPATHS=$(( 0x0001|0x0010|0x0002 ));
+         PACKAGE_EXT="*.rpm";
+      elif [[ ${ID} =~ debian|ubuntu ]]; then
+         PACKAGE_EXT="*.deb"
+      else
+         PACKAGE_EXT="*.tar.gz";
       fi;
       cd processmanagment/os/c_cpp;
       echo "[INFO] Packages will be moved to ${ARTIFACTDIR}";
@@ -142,19 +147,19 @@ build_deb_or_rpm_container:
       cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
       cpack;
       echo "[INFO] Copy packages ...";
-      find . -name "*.deb"  -o -name "*.rpm" -exec cp -v {} "${ARTIFACTDIR}" \;
+      find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
       rm -f -r *;
       cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
       cpack;
       echo "[INFO] Copy packages ...";
-      find . -name "*.deb"  -o -name "*.rpm" -exec cp -v {} "${ARTIFACTDIR}" \;
+      find . -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
       rm -f -r *;
       for item in swtrprocmgt swtrstrlib;
       do
          cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=${item} ..;
          cpack;
          echo "[INFO] Copy packages ..."
-         find . -name "*.deb"  -o -name "*.rpm" -exec cp -v {} "${ARTIFACTDIR}" \;
+         find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
          rm -f -r *;
       done;
       echo "[INFO] list packages in ${ARTIFACTDIR}";
