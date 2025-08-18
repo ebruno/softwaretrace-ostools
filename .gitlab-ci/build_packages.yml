@@ -132,6 +132,9 @@ build_deb_or_rpm_container:
     - |
       . /etc/os-release;
       ARTIFACTDIR="${PWD}/${ID}/debian/x86_64";
+      if [[ ${ID} =~ rhel|fedora ]]; then
+         export QA_RPATHS=$(( 0x0001|0x0010 ));
+      fi;
       cd processmanagment/os/c_cpp;
       echo "[INFO] Copy packages to ${ARTIFACTDIR}";
       mkdir build
