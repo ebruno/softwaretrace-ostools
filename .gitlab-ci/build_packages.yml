@@ -58,9 +58,10 @@ build_archlinux:
 
 build_archlinux_container:
   stage: package
+  image: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
   parallel:
     matrix:
-      - RUNNER_TAG: []
+      - RUNNER_TAG: [fedoracontainers,debcontainer]
   before_script:
     -|
       which make;
@@ -70,6 +71,7 @@ build_archlinux_container:
   script:
     -|
       echo "test of contents"
+      ls -l;
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
@@ -87,3 +89,5 @@ build_archlinux_container:
   artifacts:
     paths:
       - packages/archlinux/x86_64/
+
+build_container_test:
