@@ -1,9 +1,9 @@
 #Maintainer: Your Name <eric@ebruno.org>
-pkgname=swtrprocmgtutils
+pkgname=swtrprocmgtdemo
 pkgver=XMAJOR.XMINOR.XSUBVERSION.XPRIVATE_BUILD_ID.XBUILD_NUMBER
 pkgrel=1
 epoch=
-pkgdesc="Softwaretrace Process Management Utilites."
+pkgdesc="Softwaretrace Process Management Utilites Demo."
 arch=(x86_64)
 url="https://github.com/ebruno/softwaretrace-ostools"
 license=('BSD')
@@ -32,7 +32,7 @@ prepare() {
 
 build() {
 	cd "$pkgname-$pkgver"
-	cmake -DCMAKE_BUILD_TYPE:STRING="ReleaseLibsOnly" .;
+	cmake .;
 	make
 }
 
@@ -46,5 +46,4 @@ package() {
 	cd "${srcdir}/$pkgname-$pkgver";
 	make install;
 	cp -r ${srcdir}/$pkgname-$pkgver/opt ${pkgdir};
-	ls ${pkgdir};
 }

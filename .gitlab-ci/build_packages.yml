@@ -1,0 +1,202 @@
+# disable by setting as hidden job.
+# Normally use the container base job.
+.build_archlinux:
+  stage: package
+  parallel:
+    matrix:
+      - RUNNER_TAG: [archlinux]
+  before_script:
+    - |
+      if [ ! -f /usr/bin/make ]; then
+        sudo pacman -Sy make;
+      fi;
+      if [ ! -f /usr/bin/cmake ]; then
+        sudo pacman -Sy cmake;
+      fi;
+      if [ ! -d "packages" ]; then
+        . /etc/os-release;
+        machine="$(uname -m)";
+        mkdir -p "packages/${ID}linux/${machine}"
+      fi;
+  script:
+    - |
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
+      cd processmanagment/os/c_cpp;
+      PACKAGE_EXT="*.pkg.tar.zst"
+      if [ -n "${CI_PIPELINE_IID}" ]; then
+        make BUILD_ID=${CI_PIPELINE_IID} -f Makefile_packages update_version;
+      fi;
+      echo "[INFO] Copy packages to ${ARTIFACTDIR}";
+      make -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -r -f ARCHLINUXBUILD/*;
+      make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtutils -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -r -f ARCHLINUXBUILD/*;
+      make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -r -f ARCHLINUXBUILD/*;
+      make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrstrlib -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -r -f ARCHLINUXBUILD/*;
+      make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      echo "[INFO] list packages in ${ARTIFACTDIR}";
+      ls -l "${ARTIFACTDIR}";
+      find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+  needs: ["sanity"]
+  tags:
+    - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
+  artifacts:
+    paths:
+      - packages/archlinux/x86_64/
+
+build_archlinux_container:
+  stage: package
+  image:
+    name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+    docker:
+      user: builduser
+  parallel:
+    matrix:
+      - RUNNER_TAG: [debcontainer]
+  before_script:
+    - |
+      if [ ! -d "packages" ]; then
+        . /etc/os-release;
+        machine="$(uname -m)";
+        mkdir -p "packages/${ID}linux/${machine}"
+      fi;
+  script:
+    - |
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
+      PACKAGE_EXT="*.pkg.tar.zst"
+      cd processmanagment/os/c_cpp;
+      if [ -n "${CI_PIPELINE_IID}" ]; then
+        make BUILD_ID=${CI_PIPELINE_IID} -f Makefile_packages update_version;
+      fi;
+      echo "[INFO] Copy packages to ${ARTIFACTDIR}";
+      make -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -r -f ARCHLINUXBUILD/*;
+      make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtutils -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -r -f ARCHLINUXBUILD/*;
+      make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -r -f ARCHLINUXBUILD/*;
+      make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrstrlib -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -r -f ARCHLINUXBUILD/*;
+      make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      echo "[INFO] list packages in ${ARTIFACTDIR}";
+      ls -l "${ARTIFACTDIR}";
+      find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec pacman -Ql {} \;
+  needs: ["sanity_archlinux_container"]
+  tags:
+    - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
+  artifacts:
+    paths:
+      - packages/archlinux/x86_64/
+build_deb_or_rpm_container:
+  stage: package
+  image:
+    name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+    docker:
+      user: builduser
+  parallel:
+    matrix:
+      - RUNNER_TAG: [debian,redhat]
+  before_script:
+    - |
+      if [ ! -d "packages" ]; then
+         . /etc/os-release;
+         mkdir -p packages/${ID}/x86_64
+      fi;
+  script:
+    - |
+      . /etc/os-release;
+      ARTIFACTDIR="${PWD}/packages/${ID}/x86_64";
+      if [[ ${ID} =~ rhel|fedora ]]; then
+         export QA_RPATHS=$(( 0x0001|0x0010|0x0002 ));
+         PACKAGE_EXT="*.rpm";
+      elif [[ ${ID} =~ debian|ubuntu ]]; then
+         PACKAGE_EXT="*.deb"
+      else
+         PACKAGE_EXT="*.tar.gz";
+      fi;
+      cd processmanagment/os/c_cpp;
+      echo "[INFO] Packages will be moved to ${ARTIFACTDIR}";
+      mkdir build
+      cd build
+      cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
+      cpack;
+      echo "[INFO] Copy packages ...";
+      find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
+      rm -f -r *;
+      cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
+      cpack;
+      echo "[INFO] Copy packages ...";
+      find . -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
+      rm -f -r *;
+      for item in swtrprocmgt swtrstrlib;
+      do
+         cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=${item} ..;
+         cpack;
+         echo "[INFO] Copy packages ..."
+         find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
+         rm -f -r *;
+      done;
+      echo "[INFO] list packages in ${ARTIFACTDIR}";
+      ls -l "${ARTIFACTDIR}";
+      if [[ ${ID} =~ rhel|fedora ]]; then
+        find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec rpm -qlp {} \;
+      elif [[ ${ID} =~ debian|ubuntu ]]; then
+        find "${ARTIFACTDIR}"  -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec  dpkg -c {} \;
+      fi;
+  needs: ["sanity"]
+  tags:
+    - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
+  artifacts:
+    paths:
+      - packages/debian/x86_64/
+      - packages/fedora/x86_64/
+      - packages/rhel/x86_64/

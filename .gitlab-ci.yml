@@ -2,8 +2,11 @@ stages:
   - lint
   - sanity
   - build
+  - package
   - publish
 
 include:
    - '.gitlab-ci/lint.yml'
    - '.gitlab-ci/sanity.yml'
+   - '.gitlab-ci/build_packages.yml'
+   - '.gitlab-ci/publish.yml'

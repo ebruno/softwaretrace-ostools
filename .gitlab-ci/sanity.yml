@@ -25,3 +25,42 @@ sanity:
       - ./**/report/*.xml
     reports:
       junit: ./**/report/*.xml
+sanity_archlinux_container:
+  stage: sanity
+  image:
+    name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+    docker:
+      user: builduser
+  parallel:
+    matrix:
+      - RUNNER_TAG: [debcontainer]
+  before_script:
+    - |
+  script:
+    - |
+      ARTIFACTDIR="${PWD}/packages/archlinux/x86_64";
+      cd processmanagment/os/c_cpp;
+      if [ -n "${CI_PIPELINE_IID}" ]; then
+        make BUILD_ID=${CI_PIPELINE_IID} -f Makefile_packages update_version;
+      fi;
+      echo "[INFO] Build and install demo package.";
+      make -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "swtrprocmgtdemo-0*.tar.zst" -exec sudo pacman --noconfirm -U {} \;
+      rm -r -f ARCHLINUXBUILD/*;
+      ls -lR /opt;
+      /opt/swtrprocmgtdemo/demo_bin/demo_001;
+      echo "[INFO] Sanity passed";
+  needs: ["sanity"]
+  tags:
+    - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
