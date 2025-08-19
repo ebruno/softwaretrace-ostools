@@ -2,10 +2,10 @@ archlinux:
   stage: publish
   parallel:
     matrix:
-      - RUNNER_TAG: [archlinux]
+      - RUNNER_TAG: [debcontainer]
   before_script:
     - |
-      ls -l
+      ls -lR packages;
   script:
     - |
       . /etc/os-release;
@@ -14,7 +14,8 @@ archlinux:
       PACKAGE_EXT="*.pkg.tar.zst"
       ls -lR "${ARTIFACTDIR}";
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
-  needs: ["build_archlinux_container"]
+  dependencies:
+    - build_archlinux_container
   tags:
     - $RUNNER_TAG
   rules:
@@ -28,9 +29,6 @@ archlinux:
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
          - ./processmanagement/os/c_cpp/**/*.c
-  artifacts:
-    paths:
-      - packages/archlinux/x86_64/
 
 redhat:
   stage: publish
@@ -48,7 +46,8 @@ redhat:
       PACKAGE_EXT="*.rpm"
       ls -lR "${ARTIFACTDIR}";
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
-  needs: ["build_deb_or_rpm_container"]
+  dependencies:
+    - build_deb_or_rpm_container
   tags:
     - $RUNNER_TAG
   rules:
@@ -62,15 +61,12 @@ redhat:
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
          - ./processmanagement/os/c_cpp/**/*.c
-  artifacts:
-    paths:
-      - packages/fedora/x86_64/
 
 debain:
   stage: publish
   parallel:
     matrix:
-      - RUNNER_TAG: [debain]
+      - RUNNER_TAG: [debian]
   before_script:
     - |
       ls -lR packages;
@@ -82,7 +78,8 @@ debain:
       PACKAGE_EXT="*.rpm"
       ls -lR "${ARTIFACTDIR}";
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
-  needs: ["build_deb_or_rpm_container"]
+  dependencies:
+    - build_deb_or_rpm_container
   tags:
     - $RUNNER_TAG
   rules:
@@ -96,6 +93,3 @@ debain:
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
          - ./processmanagement/os/c_cpp/**/*.c
-  artifacts:
-    paths:
-      - packages/debian/x86_64/
