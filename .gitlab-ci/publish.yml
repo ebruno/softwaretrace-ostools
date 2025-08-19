@@ -1,5 +1,9 @@
 archlinux:
   stage: publish
+  image:
+    name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+    docker:
+      user: builduser
   parallel:
     matrix:
       - RUNNER_TAG: [debcontainer]
