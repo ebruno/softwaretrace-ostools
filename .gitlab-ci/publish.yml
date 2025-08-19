@@ -68,7 +68,7 @@ redhat:
          - ./processmanagement/os/c_cpp/**/*.h
          - ./processmanagement/os/c_cpp/**/*.c
 
-debain:
+debian:
   stage: publish
   parallel:
     matrix:
