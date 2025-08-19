@@ -39,12 +39,12 @@ redhat:
       - RUNNER_TAG: [redhat]
   before_script:
     - |
-      ls -l
+      ls -lR packages;
   script:
     - |
       . /etc/os-release;
       machine="$(uname -m)";
-      ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
+      ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.rpm"
       ls -lR "${ARTIFACTDIR}";
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
@@ -73,7 +73,7 @@ debain:
       - RUNNER_TAG: [debain]
   before_script:
     - |
-      ls -l
+      ls -lR packages;
   script:
     - |
       . /etc/os-release;
