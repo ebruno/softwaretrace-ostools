@@ -14,6 +14,7 @@ archlinux:
       PACKAGE_EXT="*.pkg.tar.zst"
       ls -lR "${ARTIFACTDIR}";
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+  needs: ["build_archlinux_container"]
   dependencies:
     - build_archlinux_container
   tags:
@@ -46,6 +47,7 @@ redhat:
       PACKAGE_EXT="*.rpm"
       ls -lR "${ARTIFACTDIR}";
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+  needs: ["build_deb_or_rpm_container"]
   dependencies:
     - build_deb_or_rpm_container
   tags:
@@ -78,6 +80,7 @@ debain:
       PACKAGE_EXT="*.rpm"
       ls -lR "${ARTIFACTDIR}";
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+  needs: ["build_deb_or_rpm_container"]
   dependencies:
     - build_deb_or_rpm_container
   tags:
