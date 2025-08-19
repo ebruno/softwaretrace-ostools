@@ -14,27 +14,32 @@
         sudo pacman -Sy cmake;
       fi;
       if [ ! -d "packages" ]; then
-         mkdir -p packages/archlinux/x86_64
+        . /etc/os-release;
+        machine="$(uname -m)";
+        mkdir -p "packages/${ID}linux/${machine}"
       fi;
   script:
     - |
-      ARTIFACTDIR="${PWD}/packages/archlinux/x86_64";
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
       cd processmanagment/os/c_cpp;
+      PACKAGE_EXT="*.pkg.tar.zst"
       if [ -n "${CI_PIPELINE_IID}" ]; then
         make BUILD_ID=${CI_PIPELINE_IID} -f Makefile_packages update_version;
       fi;
       echo "[INFO] Copy packages to ${ARTIFACTDIR}";
       make -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtutils -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrstrlib -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
       find ARCHLINUXBUILD -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
@@ -71,30 +76,35 @@ build_archlinux_container:
   before_script:
     - |
       if [ ! -d "packages" ]; then
-         mkdir -p packages/archlinux/x86_64
+        . /etc/os-release;
+        machine="$(uname -m)";
+        mkdir -p "packages/${ID}linux/${machine}"
       fi;
   script:
     - |
-      ARTIFACTDIR="${PWD}/packages/archlinux/x86_64";
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
+      PACKAGE_EXT="*.pkg.tar.zst"
       cd processmanagment/os/c_cpp;
       if [ -n "${CI_PIPELINE_IID}" ]; then
         make BUILD_ID=${CI_PIPELINE_IID} -f Makefile_packages update_version;
       fi;
       echo "[INFO] Copy packages to ${ARTIFACTDIR}";
       make -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtutils -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrstrlib -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
       rm -r -f ARCHLINUXBUILD/*;
       make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
-      find ARCHLINUXBUILD -name "*x86_64.tar.zst" -exec cp {} "${ARTIFACTDIR}" \;
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
       echo "[INFO] list packages in ${ARTIFACTDIR}";
       ls -l "${ARTIFACTDIR}";
       find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec pacman -Ql {} \;
