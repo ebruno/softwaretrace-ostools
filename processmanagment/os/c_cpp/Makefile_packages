@@ -117,6 +117,7 @@ else ifeq ($(NAME),${DEBIAN_NAME})
 	 include ${CURDIR}/make_swtrstrlib_deb.mk
        endif
 else ifeq ($(NAME),$(ARCHLINUX_NAME))
+       $(info OS/Distro $(NAME) is supported)
        PACMANBUILD_BASE = ${CURDIR}/ARCHLINUXBUILD
        ARCLINUX_SOURCE_DIR = ${PACMANBUILD_BASE}
        ARCLINUX_PACKAGE_DIR = packages
@@ -124,12 +125,10 @@ else ifeq ($(NAME),$(ARCHLINUX_NAME))
        else
 	 include ${CURDIR}/make_swtrstrlib_archlinux.mk
        endif
-
+       $(info checking for make_swtrprocmgtutils_archlinux.mk)
        ifeq ("$(wildcard ${CURDIR}/make_swtrprocmgtutils_archlinux.mk)","")
-	  $(info make_swtrprocmgtutils_archlinux.mk not found, skipping.)
        else
-	  $(info Including make_swtrprocmgtutils_archlinux.mk)
-	 include ${CURDIR}/make_swtrprocmgtutils_archlinux.mk
+	include ${CURDIR}/make_swtrprocmgtutils_archlinux.mk
        endif
 else
    $(error $(NAME) is not a supported operating system)

@@ -1,0 +1,103 @@
+archlinux:
+  stage: publish
+  image:
+    name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+    docker:
+      user: builduser
+  parallel:
+    matrix:
+      - RUNNER_TAG: [debcontainer]
+  before_script:
+    - |
+      ls -lR packages;
+  script:
+    - |
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
+      PACKAGE_EXT="*.pkg.tar.zst"
+      ls -lR "${ARTIFACTDIR}";
+      showmount -e 10.10.41.158
+      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+  needs: ["build_archlinux_container"]
+  dependencies:
+    - build_archlinux_container
+  tags:
+    - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
+
+redhat:
+  stage: publish
+  parallel:
+    matrix:
+      - RUNNER_TAG: [redhat]
+  before_script:
+    - |
+      ls -lR packages;
+  script:
+    - |
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
+      PACKAGE_EXT="*.rpm"
+      ls -lR "${ARTIFACTDIR}";
+      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+  needs: ["build_deb_or_rpm_container"]
+  dependencies:
+    - build_deb_or_rpm_container
+  tags:
+    - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
+
+debian:
+  stage: publish
+  parallel:
+    matrix:
+      - RUNNER_TAG: [debian]
+  before_script:
+    - |
+      ls -lR packages;
+  script:
+    - |
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
+      PACKAGE_EXT="*.rpm"
+      ls -lR "${ARTIFACTDIR}";
+      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+  needs: ["build_deb_or_rpm_container"]
+  dependencies:
+    - build_deb_or_rpm_container
+  tags:
+    - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
