@@ -1,0 +1,101 @@
+archlinux:
+  stage: publish
+  parallel:
+    matrix:
+      - RUNNER_TAG: [archlinux]
+  before_script:
+    - |
+      ls -l
+  script:
+    - |
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
+      PACKAGE_EXT="*.pkg.tar.zst"
+      ls -lR "${ARTIFACTDIR}";
+      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+  needs: ["build_archlinux_container"]
+  tags:
+    - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
+  artifacts:
+    paths:
+      - packages/archlinux/x86_64/
+
+redhat:
+  stage: publish
+  parallel:
+    matrix:
+      - RUNNER_TAG: [redhat]
+  before_script:
+    - |
+      ls -l
+  script:
+    - |
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
+      PACKAGE_EXT="*.rpm"
+      ls -lR "${ARTIFACTDIR}";
+      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+  needs: ["build_deb_rpm_container"]
+  tags:
+    - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
+  artifacts:
+    paths:
+      - packages/fedora/x86_64/
+
+debain:
+  stage: publish
+  parallel:
+    matrix:
+      - RUNNER_TAG: [debain]
+  before_script:
+    - |
+      ls -l
+  script:
+    - |
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
+      PACKAGE_EXT="*.rpm"
+      ls -lR "${ARTIFACTDIR}";
+      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+  needs: ["build_deb_rpm_container"]
+  tags:
+    - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
+  artifacts:
+    paths:
+      - packages/debian/x86_64/
