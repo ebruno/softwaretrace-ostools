@@ -17,6 +17,7 @@ archlinux:
       ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
       PACKAGE_EXT="*.pkg.tar.zst"
       ls -lR "${ARTIFACTDIR}";
+      showmount -e 10.10.41.158
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_archlinux_container"]
   dependencies:
