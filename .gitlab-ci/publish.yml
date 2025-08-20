@@ -18,9 +18,9 @@ archlinux:
       PACKAGE_EXT="*.pkg.tar.zst"
       ls -lR "${ARTIFACTDIR}";
       showmount -e 10.10.41.158
-      mkdir -p /mnt/qnap02/Web;
-      mount -t nfs 10.10.41.158:/Web /mnt/qnap/Web
-      ls -lR /mnt/qnap/Web
+      #mkdir -p /mnt/qnap02/Web;
+      #mount -t nfs 10.10.41.158:/Web /mnt/qnap/Web
+      #ls -lR /mnt/qnap/Web
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_archlinux_container"]
   dependencies:
