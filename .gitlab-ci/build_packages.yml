@@ -246,7 +246,7 @@ build_freebsd:
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
-  timeout: 10m
+  timeout: 5m
   allow_failure: true
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
