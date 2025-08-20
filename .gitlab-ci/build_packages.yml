@@ -240,8 +240,9 @@ freebsd:
          rm -f -r *;
       done;
       echo "[INFO] list packages in ${ARTIFACTDIR}";
-      ls -l "${ARTIFACTDIR}";
-      find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec pkg -F {} \;
+      cd "${ARTIFACTDIR}";
+      ls -l .;
+      find . -name "${PACKAGE_EXT}" -exec pkg -F {} \;
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
