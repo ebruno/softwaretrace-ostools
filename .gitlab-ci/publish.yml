@@ -6,7 +6,7 @@ archlinux:
       user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [debcontainer]
+      - RUNNER_TAG: [debiancontainerNFS]
   before_script:
     - |
       ls -lR packages;
