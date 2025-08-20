@@ -242,7 +242,7 @@ freebsd:
       echo "[INFO] list packages in ${ARTIFACTDIR}";
       cd "${ARTIFACTDIR}";
       ls -l .;
-      find . -name "${PACKAGE_EXT}" -exec pkg -F {} \;
+      find . -name "${PACKAGE_EXT}" -exec pkg info -l -F {} \;
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
