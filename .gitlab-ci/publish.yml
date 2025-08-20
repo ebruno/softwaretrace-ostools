@@ -101,3 +101,35 @@ debian:
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
          - ./processmanagement/os/c_cpp/**/*.c
+freebsd:
+  stage: publish
+  parallel:
+    matrix:
+      - RUNNER_TAG: [freebsd14vm]
+  before_script:
+    - |
+      ls -lR packages;
+  script:
+    - |
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
+      PACKAGE_EXT="*.pkg"
+      ls -lR "${ARTIFACTDIR}";
+      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+  needs: ["build_freebsd"]
+  dependencies:
+    - build_freebsd
+  tags:
+    - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
