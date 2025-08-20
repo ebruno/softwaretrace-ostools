@@ -248,6 +248,7 @@ build_freebsd:
     - $RUNNER_TAG
   timeout: 5m
   allow_failure: true
+  when: manual
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
