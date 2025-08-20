@@ -18,6 +18,9 @@ archlinux:
       PACKAGE_EXT="*.pkg.tar.zst"
       ls -lR "${ARTIFACTDIR}";
       showmount -e 10.10.41.158
+      #mkdir -p /mnt/qnap02/Web;
+      #mount -t nfs 10.10.41.158:/Web /mnt/qnap/Web
+      #ls -lR /mnt/qnap/Web
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_archlinux_container"]
   dependencies:
@@ -90,6 +93,45 @@ debian:
     - build_deb_or_rpm_container
   tags:
     - $RUNNER_TAG
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
+freebsd:
+  stage: publish
+  parallel:
+    matrix:
+      - RUNNER_TAG: [freebsd14vm]
+  before_script:
+    - |
+      ls -lR packages;
+  script:
+    - |
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
+      PACKAGE_EXT="*.pkg"
+      ls -lR "${ARTIFACTDIR}";
+      showmount -e 10.10.41.158
+      mkdir -p /mnt/qnap02/Web;
+      mount -t nfs 10.10.41.158:/Web /mnt/qnap/Web
+      ls -lR /mnt/qnap/Web
+      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+  needs: ["build_freebsd"]
+  when: manual
+  dependencies:
+    - build_freebsd
+  tags:
+    - $RUNNER_TAG
+  timeout: 10m
+  allow_failure: true
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"

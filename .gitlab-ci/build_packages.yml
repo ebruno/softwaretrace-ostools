@@ -200,3 +200,66 @@ build_deb_or_rpm_container:
       - packages/debian/x86_64/
       - packages/fedora/x86_64/
       - packages/rhel/x86_64/
+
+build_freebsd:
+  stage: package
+  parallel:
+    matrix:
+      - RUNNER_TAG: [freebsd14vm]
+  before_script:
+    - |
+      if [ ! -d "packages" ]; then
+         . /etc/os-release;
+         mkdir -p packages/${ID}/x86_64
+      fi;
+  script:
+    - |
+      . /etc/os-release;
+      PACKAGE_EXT="*.pkg";
+      ARTIFACTDIR="${PWD}/packages/${ID}/x86_64";
+      cd processmanagment/os/c_cpp;
+      echo "[INFO] Packages will be moved to ${ARTIFACTDIR}";
+      mkdir build
+      cd build
+      cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
+      cpack;
+      echo "[INFO] Copy packages ...";
+      find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
+      rm -f -r *;
+      cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
+      cpack;
+      echo "[INFO] Copy packages ...";
+      find . -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
+      rm -f -r *;
+      for item in swtrprocmgt swtrstrlib;
+      do
+         cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=${item} ..;
+         cpack;
+         echo "[INFO] Copy packages ..."
+         find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
+         rm -f -r *;
+      done;
+      echo "[INFO] list packages in ${ARTIFACTDIR}";
+      cd "${ARTIFACTDIR}";
+      ls -l .;
+      find . -name "${PACKAGE_EXT}" -exec pkg info -l -F {} \;
+  needs: ["sanity"]
+  tags:
+    - $RUNNER_TAG
+  timeout: 5m
+  allow_failure: true
+  when: manual
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/*.yml
+         - ./processmanagement/os/c_cpp/**/Makefile
+         - ./processmanagement/os/c_cpp/**/*.mk
+         - ./processmanagement/os/c_cpp/**/*.h
+         - ./processmanagement/os/c_cpp/**/*.c
+  artifacts:
+    paths:
+      - packages/freebsd/x86_64/
