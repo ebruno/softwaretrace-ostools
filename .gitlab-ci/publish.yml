@@ -17,7 +17,7 @@ archlinux:
       ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
       PACKAGE_EXT="*.pkg.tar.zst"
       ls -lR "${ARTIFACTDIR}";
-      echo "NAS_REPO_IP=${NAS_REPO_IP)"
+      echo "NAS_REPO_IP=${NAS_REPO_IP}"
       showmount -e 10.10.41.158
       ip addr
       sudo mkdir -p /mnt/qnap02/Web
