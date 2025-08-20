@@ -21,7 +21,7 @@ archlinux:
       showmount -e ${NAS_REPO_IP}
       ip addr
       sudo mkdir -p /mnt/qnap02/Web
-      sudo mount -t nfs4 10.10.41.158:/Web /mnt/qnap02/Web
+      sudo mount -t nfs4 ${NAS_REPO_IP}:/Web /mnt/qnap02/Web
       ls -lR /mnt/qnap02/Web
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_archlinux_container"]
