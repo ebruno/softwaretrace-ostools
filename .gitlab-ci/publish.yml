@@ -1,12 +1,8 @@
 archlinux:
   stage: publish
-  image:
-    name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
-    docker:
-      user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [debiancontainerNFS]
+      - RUNNER_TAG: [archlinuxvm]
   before_script:
     - |
       ls -lR packages;
@@ -127,7 +123,6 @@ freebsd:
       ls -lR /mnt/qnap/Web
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_freebsd"]
-  when: manual
   dependencies:
     - build_freebsd
   tags:
