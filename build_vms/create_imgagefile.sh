@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/usr/bin/bash
 exit_status=0;
 VALID_OPTIONS=":hc:n"
 DRYRUN_CMD="";
@@ -25,10 +25,10 @@ do
 	    BLOCK_COUNT=${OPTARG};
 	    ;;
 	n)
-	    DRYRUN_CMD="echo";
+	    DRYRUN_CMD="echo [DRYRUN] ";
 	    ;;
 	\?)
-	    echo "Invalid option: -${OPTARG}" 1>&2;;
+	    echo "Invalid option: -${OPTARG}" 1>&2;
 	    ;;
     esac;
 done;
@@ -36,10 +36,14 @@ shift $((OPTIND - 1))
 if [ $# -eq 1 ]; then
     if [ ${exit_status} -eq 0 ]; then
        exit_satatus=$?
-       ${DRYRUN_CMD} BLOCK_COUNT=${BLOCK_COUNT};
+       ${DRYRUN_CMD} touch "${1}";
        ${DRYRUN_CMD} dd if=/dev/zero of="${1}" bs=1M count=${BLOCK_COUNT};
-       ${DRYRUN_CMD} mkfs.ext4 "${1}";
-       ${DRYRUN_CMD} mount -o loop  -P "${1}"
+       ${DRYRUN_CMD} sudo mkfs.ext4 "${1}";
+       ${DRYRUN_CMD} mkdir -p mnt;
+       ${DRYRUN_CMD} sudo mount -o loop "${1}" ./mnt
+       ${DRYRUN_CMD} sudo cp -r --preserve=timestamps,mode archlinux ./mnt
+       ${DRYRUN_CMD} sudo ls -lR ./mnt;
+       ${DRYRUN_CMD} sudo umount ./mnt;
     fi;
 else
     echo "[FATAL] Path to output file required." 1>&2;
