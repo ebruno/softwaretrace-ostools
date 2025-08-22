@@ -18,6 +18,7 @@ archlinux:
       ip addr
       sudo mkdir -p /mnt/qnap02/Web
       sudo mount -vvv -t nfs ${NAS_REPO_IP}:/Web /mnt/qnap02/Web
+      df -kh
       ls -lR /mnt/qnap02/Web
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_archlinux_container"]
