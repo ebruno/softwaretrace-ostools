@@ -18,8 +18,6 @@ archlinux:
       ip addr
       df -kh
       ls -ln .
-      ls -l /mnt/qnap02;
-      ls -ln /mnt/qnap02/Web;
       touch /mnt/qnap02/Web/softwaretracerepos/xxxx.txt;
       ls -ln /mnt/qnap02/Web/softwaretracerepos;
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
