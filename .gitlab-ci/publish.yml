@@ -12,10 +12,9 @@ archlinux:
       machine="$(uname -m)";
       ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
       PACKAGE_EXT="*.pkg.tar.zst"
-      ls -lR "${ARTIFACTDIR}";
       echo "NAS_REPO_IP=${NAS_REPO_IP}"
-      echo cp -preserve=timestamps "${ARTIFACTDIR}/${PACKAGE_EXT}" ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_NAME}/${ID}linux/sfwtrace/os/${machine};
-      sudo cp -preserve=timestamps "${ARTIFACTDIR}/${PACKAGE_EXT}" ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_NAME}/${ID}linux/sfwtrace/os/${machine};
+      echo cp --preserve=timestamps "${ARTIFACTDIR}/${PACKAGE_EXT}" ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_NAME}/${ID}linux/sfwtrace/os/${machine};
+      sudo cp --preserve=timestamps "${ARTIFACTDIR}/${PACKAGE_EXT}" ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_NAME}/${ID}linux/sfwtrace/os/${machine};
   needs: ["build_archlinux_container"]
   dependencies:
     - build_archlinux_container
