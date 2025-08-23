@@ -15,7 +15,10 @@ archlinux:
       echo "NAS_REPO_IP=${NAS_REPO_IP}"
       
       echo cp --preserve=timestamps "${ARTIFACTDIR}/${PACKAGE_EXT}" ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_NAME}/${ID}linux/sfwtrace/os/${machine};
-      sudo cp --preserve=timestamps ${ARTIFACTDIR}/${PACKAGE_EXT} ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_NAME}/${ID}linux/sfwtrace/os/${machine};
+      #sudo install -p -m 664 ${ARTIFACTDIR}/${PACKAGE_EXT} ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_NAME}/${ID}linux/sfwtrace/os/${machine};
+      sudo find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Copying Package:%f\n" -exec basename {}; install -p -m 664 {} ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_NAME}/${ID}linux/sfwtrace/os/${machine} \;
+      echo cd ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_NAME}/${ID}linux;
+      echo repo-add --new ./sfwtrace-repo.db.tar.tz sfwtrace/os/${machine}/${PACKAGE_EXT}
   needs: ["build_archlinux_container"]
   dependencies:
     - build_archlinux_container
