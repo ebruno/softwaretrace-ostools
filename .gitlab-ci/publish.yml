@@ -17,7 +17,7 @@ archlinux:
       showmount -e ${NAS_REPO_IP}
       ip addr
       df -kh
-      ls -lR /mnt/qnap02/Web
+      sudo ls -lR /mnt/qnap02/Web
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_archlinux_container"]
   dependencies:
