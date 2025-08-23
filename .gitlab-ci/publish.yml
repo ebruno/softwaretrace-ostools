@@ -19,7 +19,7 @@ archlinux:
       df -kh
       ls -ln .
       sudo touch /mnt/qnap02/Web/softwaretracerepos/xxxx.txt;
-      ls -ln /mnt/qnap02/Web/softwaretracerepos;
+      sudo ls -ln /mnt/qnap02/Web/softwaretracerepos;
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_archlinux_container"]
   dependencies:
