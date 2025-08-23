@@ -18,8 +18,9 @@ archlinux:
       ip addr
       df -kh
       ls -ln .
-      ls -l /mnt;
-      touch /mnt/qnap02/Web/softwaretracerepos/xxxx.txt;
+      ls -l /mnt/qnap02;
+      ls -ln /mnt/qnap02/Web;
+      sudo touch /mnt/qnap02/Web/softwaretracerepos/xxxx.txt;
       ls -ln /mnt/qnap02/Web/softwaretracerepos;
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_archlinux_container"]
