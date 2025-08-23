@@ -14,13 +14,7 @@ archlinux:
       PACKAGE_EXT="*.pkg.tar.zst"
       ls -lR "${ARTIFACTDIR}";
       echo "NAS_REPO_IP=${NAS_REPO_IP}"
-      showmount -e ${NAS_REPO_IP}
-      ip addr
-      df -kh
-      ls -ln .
-      sudo touch /mnt/qnap02/Web/softwaretracerepos/xxxx.txt;
-      sudo ls -ln /mnt/qnap02/Web/softwaretracerepos;
-      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+      sudo find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Copying Package:%f\n" -exec basename {}; cp -preserve timestamps {} /qnap02/Web/softwaretracerepos/archlinux/sfwtrace/os/x86_64 \;
   needs: ["build_archlinux_container"]
   dependencies:
     - build_archlinux_container
