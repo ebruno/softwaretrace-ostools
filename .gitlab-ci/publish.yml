@@ -14,7 +14,7 @@ archlinux:
       PACKAGE_EXT="*.pkg.tar.zst"
       echo "NAS_REPO_IP=${NAS_REPO_IP}";
       ls -l;
-      sudo ./move_linux_packages.sh
+      sudo ./move_linux_packages.sh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH} "${REPO_ROOT_NAME}" 
   needs: ["build_archlinux_container"]
   dependencies:
     - build_archlinux_container
