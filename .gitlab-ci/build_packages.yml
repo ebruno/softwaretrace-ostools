@@ -208,15 +208,17 @@ build_freebsd:
       - RUNNER_TAG: [freebsd14vm]
   before_script:
     - |
+      machine="$(uname -p)"
       if [ ! -d "packages" ]; then
          . /etc/os-release;
-         mkdir -p packages/${ID}/x86_64
+         mkdir -p packages/${ID}/${machine}
       fi;
   script:
     - |
       . /etc/os-release;
+      machine="$(uname -p)"
       PACKAGE_EXT="*.pkg";
-      ARTIFACTDIR="${PWD}/packages/${ID}/x86_64";
+      ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       cd processmanagment/os/c_cpp;
       echo "[INFO] Packages will be moved to ${ARTIFACTDIR}";
       mkdir build
@@ -248,7 +250,6 @@ build_freebsd:
     - $RUNNER_TAG
   timeout: 5m
   allow_failure: true
-  when: manual
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -262,4 +263,4 @@ build_freebsd:
          - ./processmanagement/os/c_cpp/**/*.c
   artifacts:
     paths:
-      - packages/freebsd/x86_64/
+      - packages/freebsd/amd64/

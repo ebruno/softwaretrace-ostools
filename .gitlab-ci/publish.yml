@@ -1,12 +1,8 @@
 archlinux:
   stage: publish
-  image:
-    name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
-    docker:
-      user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [debcontainer]
+      - RUNNER_TAG: [archlinuxvm]
   before_script:
     - |
       ls -lR packages;
@@ -16,12 +12,8 @@ archlinux:
       machine="$(uname -m)";
       ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
       PACKAGE_EXT="*.pkg.tar.zst"
-      ls -lR "${ARTIFACTDIR}";
-      showmount -e 10.10.41.158
-      #mkdir -p /mnt/qnap02/Web;
-      #mount -t nfs 10.10.41.158:/Web /mnt/qnap/Web
-      #ls -lR /mnt/qnap/Web
-      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+      echo "NAS_REPO_IP=${NAS_REPO_IP}";
+      sudo ./move_linux_packages.sh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}" 
   needs: ["build_archlinux_container"]
   dependencies:
     - build_archlinux_container
@@ -119,13 +111,13 @@ freebsd:
       ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.pkg"
       ls -lR "${ARTIFACTDIR}";
-      showmount -e 10.10.41.158
-      mkdir -p /mnt/qnap02/Web;
-      mount -t nfs 10.10.41.158:/Web /mnt/qnap/Web
-      ls -lR /mnt/qnap/Web
+      ls -l /
+      echo "**** groups"
+      groups
+      doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}"
+      doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}"
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_freebsd"]
-  when: manual
   dependencies:
     - build_freebsd
   tags:
