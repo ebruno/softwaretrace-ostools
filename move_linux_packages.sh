@@ -8,11 +8,11 @@ REPO_NAME="$6";
 machine="$7";
 
 if [ "${ID}" = "arch" ]; then
-    echo find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Install Package:%f\n" -exec install -p -m 664 {} ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_NAME}/${ID}linux/${REPO_NAME}/os/${machine} \;
-    find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Install Package:%f\n" -exec install -p -m 664 {} ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_NAME}/${ID}linux/${REPO_NAME}/os/${machine} \;
-    cd ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_NAME}/${ID}linux/${REPO_NAME}/os/${machine};
+    echo find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Install Package:%f\n" -exec install -p -m 664 {} ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}linux/${REPO_NAME}/os/${machine} \;
+    find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Install Package:%f\n" -exec install -p -m 664 {} ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}linux/${REPO_NAME}/os/${machine} \;
+    cd ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}linux/${REPO_NAME}/os/${machine};
     pwd;
     ls -l;
-    repo-add --new ./sfwtrace.db.tar.gz ${PACKAGE_EXT}
+    repo-add -p -R --new ./sfwtrace.db.tar.gz ${PACKAGE_EXT}
     ls -l;
 fi;
