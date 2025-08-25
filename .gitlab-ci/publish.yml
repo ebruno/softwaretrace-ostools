@@ -111,7 +111,7 @@ freebsd:
       ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.pkg"
       ls -lR "${ARTIFACTDIR}";
-      ls -lR "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}"
+      ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}"
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_freebsd"]
   dependencies:
