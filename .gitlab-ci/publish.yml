@@ -26,7 +26,7 @@ archlinux:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/*.yml
-	 - ./move_linux_packages.sh
+         - ./move_linux_packages.sh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -60,7 +60,7 @@ redhat:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/*.yml
-	 - ./move_linux_packages.sh
+         - ./move_linux_packages.sh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -94,7 +94,7 @@ debian:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/*.yml
-	 - ./move_linux_packages.sh
+         - ./move_linux_packages.sh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -132,7 +132,7 @@ freebsd:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/*.yml
-	 - ./move_freebsd_packages.sh
+         - ./move_freebsd_packages.sh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
