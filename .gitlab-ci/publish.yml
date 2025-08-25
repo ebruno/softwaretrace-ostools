@@ -111,10 +111,7 @@ freebsd:
       ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.pkg"
       ls -lR "${ARTIFACTDIR}";
-      showmount -e 10.10.41.158
-      mkdir -p /mnt/qnap02/Web;
-      mount -t nfs 10.10.41.158:/Web /mnt/qnap/Web
-      ls -lR /mnt/qnap/Web
+      ls -lR "${NAS_REPO_ROOT_PATH}/${ID}"
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_freebsd"]
   dependencies:
