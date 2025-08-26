@@ -1,0 +1,6 @@
+# This file once configured should be placed in /etc/pacman.d
+# Add the following line into /etc/pacman.conf
+# Include = /etc/pacman.d/softwaretrace.conf
+[sfwtrace]
+Server = <URL to Server>
+SigLevel = Optional TrustAll
