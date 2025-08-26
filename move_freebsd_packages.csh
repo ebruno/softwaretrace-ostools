@@ -1,11 +1,11 @@
 #!/bin/tcsh
-ARTIFACTDIR="$1";
-PACKAGE_EXT="$2";
-ID="$3";
-NAS_REPO_ROOT_PATH="$4";
-REPO_ROOT_PATH="$5";
-REPO_NAME="$6";
-machine="$7";
+set ARTIFACTDIR = "$1";
+set PACKAGE_EXT = "$2";
+set ID = "$3";
+set NAS_REPO_ROOT_PATH = "$4";
+set REPO_ROOT_PATH = "$5";
+set REPO_NAME = "$6";
+set machine = "$7";
 echo "start script"
 if ( "${ID}" == "freebsd" )
     echo find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Install Package:%f\n" -exec install -p -m 664 {} ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}/${REPO_NAME}/All\;
