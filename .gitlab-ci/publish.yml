@@ -115,9 +115,9 @@ freebsd:
       PACKAGE_EXT="*.pkg"
       ls -lR "${ARTIFACTDIR}";
       # doas is the freebsd version of sudo.
-      doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}";
       doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}";
       doas  ${PWD}/move_freebsd_packages.csh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}";
+      doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}";
   needs: ["build_freebsd"]
   dependencies:
     - build_freebsd
