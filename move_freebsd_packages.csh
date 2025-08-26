@@ -7,13 +7,13 @@ set REPO_ROOT_PATH = "$5";
 set REPO_NAME = "$6";
 set machine = "$7";
 echo "start script"
-if ( "${ID}" == "freebsd" )
-    echo find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Install Package:%f\n" -exec install -p -m 664 {} ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}/${REPO_NAME}/All\;
-    #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Install Package:%f\n" -exec install -p -m 664 {} ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}linux/${REPO_NAME}/All \;
-    #cd ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}linux/${REPO_NAME}/os/${machine};
-    #chmod a+r *;
+if ( "${ID}" == "freebsd" ) then
+    echo find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -exec install -v -p -m 664 {} ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}/${REPO_NAME}/All;
+    find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -exec install -v -p -m 664 {} ${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}/${REPO_NAME}/All \;
+    cd {NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}/${REPO_NAME}/All;
+    chmod a+r *;
     #repo-add -p -R --new ./${REPO_NAME}.db.tar.gz ${PACKAGE_EXT}
-    #ls -l;
+    ls -l;
 endif;
 echo "exit script"
 exit 0;
