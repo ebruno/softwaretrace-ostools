@@ -1,0 +1,6 @@
+sfwtrace: {
+  url: "<url to repository>",
+  mirror_type: "srv",
+  signature_type: "none",
+  enabled: yes
+}
