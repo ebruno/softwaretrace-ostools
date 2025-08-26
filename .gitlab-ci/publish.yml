@@ -114,11 +114,10 @@ freebsd:
       ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.pkg"
       ls -lR "${ARTIFACTDIR}";
+      # doas is the freebsd version of sudo.
       doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}";
       doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}";
       doas  ${PWD}/move_freebsd_packages.csh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}";
-      doas ls -lR "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}/${REPO_NAME}";
-      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_freebsd"]
   dependencies:
     - build_freebsd
@@ -133,7 +132,7 @@ freebsd:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/*.yml
-         - ./move_freebsd_packages.sh
+         - ./move_freebsd_packages.csh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
