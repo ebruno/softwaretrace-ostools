@@ -7,7 +7,7 @@ set NAS_REPO_ROOT_PATH = "$4";
 set REPO_ROOT_PATH = "$5";
 set REPO_NAME = "$6";
 set machine = "$7";
-set myscript = $(basename $0);
+set myscript = `basename $0`;
 echo "[INFO] Enter: ${myscript}";
 if ( "${ID}" == "freebsd" ) then
     echo "[INFO] Installing ${ID} Packages."
