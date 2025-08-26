@@ -26,6 +26,7 @@ archlinux:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/*.yml
+         - ./move_linux_packages.sh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -59,6 +60,7 @@ redhat:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/*.yml
+         - ./move_linux_packages.sh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -92,6 +94,7 @@ debian:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/*.yml
+         - ./move_linux_packages.sh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -111,12 +114,10 @@ freebsd:
       ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.pkg"
       ls -lR "${ARTIFACTDIR}";
-      ls -l /
-      echo "**** groups"
-      groups
-      doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}"
-      doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}"
-      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+      # doas is the freebsd version of sudo.
+      doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}";
+      doas  ${PWD}/move_freebsd_packages.csh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}";
+      doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}/${REPO_NAME}/All";
   needs: ["build_freebsd"]
   dependencies:
     - build_freebsd
@@ -131,6 +132,7 @@ freebsd:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/*.yml
+         - ./move_freebsd_packages.csh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h

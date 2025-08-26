@@ -1,0 +1,8 @@
+# This file once configured with an URL should be placed
+# in /usr/local/etc/pkg/repo.
+sfwtrace: {
+  url: "<url to repository>",
+  mirror_type: "srv",
+  signature_type: "none",
+  enabled: yes
+}
