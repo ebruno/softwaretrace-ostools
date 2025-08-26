@@ -116,8 +116,8 @@ freebsd:
       ls -lR "${ARTIFACTDIR}";
       doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}";
       doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}";
-      ls -l *.sh;
       doas  ${PWD}/move_freebsd_packages.csh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}";
+      doas ls -lR "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}/${REPO_NAME}";
       #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
   needs: ["build_freebsd"]
   dependencies:
