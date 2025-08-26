@@ -12,7 +12,7 @@ echo "[INFO] Enter: ${myscript}";
 if ( "${ID}" == "freebsd" ) then
     echo "[INFO] Installing ${ID} Packages."
     cd "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}/${REPO_NAME}";
-    pkg repo;
+    pkg repo .;
     ls -l;
 endif;
 echo "[INFO] exit: ${myscript}"; 
