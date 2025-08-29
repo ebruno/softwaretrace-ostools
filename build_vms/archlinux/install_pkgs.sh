@@ -18,7 +18,7 @@ pacman -S vim emacs
 pacman -S cmake doxygen graphviz
 pacman -S git gitlab-runner
 mkinitcpio -P
-grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 systemctl enable dhcpcd
 systemctl enable gitlab-runner
