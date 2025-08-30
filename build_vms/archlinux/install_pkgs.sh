@@ -1,25 +1,22 @@
-timedatectl set-ntp true
-
-pacman -Sy vim
-mount /dev/sda3 /mnt
-mkdir /mnt/boot
-mount /dev/sda1 /mnt/boot
-swapon /dev/sda2
-pacstrap /mnt base base-devel linux linux-firmware
-genfstab -U /mnt >> /mnt/etc/fstab
-arch-choot /mnt
+#!/usr/bin/bash
 ln -sf /usr/share/zoneinfo/US/Pacific /etc/localtime
 hwclock -systohc
-echo "archlinuxvmNN" > /etc/hostname
+echo "archlinuxvm02" > /etc/hostname
 sed -i -e 's/#en_US.UTF8/en_US.UTF8/' /etc/locale.gen
 local-gen
-pacman -S dhcpcd nfs-utils sudo openssh
-pacman -S vim emacs
-pacman -S cmake doxygen graphviz
-pacman -S git gitlab-runner
+pacman -Syy --noconfirm;
+pacman -Sy --noconfirm  dhcpcd nfs-utils sudo openssh grub efibootmgr
+pacman -Sy --noconfirm vim emacs
+pacman -Sy --noconfirm cmake doxygen graphviz pacman
+pacman -Sy --noconfirm git gitlab-runner
 mkinitcpio -P
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=ARCHLINUX
 grub-mkconfig -o /boot/grub/grub.cfg
 systemctl enable dhcpcd
 systemctl enable gitlab-runner
 systemctl enable sshd
+echo "gitlab-runner ALL=(ALL) NOPASSWD:ALL" >> "/etc/sudoers.d/admins"
+chmod 440 "/etc/sudoers.d/admins"
+useradd -m -G wheel -s /bin/bash ebruno;
+echo "ebruno ALL=(ALL) NOPASSWD:ALL" >> "/etc/sudoers.d/admins"
+# Set password for root and ebruno.
