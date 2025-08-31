@@ -4,4 +4,4 @@
 /net		-hosts		-nobrowse,nosuid,intr
 /media		-media		-nosuid,noatime,autoro
 #/-		-noauto
-/qnap02         /etc/auto_master.d/qnap02.map
+/qnap02         /etc/autofs.d/qnap02.map
