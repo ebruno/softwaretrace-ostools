@@ -13,7 +13,7 @@ archlinux:
       ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
       PACKAGE_EXT="*.pkg.tar.zst"
       echo "NAS_REPO_IP=${NAS_REPO_IP}";
-      sudo ./move_linux_packages.sh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}" 
+      sudo ./move_linux_packages.sh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}"
   needs: ["build_archlinux_container"]
   dependencies:
     - build_archlinux_container
@@ -115,9 +115,9 @@ freebsd:
       PACKAGE_EXT="*.pkg"
       ls -lR "${ARTIFACTDIR}";
       # doas is the freebsd version of sudo.
-      doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}";
-      doas  ${PWD}/move_freebsd_packages.csh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}";
-      doas ls -l "${NAS_REPO_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}/${REPO_NAME}/All";
+      doas ls -l "${NAS_AUTOFS_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}";
+      doas  ${PWD}/move_freebsd_packages.csh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_AUTOFS_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}";
+      doas ls -l "${NAS_AUTOFS_ROOT_PATH}/${REPO_ROOT_PATH}/${ID}/${REPO_NAME}/All";
   needs: ["build_freebsd"]
   dependencies:
     - build_freebsd
