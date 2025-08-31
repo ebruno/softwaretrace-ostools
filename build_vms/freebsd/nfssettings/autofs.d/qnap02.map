@@ -1,0 +1,4 @@
+iso  -rw,fstype=nfs,soft,intr     10.10.41.158:/iso    
+ova  -rw,fstype=nfs,soft,intr     10.10.41.158:/ova    
+Web  -rw,fstype=nfs,soft,intr     10.10.41.158:/Web    
+Backups -rw,fstype=nfs,soft,intr  10.10.41.158:/Backups
