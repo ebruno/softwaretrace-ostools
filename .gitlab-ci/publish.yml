@@ -10,7 +10,7 @@ archlinux:
     - |
       . /etc/os-release;
       machine="$(uname -m)";
-      ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
+      ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.pkg.tar.zst"
       echo "NAS_REPO_IP=${NAS_REPO_IP}";
       sudo ./move_linux_packages.sh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}"
@@ -20,6 +20,8 @@ archlinux:
   tags:
     - $RUNNER_TAG
   rules:
+    - if: $SKIP_ARCHLINUX == "true"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -47,7 +49,7 @@ redhat:
       ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.rpm"
       ls -lR "${ARTIFACTDIR}";
-      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+      sudo ./publish_rpms.sh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_AUTOFS_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}";
   needs: ["build_deb_or_rpm_container"]
   dependencies:
     - build_deb_or_rpm_container
@@ -126,6 +128,8 @@ freebsd:
   timeout: 10m
   allow_failure: true
   rules:
+    - if: $SKIP_FREEBSD == "true"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
