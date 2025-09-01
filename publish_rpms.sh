@@ -1,15 +1,24 @@
 #!/usr/bin/env bash
 . /etc/os-release;
-if [ -z "${NAS_AUTOFS_ROOT_PATH}" ]; then
-   NAS_AUTOFS_ROOT_PATH="${PWD}/qnap02/Web"
+if [ $# -eq 7 ]; then
+    ARTIFACTDIR="$1";
+    PACKAGE_EXT="$2";
+    ID="$3";
+    NAS_REPO_ROOT_PATH="$4";
+    REPO_ROOT_PATH="$5";
+    REPO_NAME="$6";
+    machine="$7";
+else
+    if [ -z "${NAS_AUTOFS_ROOT_PATH}" ]; then
+	NAS_AUTOFS_ROOT_PATH="${PWD}/qnap02/Web"
+    fi;
+    if [ -z "${REPO_NAME}" ]; then
+	REPO_NAME="sfwtrace"
+    fi;
+    if [ -z "${REPO_ROOT_PATH}" ]; then
+	REPO_ROOT_PATH="softwaretracerepos"
+    fi;
 fi;
-if [ -z "${REPO_NAME}" ]; then
-   REPO_NAME="sfwtrace"
-fi;
-if [ -z "${REPO_ROOT_PATH}" ]; then
-   REPO_ROOT_PATH="softwaretracerepos"
-fi;
-
 REPO_BASE_DIR="${NAS_AUTOFS_ROOT_PATH}/${REPO_ROOT_PATH}"
 
 declare -A OS_DIR=(["fc"]="fedora" ["el"]="rhel");
