@@ -48,7 +48,7 @@ redhat:
       PACKAGE_EXT="*.rpm"
       ls -lR "${ARTIFACTDIR}";
       groups;
-      ls -l /qnap02/Web;
+      ls -l /;
       ./publish_rpms.sh
   needs: ["build_deb_or_rpm_container"]
   dependencies:
