@@ -50,6 +50,8 @@
   tags:
     - $RUNNER_TAG
   rules:
+    - if: $SKIP_ARCHLINUX == "true"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -112,6 +114,8 @@ build_archlinux_container:
   tags:
     - $RUNNER_TAG
   rules:
+    - if: $SKIP_ARCHLINUX == "true"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -251,6 +255,8 @@ build_freebsd:
   timeout: 5m
   allow_failure: true
   rules:
+    - if: $SKIP_FREEBSD == "true"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
