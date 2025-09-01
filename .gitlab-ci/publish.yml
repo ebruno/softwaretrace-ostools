@@ -47,9 +47,7 @@ redhat:
       ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.rpm"
       ls -lR "${ARTIFACTDIR}";
-      groups;
-      ls -l /;
-      ./publish_rpms.sh
+      sudo ./publish_rpms.sh
   needs: ["build_deb_or_rpm_container"]
   dependencies:
     - build_deb_or_rpm_container
