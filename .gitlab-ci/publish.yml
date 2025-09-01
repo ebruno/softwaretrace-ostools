@@ -10,7 +10,7 @@ archlinux:
     - |
       . /etc/os-release;
       machine="$(uname -m)";
-      ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
+      ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.pkg.tar.zst"
       echo "NAS_REPO_IP=${NAS_REPO_IP}";
       sudo ./move_linux_packages.sh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}"
@@ -47,7 +47,7 @@ redhat:
       ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.rpm"
       ls -lR "${ARTIFACTDIR}";
-      #find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec basename {}; pacman -Ql {} \;
+      ./publish_rpms.sh
   needs: ["build_deb_or_rpm_container"]
   dependencies:
     - build_deb_or_rpm_container
