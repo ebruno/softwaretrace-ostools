@@ -13,7 +13,7 @@ archlinux:
       ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.pkg.tar.zst"
       echo "NAS_REPO_IP=${NAS_REPO_IP}";
-      sudo ./move_linux_packages.sh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}"
+      sudo ./move_linux_packages.sh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_AUTOFS_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}" "${machine}"
   needs: ["build_archlinux_container"]
   dependencies:
     - build_archlinux_container

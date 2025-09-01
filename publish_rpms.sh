@@ -5,7 +5,7 @@ if [ $# -eq 7 ]; then
     ARTIFACTDIR="$1";
     PACKAGE_EXT="$2";
     ID="$3";
-    NAS_REPO_ROOT_PATH="$4";
+    NAS_AUTOFS_ROOT_PATH="$4";
     REPO_ROOT_PATH="$5";
     REPO_NAME="$6";
     machine="$7";
