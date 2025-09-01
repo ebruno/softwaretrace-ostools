@@ -47,7 +47,7 @@ redhat:
       ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
       PACKAGE_EXT="*.rpm"
       ls -lR "${ARTIFACTDIR}";
-      sudo ./publish_rpms.sh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}"
+      sudo ./publish_rpms.sh "${ARTIFACTDIR}" "${PACKAGE_EXT}" "${ID}" "${NAS_REPO_ROOT_PATH}" "${REPO_ROOT_PATH}" "${REPO_NAME}";
   needs: ["build_deb_or_rpm_container"]
   dependencies:
     - build_deb_or_rpm_container

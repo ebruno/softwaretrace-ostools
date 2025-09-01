@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 . /etc/os-release;
+echo "param count $#";
 if [ $# -eq 7 ]; then
     ARTIFACTDIR="$1";
     PACKAGE_EXT="$2";
