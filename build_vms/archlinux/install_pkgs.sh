@@ -19,4 +19,4 @@ echo "gitlab-runner ALL=(ALL) NOPASSWD:ALL" >> "/etc/sudoers.d/admins"
 chmod 440 "/etc/sudoers.d/admins"
 useradd -m -G wheel -s /bin/bash ebruno;
 echo "ebruno ALL=(ALL) NOPASSWD:ALL" >> "/etc/sudoers.d/admins"
-# Set password for root and ebruno.
+echo "[INFO] Set password for root and ebruno."
