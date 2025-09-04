@@ -12,6 +12,9 @@ else
     echo "permit nopass $username as root" >> /usr/local/etc/doas.conf
   end
 endif
+foreach username (ebruno root)
+    echo "permit nopass $username as gitlab-runner" >> /usr/local/etc/doas.conf
+endif
 pw group add -n gitlab-runner
 pw user add -n gitlab-runner -g gitlab-runner -s /usr/local/bin/bash
 mkdir /home/gitlab-runner
