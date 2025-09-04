@@ -12,6 +12,9 @@ else
     echo "permit nopass $username as root" >> /usr/local/etc/doas.conf
   end
 endif
+foreach username (ebruno root)
+    echo "permit nopass $username as gitlab-runner" >> /usr/local/etc/doas.conf
+endif
 pw group add -n gitlab-runner
 pw user add -n gitlab-runner -g gitlab-runner -s /usr/local/bin/bash
 mkdir /home/gitlab-runner
@@ -24,3 +27,10 @@ cp gitlab_runner /usr/local/etc/rc.d/gitlab_runner
 chmod a+rx /usr/local/etc/rc.d/gitlab_runner
 sysrc gitlab_runner_enable=YES
 service gitlab_runner start
+echo "[INFO] registering the runner as gitlab-runner user".
+echo "[INFO] doas -u gitlab-runner /usr/local/bin/gitlab-runner register <url and token info>"
+echo "[INFO] Check if the config.toml file is in the correct location /home/gitlab-runner/.gitlab-runner/config.toml"
+echo "[INFO} if not you may have to move it."
+ehco "[INFO] doas cp /etc/gitlab-runner/config.toml /home/gitlab-runner/.gitlab-runner/"
+echo "[INFO] doas chown gitlab-runner:gitlab-runner"
+echo "[INFO] Check /var/log/gitlab_runner.log."
