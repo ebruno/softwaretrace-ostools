@@ -12,7 +12,6 @@ else
     disk_prefix="${tmp_diskinfo[0]}"
 fi;
 echo "[INFO] Using disk prefix \"${disk_prefix}\"" 1>&2;
-exit 0;
 timedatectl set-ntp true
 pacman -Syy --noconfirm
 pacman -Sy --noconfirm vim
