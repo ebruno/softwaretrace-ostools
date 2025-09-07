@@ -33,7 +33,7 @@ sanity_archlinux_container:
       user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [rhel10containers]
+      - RUNNER_TAG: [debcontainer]
   before_script:
     - |
   script:
