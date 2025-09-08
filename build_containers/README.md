@@ -8,9 +8,6 @@ Cockpit runs on localhost:9090
 
 **Only install podman or docker-ce not both.**
 
-## Create and upload build containers to gitlab registry ##
-
-
 ## Setup gitlab-runner to use podman ##
 Install podman before gitlab-runner.
  * RHEL10
@@ -143,3 +140,10 @@ Sample complete config.toml with shell runner and podman runner
 		 network_mode = "bridge"
 		 shm_size = 0
 		 network_mtu = 0
+
+## Create and upload build containers to gitlab registry ##
+	  podman | docker login gitlab01.brunoe.net:5050
+	  podman | docker build -t gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/rhel10rpmbuild -t rhel10rpmbuild -f rhel10/Containerfile;
+	  podman | docker push gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/rhel10rpmbuild;
+	  podman | docker build -t gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinux -t archlinux -f archlinux/Dockerfile;
+	  podman | docker push gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinux;
