@@ -142,6 +142,7 @@ Sample complete config.toml with shell runner and podman runner
 		 network_mtu = 0
 
 ## Create and upload build containers to gitlab registry ##
+
 	  podman | docker login gitlab01.brunoe.net:5050
 	  podman | docker build -t gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/rhel10rpmbuild -t rhel10rpmbuild -f rhel10/Containerfile;
 	  podman | docker push gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/rhel10rpmbuild;
