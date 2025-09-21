@@ -1,0 +1,12 @@
+FROM docker.io/redhat/ubi10:latest
+
+LABEL org.opencontainers.image.title="RHEL10 UBI with rpmbuild support"
+LABEL org.opencontainers.image.description="Contains cmake and rpm build utils."
+RUN dnf -y update && \
+    dnf -y install cmake rpm-build rpmdevtools && \
+    dnf clean all && \
+    dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm && \
+    dnf repolist;
+    
+
+ENTRYPOINT ["/usr/bin/bash"]
