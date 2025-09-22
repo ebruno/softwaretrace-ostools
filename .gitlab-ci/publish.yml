@@ -20,7 +20,7 @@ archlinux:
   tags:
     - $RUNNER_TAG
   rules:
-    - if: $CI_SWTR_ONLY_CONTAINERS == "false"
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
     - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
       when: never
