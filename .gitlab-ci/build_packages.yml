@@ -20,8 +20,6 @@
       fi;
   script:
     - |
-      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ]; then {
-      . /etc/os-release;
       machine="$(uname -m)";
       ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
       cd processmanagment/os/c_cpp;
@@ -87,36 +85,32 @@ build_archlinux_container:
       fi;
   script:
     - |
-      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ]; then
-         . /etc/os-release;
-         machine="$(uname -m)";
-         ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
-         PACKAGE_EXT="*.pkg.tar.zst"
-         cd processmanagment/os/c_cpp;
-         if [ -n "${CI_PIPELINE_IID}" ]; then
-           make BUILD_ID=${CI_PIPELINE_IID} -f Makefile_packages update_version;
-         fi;
-         echo "[INFO] Copy packages to ${ARTIFACTDIR}";
-         make -f Makefile_packages swtrprocmgtutils_create_distro
-         find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
-         rm -r -f ARCHLINUXBUILD/*;
-         make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtutils -f Makefile_packages swtrprocmgtutils_create_distro
-         find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
-         rm -r -f ARCHLINUXBUILD/*;
-         make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
-         find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
-         rm -r -f ARCHLINUXBUILD/*;
-         make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrstrlib -f Makefile_packages swtrprocmgtutils_create_distro
-         find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
-         rm -r -f ARCHLINUXBUILD/*;
-         make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
-         find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
-         echo "[INFO] list packages in ${ARTIFACTDIR}";
-         ls -l "${ARTIFACTDIR}";
-         find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec pacman -Ql {} \;
-      else
-         echo "[INFO] CI_SWTR_ONLY_CONTAINERS is $CI_SWTR_ONLY_CONTAINERS, skipping job.";
+      . /etc/os-release;
+      machine="$(uname -m)";
+      ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
+      PACKAGE_EXT="*.pkg.tar.zst"
+      cd processmanagment/os/c_cpp;
+      if [ -n "${CI_PIPELINE_IID}" ]; then
+        make BUILD_ID=${CI_PIPELINE_IID} -f Makefile_packages update_version;
       fi;
+      echo "[INFO] Copy packages to ${ARTIFACTDIR}";
+      make -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -r -f ARCHLINUXBUILD/*;
+      make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtutils -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -r -f ARCHLINUXBUILD/*;
+      make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -r -f ARCHLINUXBUILD/*;
+      make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrstrlib -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      rm -r -f ARCHLINUXBUILD/*;
+      make BUILD_ID=${CI_PIPELINE_IID} SWTRPROCMGTUTILS_CURPKG=swtrprocmgtlib -f Makefile_packages swtrprocmgtutils_create_distro
+      find ARCHLINUXBUILD -name "${PACKAGE_EXT}" -exec cp {} "${ARTIFACTDIR}" \;
+      echo "[INFO] list packages in ${ARTIFACTDIR}";
+      ls -l "${ARTIFACTDIR}";
+      find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec pacman -Ql {} \;
   needs: ["sanity_archlinux_container"]
   tags:
     - $RUNNER_TAG
@@ -155,48 +149,44 @@ build_deb_or_rpm_container:
       fi;
   script:
     - |
-      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ]; then
-         . /etc/os-release;
-         ARTIFACTDIR="${PWD}/packages/${ID}/x86_64";
-         if [[ ${ID} =~ rhel|fedora ]]; then
-            export QA_RPATHS=$(( 0x0001|0x0010|0x0002 ));
-            PACKAGE_EXT="*.rpm";
-         elif [[ ${ID} =~ debian|ubuntu ]]; then
-            PACKAGE_EXT="*.deb"
-         else
-            PACKAGE_EXT="*.tar.gz";
-         fi;
-         cd processmanagment/os/c_cpp;
-         echo "[INFO] Packages will be moved to ${ARTIFACTDIR}";
-         mkdir build
-         cd build
-         cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
+      . /etc/os-release;
+      ARTIFACTDIR="${PWD}/packages/${ID}/x86_64";
+      if [[ ${ID} =~ rhel|fedora ]]; then
+         export QA_RPATHS=$(( 0x0001|0x0010|0x0002 ));
+         PACKAGE_EXT="*.rpm";
+      elif [[ ${ID} =~ debian|ubuntu ]]; then
+         PACKAGE_EXT="*.deb"
+      else
+         PACKAGE_EXT="*.tar.gz";
+      fi;
+      cd processmanagment/os/c_cpp;
+      echo "[INFO] Packages will be moved to ${ARTIFACTDIR}";
+      mkdir build
+      cd build
+      cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
+      cpack;
+      echo "[INFO] Copy packages ...";
+      find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
+      rm -f -r *;
+      cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
+      cpack;
+      echo "[INFO] Copy packages ...";
+      find . -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
+      rm -f -r *;
+      for item in swtrprocmgt swtrstrlib;
+      do
+         cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=${item} ..;
          cpack;
-         echo "[INFO] Copy packages ...";
+         echo "[INFO] Copy packages ..."
          find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
          rm -f -r *;
-         cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
-         cpack;
-         echo "[INFO] Copy packages ...";
-         find . -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
-         rm -f -r *;
-         for item in swtrprocmgt swtrstrlib;
-         do
-            cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=${item} ..;
-            cpack;
-            echo "[INFO] Copy packages ..."
-            find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
-            rm -f -r *;
-         done;
-         echo "[INFO] list packages in ${ARTIFACTDIR}";
-         ls -l "${ARTIFACTDIR}";
-         if [[ ${ID} =~ rhel|fedora ]]; then
-           find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec rpm -qlp {} \;
-         elif [[ ${ID} =~ debian|ubuntu ]]; then
-           find "${ARTIFACTDIR}"  -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec  dpkg -c {} \;
-         fi;
-      else
-         echo "[INFO] CI_SWTR_ONLY_CONTAINERS is $CI_SWTR_ONLY_CONTAINERS, skipping job.";
+      done;
+      echo "[INFO] list packages in ${ARTIFACTDIR}";
+      ls -l "${ARTIFACTDIR}";
+      if [[ ${ID} =~ rhel|fedora ]]; then
+        find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec rpm -qlp {} \;
+      elif [[ ${ID} =~ debian|ubuntu ]]; then
+        find "${ARTIFACTDIR}"  -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec  dpkg -c {} \;
       fi;
   needs: ["sanity"]
   tags:
@@ -234,40 +224,36 @@ build_freebsd:
       fi;
   script:
     - |
-      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ]; then
-         . /etc/os-release;
-         machine="$(uname -p)"
-         PACKAGE_EXT="*.pkg";
-         ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
-         cd processmanagment/os/c_cpp;
-         echo "[INFO] Packages will be moved to ${ARTIFACTDIR}";
-         mkdir build
-         cd build
-         cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
+      . /etc/os-release;
+      machine="$(uname -p)"
+      PACKAGE_EXT="*.pkg";
+      ARTIFACTDIR="${PWD}/packages/${ID}/${machine}";
+      cd processmanagment/os/c_cpp;
+      echo "[INFO] Packages will be moved to ${ARTIFACTDIR}";
+      mkdir build
+      cd build
+      cmake -DBUILD_ID=${CI_PIPELINE_IID} ..
+      cpack;
+      echo "[INFO] Copy packages ...";
+      find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
+      rm -f -r *;
+      cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
+      cpack;
+      echo "[INFO] Copy packages ...";
+      find . -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
+      rm -f -r *;
+      for item in swtrprocmgt swtrstrlib;
+      do
+         cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=${item} ..;
          cpack;
-         echo "[INFO] Copy packages ...";
+         echo "[INFO] Copy packages ..."
          find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
          rm -f -r *;
-         cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly ..
-         cpack;
-         echo "[INFO] Copy packages ...";
-         find . -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
-         rm -f -r *;
-         for item in swtrprocmgt swtrstrlib;
-         do
-            cmake -DBUILD_ID=${CI_PIPELINE_IID} -DCMAKE_BUILD_TYPE=ReleaseLibsOnly -DSWTRLIB_BUILD_LIBS=${item} ..;
-            cpack;
-            echo "[INFO] Copy packages ..."
-            find . -maxdepth 1 -name "${PACKAGE_EXT}" -exec cp -v {} "${ARTIFACTDIR}" \;
-            rm -f -r *;
-         done;
-         echo "[INFO] list packages in ${ARTIFACTDIR}";
-         cd "${ARTIFACTDIR}";
-         ls -l .;
-         find . -name "${PACKAGE_EXT}" -exec pkg info -l -F {} \;
-      else
-         echo "[INFO] CI_SWTR_ONLY_CONTAINERS is $CI_SWTR_ONLY_CONTAINERS, skipping job.";
-      fi;
+      done;
+      echo "[INFO] list packages in ${ARTIFACTDIR}";
+      cd "${ARTIFACTDIR}";
+      ls -l .;
+      find . -name "${PACKAGE_EXT}" -exec pkg info -l -F {} \;
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
