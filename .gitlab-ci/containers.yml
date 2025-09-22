@@ -13,6 +13,7 @@ container:
   tags:
      - $RUNNER_TAG
 
+  rules:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/container.yml
