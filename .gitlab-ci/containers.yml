@@ -5,7 +5,7 @@ container:
       - RUNNER_TAG: [debian]
   script:
     - |
-       env | grep CI;
+       env | grep CI | sort;
   allow_failure:
     exit_codes:
       - 1
