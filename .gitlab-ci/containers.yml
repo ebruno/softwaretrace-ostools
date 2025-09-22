@@ -1,5 +1,5 @@
 container:
-  stage: build
+  stage: build_envs
   parallel:
     matrix:
       - RUNNER_TAG: [debian]
