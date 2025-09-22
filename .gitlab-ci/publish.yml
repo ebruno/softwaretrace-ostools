@@ -20,7 +20,9 @@ archlinux:
   tags:
     - $RUNNER_TAG
   rules:
-    - if: $SKIP_ARCHLINUX == "true"
+    - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
+      when: never
+    - if: $CI_SWTR_ONLY_CONTAINERS == "false"
       when: never
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -57,7 +59,7 @@ redhat:
     - $RUNNER_TAG
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
- #   - if: $CI_PIPELINE_SOURCE == "push"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -92,6 +94,7 @@ debian:
     - $RUNNER_TAG
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:

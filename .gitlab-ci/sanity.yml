@@ -38,7 +38,7 @@ sanity_archlinux_container:
     - |
   script:
     - |
-      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ]; then {
+      if [ "$CI_SWTR_ONLY_CONTAINERS" = "false" ]; then
          ARTIFACTDIR="${PWD}/packages/archlinux/x86_64";
          cd processmanagment/os/c_cpp;
          if [ -n "${CI_PIPELINE_IID}" ]; then
