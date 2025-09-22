@@ -17,7 +17,9 @@ container:
   rules:
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/container.yml
+         - .gitlab-ci/containers.yml
          - ./system_management/build_containers/**/Containerfile
          - ./system_management/build_containers/**/Doxyfile
          - ./system_management/build_containers/packages/*
+      when: on_success
+    - when: never
