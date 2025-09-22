@@ -20,6 +20,7 @@
       fi;
   script:
     - |
+      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ]; then {
       . /etc/os-release;
       machine="$(uname -m)";
       ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
@@ -86,7 +87,7 @@ build_archlinux_container:
       fi;
   script:
     - |
-      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ] {
+      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ]; then
          . /etc/os-release;
          machine="$(uname -m)";
          ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
@@ -115,7 +116,7 @@ build_archlinux_container:
          find "${ARTIFACTDIR}" -name "${PACKAGE_EXT}" -printf "[INFO] Package:%f\n" -exec pacman -Ql {} \;
       else
          echo "[INFO] CI_SWTR_ONLY_CONTAINERS is $CI_SWTR_ONLY_CONTAINERS, skipping job.";
-      }
+      fi;
   needs: ["sanity_archlinux_container"]
   tags:
     - $RUNNER_TAG
@@ -152,7 +153,7 @@ build_deb_or_rpm_container:
       fi;
   script:
     - |
-      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ] {
+      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ]; then
          . /etc/os-release;
          ARTIFACTDIR="${PWD}/packages/${ID}/x86_64";
          if [[ ${ID} =~ rhel|fedora ]]; then
@@ -194,13 +195,11 @@ build_deb_or_rpm_container:
          fi;
       else
          echo "[INFO] CI_SWTR_ONLY_CONTAINERS is $CI_SWTR_ONLY_CONTAINERS, skipping job.";
-      }
+      fi;
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
   rules:
-    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
-      when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -231,7 +230,7 @@ build_freebsd:
       fi;
   script:
     - |
-      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ] {
+      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ]; then {
          . /etc/os-release;
          machine="$(uname -p)"
          PACKAGE_EXT="*.pkg";
@@ -264,7 +263,7 @@ build_freebsd:
          find . -name "${PACKAGE_EXT}" -exec pkg info -l -F {} \;
       else
          echo "[INFO] CI_SWTR_ONLY_CONTAINERS is $CI_SWTR_ONLY_CONTAINERS, skipping job.";
-      }
+      fi;
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
