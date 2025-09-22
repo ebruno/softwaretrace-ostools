@@ -143,8 +143,21 @@ Sample complete config.toml with shell runner and podman runner
 
 ## Create and upload build containers to gitlab registry ##
 
-	  podman | docker login gitlab01.brunoe.net:5050
-	  podman | docker build -t gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/rhel10rpmbuild -t rhel10rpmbuild -f rhel10/Containerfile;
-	  podman | docker push gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/rhel10rpmbuild;
-	  podman | docker build -t gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinux -t archlinux -f archlinux/Dockerfile;
-	  podman | docker push gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinux;
+Change URL to match your gitlab repo.
+
+	  export GITHUB_URL="gitlab01.brunoe.net:5050/ebruno";
+	  podman | docker login "${GITHUB_URL}"
+	  podman | docker build -t ${GITHUB_URL}/softwaretrace-ostools/rhel10rpmbuild -t rhel10rpmbuild -f rhel10/Containerfile .;
+	  podman | docker push ${GITHUB_URL}/softwaretrace-ostools/rhel10rpmbuild;
+	  podman | docker build -t ${GITHUB_URL}/softwaretrace-ostools/archlinux -t archlinux -f archlinux/Dockerfile .;
+	  podman | docker push ${GITHUB_URL}/softwaretrace-ostools/archlinux;
+
+## Create and upload containers to github container registry ##
+
+Change URL to match your github repo.
+
+	  # set CR_PAT to your Container Repo Personal Access Token
+	  export GITHUB_URL="ghcr.io/ebruno"
+	  echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
+	  docker build -t ${GITHUB_URL}/softwaretrace-ostools/archlinux:latest -t archlinux -f archlinux/Dockerfile .;
+	  docker push ${GITHUB_URL}/softwaretrace-ostools/archlinux:latest;
