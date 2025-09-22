@@ -230,7 +230,7 @@ build_freebsd:
       fi;
   script:
     - |
-      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ]; then {
+      if [ $CI_SWTR_ONLY_CONTAINERS = "false" ]; then
          . /etc/os-release;
          machine="$(uname -p)"
          PACKAGE_EXT="*.pkg";
