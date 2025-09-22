@@ -6,6 +6,7 @@ container:
   script:
     - |
        env | grep CI | sort;
+       pwd;
   allow_failure:
     exit_codes:
       - 1
