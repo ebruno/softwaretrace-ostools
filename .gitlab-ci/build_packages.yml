@@ -121,6 +121,8 @@ build_archlinux_container:
   tags:
     - $RUNNER_TAG
   rules:
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
+      when: never
     - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
@@ -200,6 +202,8 @@ build_deb_or_rpm_container:
   tags:
     - $RUNNER_TAG
   rules:
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
