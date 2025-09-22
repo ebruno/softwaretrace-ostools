@@ -22,7 +22,7 @@ archlinux:
   rules:
     - if: $SKIP_ARCHLINUX == "true"
       when: never
-    - if: $CI_SWTR_ONLY_CONTAINERS == "false"
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -56,7 +56,7 @@ redhat:
   tags:
     - $RUNNER_TAG
   rules:
-    - if: $CI_SWTR_ONLY_CONTAINERS == "false"
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
  #   - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -91,7 +91,7 @@ debian:
   tags:
     - $RUNNER_TAG
   rules:
-    - if: $CI_SWTR_ONLY_CONTAINERS == "false"
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -129,12 +129,10 @@ freebsd:
   timeout: 10m
   allow_failure: true
   rules:
-    - if: $CI_SWTR_ONLY_CONTAINERS == "false"
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
     - if: $CI_SWTR_SKIP_FREEBSD == "true"
       when: never
-    - if: $CI_SWTR_ONLY_CONTAINERS == "false"
-
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
