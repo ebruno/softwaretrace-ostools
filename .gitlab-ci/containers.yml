@@ -1,0 +1,21 @@
+container:
+  stage: build
+  parallel:
+    matrix:
+      - RUNNER_TAG: [debian]
+  script:
+    - |
+       env | grep CI;
+  allow_failure:
+    exit_codes:
+      - 1
+
+  tags:
+     - $RUNNER_TAG
+
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/container.yml
+         - ./system_management/build_containers/**/Containerfile
+         - ./system_management/build_containers/**/Doxyfile
+         - ./system_management/build_containers/packages/*

@@ -10,7 +10,7 @@ sanity:
      - $RUNNER_TAG
 
   rules:
-    - if: $CI_PIPELINE_SOURCE == "push"
+#    - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -54,7 +54,7 @@ sanity_archlinux_container:
   tags:
     - $RUNNER_TAG
   rules:
-    - if: $CI_PIPELINE_SOURCE == "push"
+#    - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
