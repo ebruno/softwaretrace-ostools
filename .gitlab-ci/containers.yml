@@ -38,7 +38,10 @@ container:
 
       x86_64_v3_supported=1;
       if [ ${count_found} -eq ${#required_v3_flags[@]} ]; then
+         echo "[INFO] x86_64_v3 support is present.";
          x86_64_v3_supported=0;
+      else
+         echo "[INFO] x86_64_v3 support is not present.";
       fi;
       tmpfile=$(mktemp);
       git diff --name-only HEAD^ HEAD > "${tmpfile}";
