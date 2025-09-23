@@ -4,11 +4,11 @@ container:
     matrix:
       - RUNNER_TAG: [debian]
   before_script:
-    -|
+    - |
      echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
 
   script:
-    -|
+    - |
       PODMAN=$(which podman);
       DOCKER=$(which docker);
       declare -i exit_status=0;
@@ -23,9 +23,6 @@ container:
       #${CONTAINER_APP} build -t gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/rhel10rpmbuild -t rhel10rpmbuild -f rhel10/Containerfile;
       ${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/rhel10rpmbuild -t rhel10rpmbuild -f rhel10/Containerfile;
       ${CONTAINER_APP} images;
-    allow_failure:
-    exit_codes:
-      - 1
 
   tags:
      - $RUNNER_TAG
