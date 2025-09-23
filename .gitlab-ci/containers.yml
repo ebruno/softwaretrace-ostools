@@ -62,9 +62,11 @@ container:
            path_components=IFS="/" read <<< ${line};
            length=${#path_components[@]};
            # the path is <dir prefix>/containeros/[Dockerfile|Containerfile]
+           echo "path component length is ${length}";
            if [ ${length} -gt 2 ]; then
               base_dir_length=$((length - 2));
               base_dir="${path_components[@]:0:${base_dir_length}}";
+              echo "[INFO] Switching to: ${base_dir}.";
               pushd ${base_dir};
               echo ${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[@]:-2:1} -t ${path_components[@]:-2:1} -f ${path_components[@]:-2:1}/${path_components[@]:-1:1} .;
               #${CONTAINER_APP} rmi archlinux;
