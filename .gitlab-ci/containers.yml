@@ -41,6 +41,7 @@ container:
       fi;
       tmpfile=$(mktemp);
       git diff --name-only HEAD^ HEAD > "${tmpfile}";
+      echo "[DEBUG] at line number $LINENO"
       if [ -n "${CI_SWTR_BUILD_SPECIFIC_CONTAINERS}" ]; then
          while read container_path
          do
@@ -53,6 +54,7 @@ container:
          done <<< "${CI_SWTR_BUILD_SPECIFIC_CONTAINERS}";
       fi;
       echo "[INFO] Process list of changed files";
+      echo "[DEBUG] at line number $LINENO"
       while read line
       do
         echo "Checking file: $line";
@@ -72,6 +74,7 @@ container:
       done < "${tmpfile}";
       rm -r -f "${tmpfile}";
       #${CONTAINER_APP} build -t gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/rhel10rpmbuild -t rhel10rpmbuild -f rhel10/Containerfile;
+      echo "[DEBUG] at line number $LINENO"
 
   tags:
      - $RUNNER_TAG
