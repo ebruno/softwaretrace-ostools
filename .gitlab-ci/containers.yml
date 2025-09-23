@@ -63,7 +63,7 @@ container:
            path_components=IFS="/" read <<< ${line};
            length=${#path_components[@]};
            # the path is <dir prefix>/containeros/[Dockerfile|Containerfile]
-           base_dir_length=((${length} - 2));
+           base_dir_length=((length - 2));
            base_dir="${path_components[@]:0:${base_dir_length}}";
            pushd ${base_dir};
            #${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/archlinux -t archlinux -f archlinux/Dockerfile .;
