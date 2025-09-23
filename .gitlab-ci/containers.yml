@@ -9,9 +9,12 @@ container:
 
   script:
     - |
-      PODMAN=$(which podman);
-      DOCKER=$(which docker);
-      declare -i exit_status=0;
+      if [ -x /usr/bin/podman ]; then
+        PODMAN="podman";
+      fi;
+      if [ -x /usr/bin/docker ]; then
+          DOCKER="docker";
+      fi;
       if [ -n "${PODMAN}" ]; then
          CONTAINER_APP="${PODMAN}";
       elif [ -n "${DOCKER}" ]; then
