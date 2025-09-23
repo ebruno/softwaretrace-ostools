@@ -39,13 +39,12 @@ container:
       if [ ${count_found} -eq ${#required_v3_flags[@]} ]; then
          x86_64_v3_supported=0;
       fi;
+      git diff --name-only HEAD^ HEAD
       #${CONTAINER_APP} build -t gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/rhel10rpmbuild -t rhel10rpmbuild -f rhel10/Containerfile;
       cd build_containers;
       ${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/archlinux -t archlinux -f archlinux/Dockerfile .;
-      ${CONTAINER_APP} images;
       ${CONTAINER_APP} rmi archlinux;
       ${CONTAINER_APP} rmi ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/archlinux;
-      ${CONTAINER_APP} images;
 
   tags:
      - $RUNNER_TAG
@@ -57,7 +56,7 @@ container:
          - .gitlab-ci.yml
          - .gitlab-ci/containers.yml
          - ./system_management/build_containers/**/Containerfile
-         - ./system_management/build_containers/**/Doxyfile
+         - ./system_management/build_containers/**/Dockerfile
          - ./system_management/build_containers/packages/*
       when: on_success
     - when: never
