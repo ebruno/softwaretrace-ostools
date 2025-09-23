@@ -8,7 +8,7 @@ container:
      echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
 
   script:
-    - |
+    -|
       PODMAN=$(which podman);
       DOCKER=$(which docker);
       declare -i exit_status=0;
