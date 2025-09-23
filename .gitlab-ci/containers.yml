@@ -23,6 +23,22 @@ container:
         echo "[ERROR] podman or docker not present in environment."
         exit 1;
       fi;
+      # Some OS's now require x86 64 Version 3 support determine for later use.
+      declare -a required_v3_flags=(abm avx avx2 bmi1 bmi2 f16c fma  movbe xsave);
+      flags=$(cat /proc/cpuinfo | grep flags | head -n 1 | cut -d: -f2);
+
+      count_found=0;
+      for flag in ${required_v3_flags[@]};
+      do
+          if [[ "${flags}"  =~ .*${flag}.* ]]; then
+              ((++count_found));
+          fi;
+      done;
+
+      x86_64_v3_supported=1;
+      if [ ${count_found} -eq ${#required_v3_flags[@]} ]; then
+         x86_64_v3_supported=0;
+      fi;
       #${CONTAINER_APP} build -t gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/rhel10rpmbuild -t rhel10rpmbuild -f rhel10/Containerfile;
       cd build_containers;
       ${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/archlinux -t archlinux -f archlinux/Dockerfile .;
