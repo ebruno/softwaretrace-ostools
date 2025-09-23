@@ -41,11 +41,26 @@ container:
       fi;
       tmpfile=$(mktemp);
       git diff --name-only HEAD^ HEAD > "${tmpfile}";
+      if [ -n "${CI_SWTR_BUILD_SPECIFIC_CONTAINERS}" ]; then
+         while read container_path do
+            if [ -f "${container_path}" ]; then
+              echo "[INFO] Adding ${container_path}";
+              echo "${container_path}" >> "${tmpfile}";
+            else
+              echo "[WARNING] ${container_path} not found, skipping";
+            fi;
+         done <<< "${CI_SWTR_BUILD_SPECIFIC_CONTAINERS}";
+      fi;
       while read line
       do
         echo "Checking file: $line";
         if [[ "${line}" =~ .*Dockerfile.* ]] || [[ "${line}" =~ .*Containerfile.* ]]; then
-           pushd build_containers;
+           path_components=IFS="/" read <<< ${line};
+           length=${#path_components[@]};
+           # the path is <dir prefix>/containeros/[Dockerfile|Containerfile]
+           base_dir_length=((${length} - 2 ));
+           base_dir="${path_components[@]:0:${base_dir_length}";
+           pushd ${base_dir};
            echo "Rebuilding ${line}";
            #${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/archlinux -t archlinux -f archlinux/Dockerfile .;
            #${CONTAINER_APP} rmi archlinux;
