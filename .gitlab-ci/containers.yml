@@ -9,6 +9,7 @@ container:
 
   script:
     - |
+      echo "[INFO] start of script at line number $LINENO"
       if [ -x /usr/bin/podman ]; then
         PODMAN="podman";
       fi;
@@ -41,7 +42,6 @@ container:
       fi;
       tmpfile=$(mktemp);
       git diff --name-only HEAD^ HEAD > "${tmpfile}";
-      echo "[DEBUG] at line number $LINENO"
       if [ -n "${CI_SWTR_BUILD_SPECIFIC_CONTAINERS}" ]; then
          while read container_path
          do
@@ -54,7 +54,6 @@ container:
          done <<< "${CI_SWTR_BUILD_SPECIFIC_CONTAINERS}";
       fi;
       echo "[INFO] Process list of changed files";
-      echo "[DEBUG] at line number $LINENO"
       while read line
       do
         echo "Checking file: $line";
@@ -67,7 +66,7 @@ container:
               base_dir_length=$((length - 2));
               base_dir="${path_components[@]:0:${base_dir_length}}";
               pushd ${base_dir};
-              #${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/archlinux -t archlinux -f archlinux/Dockerfile .;
+              echo ${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[@]:-2:1} -t ${path_components[@]:-2:1} -f ${path_components[@]:-2:1}/${path_components[@]:-1:1} .;
               #${CONTAINER_APP} rmi archlinux;
               #${CONTAINER_APP} rmi ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/archlinux;
               popd
@@ -76,8 +75,7 @@ container:
       done < "${tmpfile}";
       rm -r -f "${tmpfile}";
       #${CONTAINER_APP} build -t gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/rhel10rpmbuild -t rhel10rpmbuild -f rhel10/Containerfile;
-      echo "[DEBUG] at line number $LINENO"
-
+      echo "[INFO] end of script at line number $LINENO"
   tags:
      - $RUNNER_TAG
 
