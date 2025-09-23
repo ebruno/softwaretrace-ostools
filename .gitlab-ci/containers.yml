@@ -43,6 +43,9 @@ container:
       cd build_containers;
       ${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/archlinux -t archlinux -f archlinux/Dockerfile .;
       ${CONTAINER_APP} images;
+      ${CONTAINER_APP} rmi archlinux;
+      ${CONTAINER_APP} rmi ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/archlinux;
+      ${CONTAINER_APP} images;
 
   tags:
      - $RUNNER_TAG
