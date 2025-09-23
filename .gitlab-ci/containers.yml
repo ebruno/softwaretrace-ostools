@@ -54,7 +54,7 @@ container:
             else
               echo "[WARNING] ${container_path} not found, skipping";
             fi;
-         done <<< "${CI_SWTR_BUILD_SPECIFIC_CONTAINERS}";
+         done <<< ${CI_SWTR_BUILD_SPECIFIC_CONTAINERS};
       fi;
       echo "[INFO] Process list of changed files";
       while read line
