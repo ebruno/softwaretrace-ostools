@@ -52,6 +52,7 @@ container:
             fi;
          done <<< "${CI_SWTR_BUILD_SPECIFIC_CONTAINERS}";
       fi;
+      echo "[INFO] Process list of changed files";
       while read line
       do
         echo "Checking file: $line";
