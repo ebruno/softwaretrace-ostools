@@ -3,9 +3,9 @@ container:
   parallel:
     matrix:
       - RUNNER_TAG: [debian]
-    variables:
+  variables:
         FF_SCRIPT_SECTIONS: "false"
-    before_script:
+  before_script:
     - |
      echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
 
