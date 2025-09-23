@@ -9,6 +9,7 @@ container:
 
   script:
     - |
+      export CI_JOB_COLLAPSE_OUTPUT=false;
       if [ -x /usr/bin/podman ]; then
         PODMAN="podman";
       fi;
@@ -42,7 +43,8 @@ container:
       tmpfile=$(mktemp);
       git diff --name-only HEAD^ HEAD > "${tmpfile}";
       if [ -n "${CI_SWTR_BUILD_SPECIFIC_CONTAINERS}" ]; then
-         while read container_path do
+         while read container_path
+         do
             if [ -f "${container_path}" ]; then
               echo "[INFO] Adding ${container_path}";
               echo "${container_path}" >> "${tmpfile}";
@@ -58,7 +60,7 @@ container:
            path_components=IFS="/" read <<< ${line};
            length=${#path_components[@]};
            # the path is <dir prefix>/containeros/[Dockerfile|Containerfile]
-           base_dir_length=((${length} - 2 ));
+           base_dir_length=((${length} - 2));
            base_dir="${path_components[@]:0:${base_dir_length}";
            pushd ${base_dir};
            echo "Rebuilding ${line}";
