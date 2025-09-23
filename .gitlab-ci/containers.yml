@@ -59,7 +59,7 @@ container:
         echo "Checking file: $line";
         if [[ "${line}" =~ .*Dockerfile.* ]] || [[ "${line}" =~ .*Containerfile.* ]]; then
            echo "Rebuilding ${line}";
-           path_components=IFS="/" read <<< ${line};
+           IFS="/" read -a path_components <<< ${line};
            length=${#path_components[@]};
            # the path is <dir prefix>/containeros/[Dockerfile|Containerfile]
            echo "path component length is ${length}";
