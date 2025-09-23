@@ -69,8 +69,8 @@ container:
               echo "[INFO] Switching to: ${base_dir}.";
               pushd ${base_dir};
               echo ${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]} -t ${path_components[-2]} -f ${path_components[-2]}/${path_components[-1]} .;
-              #${CONTAINER_APP} rmi archlinux;
-              #${CONTAINER_APP} rmi ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/archlinux;
+              echo ${CONTAINER_APP} rmi ${path_components[-2]};
+              echo ${CONTAINER_APP} rmi ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]};
               popd
            fi;
         fi;
