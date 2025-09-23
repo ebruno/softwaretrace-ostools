@@ -46,7 +46,7 @@ container:
       tmpfile=$(mktemp);
       git diff --name-only HEAD^ HEAD > "${tmpfile}";
       if [ -n "${CI_SWTR_BUILD_SPECIFIC_CONTAINERS}" ]; then
-         while IFS=' ' read container_path
+         for container_path in ${CI_SWTR_BUILD_SPECIFIC_CONTAINERS};
          do
             if [ -f "${container_path}" ]; then
               echo "[INFO] Adding ${container_path}";
@@ -54,7 +54,7 @@ container:
             else
               echo "[WARNING] ${container_path} not found, skipping";
             fi;
-         done <<< ${CI_SWTR_BUILD_SPECIFIC_CONTAINERS};
+         done;
       fi;
       echo "[INFO] Process list of changed files";
       while read line
