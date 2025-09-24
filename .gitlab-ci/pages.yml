@@ -1,7 +1,7 @@
 pages:
   stage: publish
   tags:
-    - fedora42
+    - redhat
   script:
     - |
       mkdir .public;
