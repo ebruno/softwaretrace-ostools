@@ -1,6 +1,7 @@
 pages:
   stage: publish
-
+  tags:
+    - fedora
   script:
     - |
       mkdir .public;
@@ -10,7 +11,6 @@ pages:
   artifacts:
     paths:
       - public
-  tag: debian
 #  rules:
 #    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   changes:
