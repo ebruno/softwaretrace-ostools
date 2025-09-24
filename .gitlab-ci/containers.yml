@@ -57,7 +57,7 @@ container:
       do
         file_name=$(basename ${line});
         echo "[INFO] Checking for ${file_name}";
-        if [[ -v "${package_map[${file_name}]}" ]]; then
+        if [[ -v "package_map[${file_name}]" ]]; then
            echo "[INFO] Adding ${package_map[${file_name}]} to build list.";
            implied_containers[${package_map[${file_name}]}]='true';
         fi;
