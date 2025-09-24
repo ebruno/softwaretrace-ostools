@@ -6,7 +6,7 @@ pages:
     - |
       mkdir .public;
       cp -r doc/childmgt_c .public
-      echo "<html><title>Softwaretrace OS Tools</title><body><p><a href=\"childmgt_c/html/index.html\">Child Managment</a></p></body></html>" > .public/index.html;
+      echo "<html><title>Softwaretrace OS Tools</title><center><h1>Softwaretace OSTools</h1></center><body><p><a href=\"childmgt_c/html/index.html\">Child Managment</a></p></body></html>" > .public/index.html;
       mv .public public
   artifacts:
     paths:
