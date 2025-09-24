@@ -1,7 +1,7 @@
 pages:
   stage: publish
   tags:
-    - fedora
+    - fedora42
   script:
     - |
       mkdir .public;
