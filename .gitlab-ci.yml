@@ -12,3 +12,4 @@ include:
    - '.gitlab-ci/build_packages.yml'
    - '.gitlab-ci/publish.yml'
    - '.gitlab-ci/containers.yml'
+   - '.gitlab-ci/pages.yml'
