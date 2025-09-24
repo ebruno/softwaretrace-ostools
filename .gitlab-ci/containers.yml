@@ -59,28 +59,31 @@ container:
       echo "[INFO] Process list of changed files";
       while read line
       do
-        echo "Checking file: $line";
+        echo "[INFO] Checking file: $line";
         if [[ "${line}" =~ .*Dockerfile.* ]] || [[ "${line}" =~ .*Containerfile.* ]]; then
-           echo "Rebuilding ${line}";
+           # This is need for the case when a file has been deleted.
+           if [ -f "${container_path}" ]; then
+                echo "[INFO] Rebuilding ${line}";
+           else
+                echo "[INFO] not found ${line}, skipping.";
+           fi;
            IFS="/" read -a path_components <<< ${line};
            length=${#path_components[@]};
            # the path is <dir prefix>/containeros/[Dockerfile|Containerfile]
            if [ ${length} -gt 2 ]; then
               base_dir_length=$((length - 2));
-              if [ "${path_components[-1]}" = "Containerfile" ] && [ "${CONTAINER_APP}" = "docker" ]; then
-                  echo "[INFO] docker installed, only use Containterfile with podman, skipping";
-                  continue;
-              fi;
               base_dir="${path_components[@]:0:${base_dir_length}}";
               echo -n "[INFO] Switching to: ";
               pushd ${base_dir};
-              echo ${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]} -t ${path_components[-2]} -f ${path_components[-2]}/${path_components[-1]} .;
-              echo ${CONTAINER_APP} push ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]};
-              echo ${CONTAINER_APP} rmi ${path_components[-2]};
-              echo ${CONTAINER_APP} rmi ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]};
+              ${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]} -t ${path_components[-2]} -f ${path_components[-2]}/${path_components[-1]} .;
+              ${CONTAINER_APP} push ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]};
+              ${CONTAINER_APP} rmi ${path_components[-2]};
+              ${CONTAINER_APP} rmi ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]};
               echo -n "[INFO] Switching to: ";
               popd
            fi;
+        else
+           echo "[INFO] file: $line not Dockerfile or Containerfile, skipping.";
         fi;
       done < "${tmpfile}";
       rm -r -f "${tmpfile}";
