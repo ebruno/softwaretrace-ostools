@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.description="Contains cmake and rpm build utils."
 WORKDIR /
 COPY packages /packages/
 RUN dnf -y update && \
-    dnf -y install cmake clang cmake-fedora cmake-rpms-macros cppcheck gcc make rpm-build rpmdevtools shellcheck && \
+    dnf -y install cmake clang cmake-fedora cmake-rpm-macros cppcheck gcc make rpm-build rpmdevtools shellcheck && \
     dnf clean all && \
     dnf repolist && \
     ls -la /packages && \
