@@ -52,7 +52,7 @@ container:
       declare -A implied_containers=();
       echo "build_containers/packages/shellspec" >> ${tmpfile};
       echo "build_containers/packages/shellspec-dist.tar.gz" >> ${tmpfile};
-
+      echo "package_map keys: ${!package_map[@]}"
       while read line
       do
         file_name=$(basename ${line});
