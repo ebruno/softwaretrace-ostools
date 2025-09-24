@@ -67,6 +67,10 @@ container:
            # the path is <dir prefix>/containeros/[Dockerfile|Containerfile]
            if [ ${length} -gt 2 ]; then
               base_dir_length=$((length - 2));
+              if [ "${path_components[-1]}" = "Containerfile" ] && [ "${CONTAINER_APP}" = "docker" ]; then
+                  echo "[INFO] docker installed, only use Containterfile with podman, skipping";
+                  continue;
+              fi;
               base_dir="${path_components[@]:0:${base_dir_length}}";
               echo -n "[INFO] Switching to: ";
               pushd ${base_dir};
