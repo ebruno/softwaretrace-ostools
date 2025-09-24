@@ -19,7 +19,7 @@ container:
         echo "[ERROR] podman or docker not present in environment.";
         exit 1;
       fi;
-     echo "$CI_REGISTRY_PASSWORD" | ${CONTAINER_APP} login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+      echo "$CI_REGISTRY_PASSWORD" | ${CONTAINER_APP} login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
 
   script:
     - |
@@ -137,7 +137,7 @@ container:
         echo "[ERROR] podman or docker not present in environment.";
         exit 1;
       fi;
-     echo ${CONTAINER_APP} logout $CI_REGISTRY;
+      echo ${CONTAINER_APP} logout $CI_REGISTRY;
   tags:
      - $RUNNER_TAG
 
