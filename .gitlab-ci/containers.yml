@@ -47,28 +47,29 @@ container:
       # If anything in the packages directory has changed
       # Then rebuild containers that use those files.
       #
-      echo "[INFO] script at line number $LINENO"
+      echo "[INFO] id-1 script at line number $LINENO"
       git diff --name-only HEAD^ HEAD > "${tmpfile}";
       . build_containers/package_map.sh;
       declare -A implied_containers=();
       echo "build_containers/packages/shellspec" >> ${tmpfile};
       echo "build_containers/packages/shellspec-dist.tar.gz" >> ${tmpfile};
 
-      echo "[INFO] script at line number $LINENO"
+      echo "[INFO] id-2 script at line number $LINENO"
       while read line
       do
-        file_name=basename ${line};
+        file_name=$(basename ${line});
         if [[ -v "${package_map[${file_name}]}" ]]; then
            implied_containers[${package_map[${file_name}]}]='true';
         fi;
       done < "${tmpfile}";
+      echo "[INFO] id-3 script at line number $LINENO"
       if [ ${#implied_containers[@]} -gt 0 ]; then
          for key in ${!implied_containers[@]}
          do
             echo "${key}" >> ${tmpfile};
          done;
       fi;
-      echo "[INFO] script at line number $LINENO"
+      echo "[INFO] id-4 script at line number $LINENO"
       if [ -n "${CI_SWTR_BUILD_SPECIFIC_CONTAINERS}" ]; then
          for container_path in ${CI_SWTR_BUILD_SPECIFIC_CONTAINERS};
          do
