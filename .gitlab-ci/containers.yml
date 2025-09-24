@@ -50,9 +50,6 @@ container:
       git diff --name-only HEAD^ HEAD > "${tmpfile}";
       . build_containers/package_map.sh;
       declare -A implied_containers=();
-      echo "build_containers/packages/shellspec" >> ${tmpfile};
-      echo "build_containers/packages/shellspec-dist.tar.gz" >> ${tmpfile};
-      echo "package_map keys: ${!package_map[@]}"
       while read line
       do
         file_name=$(basename ${line});
@@ -62,8 +59,6 @@ container:
            implied_containers[${package_map[${file_name}]}]='true';
         fi;
       done < "${tmpfile}";
-      echo "[INFO] id-3 script at line number $LINENO"
-      echo "length is ${#implied_containers[@]}";
       if [ ${#implied_containers[@]} -gt 0 ]; then
          for key in ${!implied_containers[@]}
          do
@@ -81,8 +76,6 @@ container:
             fi;
          done;
       fi;
-      cat ${tmpfile}
-      exit 0;
       echo "[INFO] Process list of changed files";
       while read line
       do
