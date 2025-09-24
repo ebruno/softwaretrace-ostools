@@ -1,0 +1,14 @@
+pages:
+  stage: publish
+  script:
+    - |
+      mkdir .public;
+      cp -r doc/child_mgt_c .public
+      echo "<html><title>Softwaretrace OStools</title><body><p><a href=\"child_mgt_c/html/index.html\">Child Managment</a></p></body></html>" > .public/index.html;
+      mv .public public
+  artifacts:
+    paths:
+      - public
+
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
