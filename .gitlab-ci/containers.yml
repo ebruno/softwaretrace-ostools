@@ -2,7 +2,7 @@ container:
   stage: build_envs
   parallel:
     matrix:
-      - RUNNER_TAG: [debian]
+      - RUNNER_TAG: [debian,fedora42]
   before_script:
     - |
       if [ -x /usr/bin/podman ]; then
