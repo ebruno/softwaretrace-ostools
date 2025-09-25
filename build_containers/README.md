@@ -13,6 +13,26 @@ Install podman before gitlab-runner.
  * RHEL10
 	 sudo dnf -y install podman cockpit-podman
 
+Note the gitlab-runner shell providing podman
+needs to have /etc/subuid and /etc/setgid configured.
+Newer version of linux do not automatically configure sub uids and gids
+for system accounts.  gitlab-runner is installed with a system account
+UID/GID on system distributions.
+UID and GID ranges for users should not overlap.
+
+	GLR_SUBUID=$(($(tail -1 /etc/subuid |awk -F ":" '{print $2}')+65536))
+	GLR_SUBGID=$(($(tail -1 /etc/subgid |awk -F ":" '{print $2}')+65536))
+
+	sudo usermod \
+	--add-subuids ${GLR_SUBUID}-$((${GLR_SUBUID}+65535)) \
+	--add-subgids ${GLR_SUBGID}-$((${GLR_SUBGID}+65535)) gitlab-runner;
+
+You man need to login to the gitlab-runner account and run the following command:
+
+	podman system migrate
+
+If a image does not  build correctly when logged in to gitlab-runner account
+it will not work under the runner.
 
 
 ## Setup gitlab-runner to use docker ##
