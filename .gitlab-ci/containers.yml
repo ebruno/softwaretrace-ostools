@@ -1,3 +1,6 @@
+# Note the gitlab-runner shell providing podman
+# needs to have /etc/subuid and /etc/setgid configured.
+# github-runner:100000-165536
 container:
   stage: build_envs
   parallel:
