@@ -1,6 +1,14 @@
 # Note the gitlab-runner shell providing podman
 # needs to have /etc/subuid and /etc/setgid configured.
-# github-runner:100000-165536
+# UID and GID ranges for users should not overlap.
+# GLR_SUBUID=$(($(tail -1 /etc/subuid |awk -F ":" '{print $2}')+65536))
+# GLR_SUBGID=$(($(tail -1 /etc/subgid |awk -F ":" '{print $2}')+65536))
+#
+sudo usermod \
+ --add-subuids ${GLR_SUBUID}-$((${GLR_SUBUID}+65535)) \
+ --add-subgids ${GLR_SUBGID}-$((${GLR_SUBGID}+65535)) gitlab-runner;
+# podman system migrate
+
 container:
   stage: build_envs
   parallel:
@@ -114,7 +122,11 @@ container:
               pushd ${base_dir};
               ${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]} -t ${path_components[-2]} -f ${path_components[-2]}/${path_components[-1]} .;
               ${CONTAINER_APP} push ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]};
-              ${CONTAINER_APP} rmi ${path_components[-2]};
+              if [ "${CONTAINER_APP}" = "podman" ]; then
+                 ${CONTAINER_APP} rmi localhost/${path_components[-2]};
+              else
+                 ${CONTAINER_APP} rmi ${path_components[-2]};
+              fi;
               ${CONTAINER_APP} rmi ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]};
               echo -n "[INFO] Switching to: ";
               popd
