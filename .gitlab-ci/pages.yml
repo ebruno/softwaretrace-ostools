@@ -12,7 +12,7 @@ pages:
     paths:
       - public
   rules:
-#    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
    - changes:
        - .gitlab-ci.yml
        - .gitlab-ci/pages.yml
