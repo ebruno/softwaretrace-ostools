@@ -4,9 +4,9 @@
 # GLR_SUBUID=$(($(tail -1 /etc/subuid |awk -F ":" '{print $2}')+65536))
 # GLR_SUBGID=$(($(tail -1 /etc/subgid |awk -F ":" '{print $2}')+65536))
 #
-sudo usermod \
- --add-subuids ${GLR_SUBUID}-$((${GLR_SUBUID}+65535)) \
- --add-subgids ${GLR_SUBGID}-$((${GLR_SUBGID}+65535)) gitlab-runner;
+# sudo usermod \
+# --add-subuids ${GLR_SUBUID}-$((${GLR_SUBUID}+65535)) \
+# --add-subgids ${GLR_SUBGID}-$((${GLR_SUBGID}+65535)) gitlab-runner;
 # podman system migrate
 
 container:
