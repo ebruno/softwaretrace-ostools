@@ -1,0 +1,18 @@
+pages:
+  stage: publish
+  tags:
+    - redhat
+  script:
+    - |
+      mkdir .public;
+      cp -r doc/childmgt_c .public
+      echo "<html><title>Softwaretrace OS Tools</title><center><h1>Softwaretace OSTools</h1></center><body><p><a href=\"childmgt_c/html/index.html\">Child Managment</a></p></body></html>" > .public/index.html;
+      mv .public public
+  artifacts:
+    paths:
+      - public
+  rules:
+   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+   - changes:
+       - .gitlab-ci.yml
+       - .gitlab-ci/pages.yml

@@ -1,0 +1,176 @@
+# Note the gitlab-runner shell providing podman
+# needs to have /etc/subuid and /etc/setgid configured.
+# Newer version of linux do not automatically configure sub uids and gids
+# for system accounts.  gitlab-runner is installed with a system account
+# UID/GID on system distributions.
+# UID and GID ranges for users should not overlap.
+# GLR_SUBUID=$(($(tail -1 /etc/subuid |awk -F ":" '{print $2}')+65536))
+# GLR_SUBGID=$(($(tail -1 /etc/subgid |awk -F ":" '{print $2}')+65536))
+#
+# sudo usermod \
+# --add-subuids ${GLR_SUBUID}-$((${GLR_SUBUID}+65535)) \
+# --add-subgids ${GLR_SUBGID}-$((${GLR_SUBGID}+65535)) gitlab-runner;
+# You man need to login to the gitlab-runner account
+# and run the following command:
+# podman system migrate
+# If does build correctly when logged in to gitlab-runner account
+# it will not work under the runner.
+
+container:
+  stage: build_envs
+  parallel:
+    matrix:
+      - RUNNER_TAG: [debian,fedora42]
+  before_script:
+    - |
+      if [ -x /usr/bin/podman ]; then
+        PODMAN="podman";
+      fi;
+      if [ -x /usr/bin/docker ]; then
+          DOCKER="docker";
+      fi;
+      if [ -n "${PODMAN}" ]; then
+         CONTAINER_APP="${PODMAN}";
+      elif [ -n "${DOCKER}" ]; then
+         CONTAINER_APP="${DOCKER}";
+      else
+        echo "[ERROR] podman or docker not present in environment.";
+        exit 1;
+      fi;
+      echo "$CI_REGISTRY_PASSWORD" | ${CONTAINER_APP} login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+
+  script:
+    - |
+      echo "[INFO] start of script at line number $LINENO"
+      if [ -x /usr/bin/podman ]; then
+        PODMAN="podman";
+      fi;
+      if [ -x /usr/bin/docker ]; then
+          DOCKER="docker";
+      fi;
+      if [ -n "${PODMAN}" ]; then
+         CONTAINER_APP="${PODMAN}";
+      elif [ -n "${DOCKER}" ]; then
+         CONTAINER_APP="${DOCKER}";
+      else
+        echo "[ERROR] podman or docker not present in environment."
+        exit 1;
+      fi;
+      # Some OS's now require x86 64 Version 3 support determine for later use.
+      declare -a required_v3_flags=(abm avx avx2 bmi1 bmi2 f16c fma  movbe xsave);
+      flags=$(cat /proc/cpuinfo | grep flags | head -n 1 | cut -d: -f2);
+
+      count_found=0;
+      for flag in ${required_v3_flags[@]};
+      do
+          if [[ "${flags}"  =~ .*${flag}.* ]]; then
+              ((++count_found));
+          fi;
+      done;
+
+      x86_64_v3_supported=1;
+      if [ ${count_found} -eq ${#required_v3_flags[@]} ]; then
+         echo "[INFO] x86_64_v3 support is present.";
+         x86_64_v3_supported=0;
+      else
+         echo "[INFO] x86_64_v3 support is not present.";
+      fi;
+      tmpfile=$(mktemp);
+      # If anything in the packages directory has changed
+      # Then rebuild containers that use those files.
+      #
+      git diff --name-only HEAD^ HEAD > "${tmpfile}";
+      . build_containers/package_map.sh;
+      declare -A implied_containers=();
+      while read line
+      do
+        file_name=$(basename ${line});
+        echo "[INFO] Checking for ${file_name}";
+        if [[ -v "package_map[${file_name}]" ]]; then
+           echo "[INFO] Adding ${package_map[${file_name}]} to build list.";
+           implied_containers[${package_map[${file_name}]}]='true';
+        fi;
+      done < "${tmpfile}";
+      if [ ${#implied_containers[@]} -gt 0 ]; then
+         for key in ${!implied_containers[@]}
+         do
+            echo "${key}" >> ${tmpfile};
+         done;
+      fi;
+      if [ -n "${CI_SWTR_BUILD_SPECIFIC_CONTAINERS}" ]; then
+         for container_path in ${CI_SWTR_BUILD_SPECIFIC_CONTAINERS};
+         do
+            if [ -f "${container_path}" ]; then
+              echo "[INFO] Adding ${container_path}";
+              echo "${container_path}" >> "${tmpfile}";
+            else
+              echo "[WARNING] ${container_path} not found, skipping";
+            fi;
+         done;
+      fi;
+      echo "[INFO] Process list of changed files";
+      while read line
+      do
+        echo "[INFO] Checking file: $line";
+        if [[ "${line}" =~ .*Dockerfile.* ]] || [[ "${line}" =~ .*Containerfile.* ]]; then
+           # This is need for the case when a file has been deleted.
+           if [ -f "${container_path}" ]; then
+                echo "[INFO] Rebuilding ${line}";
+           else
+                echo "[INFO] not found ${line}, skipping.";
+           fi;
+           IFS="/" read -a path_components <<< ${line};
+           length=${#path_components[@]};
+           # the path is <dir prefix>/containeros/[Dockerfile|Containerfile]
+           if [ ${length} -gt 2 ]; then
+              base_dir_length=$((length - 2));
+              base_dir="${path_components[@]:0:${base_dir_length}}";
+              echo -n "[INFO] Switching to: ";
+              pushd ${base_dir};
+              ${CONTAINER_APP} build -t ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]} -t ${path_components[-2]} -f ${path_components[-2]}/${path_components[-1]} .;
+              ${CONTAINER_APP} push ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]};
+              if [ "${CONTAINER_APP}" = "podman" ]; then
+                 ${CONTAINER_APP} rmi localhost/${path_components[-2]};
+              else
+                 ${CONTAINER_APP} rmi ${path_components[-2]};
+              fi;
+              ${CONTAINER_APP} rmi ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE_SLUG}/${CI_PROJECT_NAME}/${path_components[-2]};
+              echo -n "[INFO] Switching to: ";
+              popd
+           fi;
+        else
+           echo "[INFO] file: $line not Dockerfile or Containerfile, skipping.";
+        fi;
+      done < "${tmpfile}";
+      rm -r -f "${tmpfile}";
+      echo "[INFO] end of script at line number $LINENO";
+  after_script:
+      if [ -x /usr/bin/podman ]; then
+        PODMAN="podman";
+      fi;
+      if [ -x /usr/bin/docker ]; then
+          DOCKER="docker";
+      fi;
+      if [ -n "${PODMAN}" ]; then
+         CONTAINER_APP="${PODMAN}";
+      elif [ -n "${DOCKER}" ]; then
+         CONTAINER_APP="${DOCKER}";
+      else
+        echo "[ERROR] podman or docker not present in environment.";
+        exit 1;
+      fi;
+      echo ${CONTAINER_APP} logout $CI_REGISTRY;
+  tags:
+     - $RUNNER_TAG
+
+  rules:
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
+      when: on_success
+    - changes:
+         - .gitlab-ci.yml
+         - .gitlab-ci/containers.yml
+         - ./system_management/build_containers/**/Containerfile
+         - ./system_management/build_containers/**/Dockerfile
+         - ./system_management/build_containers/packages/*
+      when: on_success
+    - when: never
