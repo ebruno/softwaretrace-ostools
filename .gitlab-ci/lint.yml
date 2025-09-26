@@ -14,7 +14,8 @@ lint_system_management:
      - $RUNNER_TAG
 
   rules:
-    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -39,7 +40,8 @@ lint_c_processmanagement:
      - $RUNNER_TAG
 
   rules:
-    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -72,7 +74,8 @@ lint_python_processmanagement:
      - $RUNNER_TAG
 
   rules:
-    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:

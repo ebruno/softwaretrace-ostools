@@ -1,4 +1,5 @@
 stages:
+  - build_envs
   - lint
   - sanity
   - build
@@ -10,3 +11,5 @@ include:
    - '.gitlab-ci/sanity.yml'
    - '.gitlab-ci/build_packages.yml'
    - '.gitlab-ci/publish.yml'
+   - '.gitlab-ci/containers.yml'
+   - '.gitlab-ci/pages.yml'

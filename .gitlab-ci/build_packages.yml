@@ -20,7 +20,6 @@
       fi;
   script:
     - |
-      . /etc/os-release;
       machine="$(uname -m)";
       ARTIFACTDIR="${PWD}/packages/${ID}linux/${machine}";
       cd processmanagment/os/c_cpp;
@@ -50,7 +49,9 @@
   tags:
     - $RUNNER_TAG
   rules:
-    - if: $SKIP_ARCHLINUX == "true"
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
+      when: never
+    - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -114,7 +115,9 @@ build_archlinux_container:
   tags:
     - $RUNNER_TAG
   rules:
-    - if: $SKIP_ARCHLINUX == "true"
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
+      when: never
+    - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -189,6 +192,8 @@ build_deb_or_rpm_container:
   tags:
     - $RUNNER_TAG
   rules:
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -255,7 +260,9 @@ build_freebsd:
   timeout: 5m
   allow_failure: true
   rules:
-    - if: $SKIP_FREEBSD == "true"
+    - if: $CI_SWTR_ONLY_CONTAINERS == "true"
+      when: never
+    - if: $CI_SWTR_SKIP_FREEBSD == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
