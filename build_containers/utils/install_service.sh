@@ -41,6 +41,7 @@ if [  ${EUID} -eq 0 ]; then
 		${DRYRUN} install ${item} ${dest};
 	    done;
 	done;
+	rm -f swtr_containers_prune.service;
 	systemctl daemon-reload;
 	systemctl enable swtr_containers_prune.timer;
 	systemctl start swtr_containers_prune.timer;

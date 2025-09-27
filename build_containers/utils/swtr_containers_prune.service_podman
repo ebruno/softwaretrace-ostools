@@ -1,7 +1,6 @@
 [Unit]
 Description=Clean up docker/podman container cache.
-Requires=podman.service
-After=podman.service
+After=multi-user.target
 
 [Service]
 Type=oneshot
