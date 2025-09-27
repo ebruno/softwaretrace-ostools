@@ -181,3 +181,10 @@ Change URL to match your github repo.
 	  echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
 	  docker build -t ${GITHUB_URL}/softwaretrace-ostools/archlinux:latest -t archlinux -f archlinux/Dockerfile .;
 	  docker push ${GITHUB_URL}/softwaretrace-ostools/archlinux:latest;
+
+## docker/podman cache management ##
+
+It is recommended that podman/docker cache be clean/purged periodically.
+The systemd service and timer in the utils directory can be used to
+automate that process. The use install\_service.sh and remove\_service.sh
+to manage the service.

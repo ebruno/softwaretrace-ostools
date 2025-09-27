@@ -1,0 +1,8 @@
+[Unit]
+Description=Clean up docker/podman container cache.
+Requires=podman.service
+After=podman.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/swtr_clear_container_cache.sh
