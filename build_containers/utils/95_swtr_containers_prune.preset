@@ -1,0 +1,2 @@
+disable swtr_containers_prune.service
+disable swtr_containers_prune.timer
