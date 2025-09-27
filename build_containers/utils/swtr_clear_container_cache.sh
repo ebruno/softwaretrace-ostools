@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-declare -i exit_status=1;
+declare -i exit_status=0;
 if [ -x /usr/bin/podman ]; then
   PODMAN="podman";
 fi;
@@ -11,9 +11,9 @@ if [ -n "${PODMAN}" ]; then
    CONTAINER_APP="${PODMAN}";
 elif [ -n "${DOCKER}" ]; then
    CONTAINER_APP="${DOCKER}";
-   exit_status=0;
 else
   echo "[ERROR] podman or docker not present in environment." 1>&2;
+   exit_status=1;
 fi;
 
 if [ ${exit_status} -eq 0 ]; then
