@@ -1,6 +1,22 @@
-# Configuring Runner Support #
+# Virtual Machines #
 
-## Setup gitlab-runner for RHEL and Fedora ##
+## Creating Virtual Machines ##
+
+### Using Packer ###
+
+#### Debian ####
+
+Install packer using the debian repository
+
+		  wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+		  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+		  sudo apt-get update;
+		  sudo apt-get -y install packer
+
+
+## Configuring Runner Support ##
+
+### Setup gitlab-runner for RHEL and Fedora ###
 
 Make sure cockpit in installed.
 
@@ -15,18 +31,18 @@ If this is a headless system expose port 9090 to the appropriate  subnets.
 
 **Only install podman or docker-ce not both.**
 
-### Setup gitlab-runner to use podman ###
+#### Setup gitlab-runner to use podman ####
 Install podman before gitlab-runner.
 
  * RHEL10 | Fedora Server 42 | Fedora Workstation 42
 	   sudo dnf -y install podman podman-docker cockpit-podman
 
-### Setup gitlab-runner to use docker ###
+#### Setup gitlab-runner to use docker ####
 Install docker before gitlab-runner
 
 [Installing Docker CE](https://docs.docker.com/engine/install/)
 
-### Installing gitlab-runner  ###
+#### Installing gitlab-runner  ####
 
 Instructions may change so it is best to validate the current instructions.
 
@@ -67,7 +83,7 @@ Register a shell runner to validate installation.
 	fedorda42                                           Executor=shell Token=<your gitlab token> URL=https://<your gitlab server>
 
 
-### Configuring gitlab-runner to use podman ###
+#### Configuring gitlab-runner to use podman ####
 
 Once gitlab-runner is installed you need to do some some addition podman setup.
 Make sure you have the following line in your sudoers file:
@@ -91,7 +107,7 @@ Make sure you have the following line in your sudoers file:
 	loginctl enable-linger gitlab-runner # Replace 'gitlab-runner' with your runner user if different
 
 
-### Sample config.tmpl ###
+#### Sample config.tmpl ####
 
 On RHEL 10 this located in /etc/gitlab-runner
 Items to note 975 is gitlab-runner uid.
@@ -198,7 +214,7 @@ Sample complete config.toml with shell runner and podman runner
 		 shm_size = 0
 		 network_mtu = 0
 
-## Create and upload build containers to gitlab registry ##
+### Create and upload build containers to gitlab registry ###
 
 	  podman | docker login gitlab01.brunoe.net:5050
 	  podman | docker build -t gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/rhel10rpmbuild -t rhel10rpmbuild -f rhel10/Containerfile;
@@ -206,7 +222,7 @@ Sample complete config.toml with shell runner and podman runner
 	  podman | docker build -t gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinux -t archlinux -f archlinux/Dockerfile;
 	  podman | docker push gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinux;
 
-## Setup github runner ##
+### Setup github runner ###
 
 Github allows you to use runners in your own environment.
 
