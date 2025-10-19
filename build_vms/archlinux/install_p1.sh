@@ -39,3 +39,6 @@ genfstab -U /mnt >> /mnt/etc/fstab
 df -kh
 cp install_pkgs.sh /mnt
 ls /mnt;
+arch-chroot /mnt ./install_pkgs.sh
+arch-chroot /mnt usermod -p "" root
+arch-chroot /mnt usermod -p "" ebruno
