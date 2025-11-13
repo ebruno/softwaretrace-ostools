@@ -13,9 +13,10 @@ on:
          - processmanagement/os/lint_code.sh
          - common.mk
 
+  workflow_dispatch:
 jobs:
   lint:
-    runs-on: debian
+    runs-on: fedora42
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -44,7 +45,7 @@ jobs:
 
 
   lint_python:
-     runs-on: debian
+     runs-on: fedora42
      steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
