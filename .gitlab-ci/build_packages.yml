@@ -265,7 +265,7 @@ build_freebsd:
     - if: $CI_SWTR_SKIP_FREEBSD == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
-    when: never
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" 
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
