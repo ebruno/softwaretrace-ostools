@@ -27,7 +27,7 @@ archlinux:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - changes:
          - build_vms/**/*
-         when: never
+      when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
@@ -65,7 +65,7 @@ redhat:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - changes:
          - build_vms/**/*
-         when: never
+      when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
@@ -103,7 +103,7 @@ debian:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - changes:
          - build_vms/**/*
-         when: never
+      when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
@@ -147,7 +147,7 @@ freebsd:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - changes:
          - build_vms/**/*
-         when: never
+      when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
