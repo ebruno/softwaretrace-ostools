@@ -16,7 +16,7 @@ source "vsphere-iso" "freebsd" {
   ssh_password      = "${var.ssh_password}"
   ssh_private_key_file = "${var.ssh_private_key_file}"
   ip_wait_timeout   = "10m"
-  ip_settle_timeout = "1m"
+  ip_settle_timeout = "30s"
   vcenter_server    = "${var.vcenter_server}"
   host              = "${var.esxi_server}"
   username          = "${var.remote_username}"
@@ -29,7 +29,7 @@ source "vsphere-iso" "freebsd" {
   shutdown_command    = "doas shutdown -p now"
   insecure_connection = true # This may need to set to true if using autogenrated certs.
   storage {
-    disk_size             = 40000
+    disk_size             = 400000
     disk_thin_provisioned = true
   }
   vm_name    = "${var.vm_name}"
@@ -52,9 +52,10 @@ source "vsphere-iso" "freebsd" {
     network      = "VM Network"
     network_card = "vmxnet3"
   }
+  boot_keygroup_interval = "40ms" # default is 100ms.
   boot_wait = "35s" # This may need to be adjusted based on the environment.
   # The bsdinstall sections are called manual, make sure the
-  # default BSDINSTALL are set see the bsdinstall man page for more information.
+  # default BSDINSTALL are set. See the bsdinstall man page for more information.
   boot_command = [
     "<wait>S",
     "<wait>export PARITIONS=DEFAULT<enter>",
@@ -123,6 +124,7 @@ build {
     		   "gitlab_runner",
 		   "gitlabrunner.csh",
 		   "pkg_install.csh",
+		   "register_gitlab_runner.csh",
 		   ]
     destination = "/tmp/install/"
   }
@@ -144,6 +146,9 @@ build {
       "doas /tmp/install/pkg_install.csh",
       "doas /tmp/install/nfssettings/setupautomounts.csh",
       "doas /tmp/install/nfssettings/rc_conf_setup.csh",
+      "doas /tmp/install/gitlabrunner.csh ${var.adminuser} ${var.ssh_user}",
+      "doas mkdir -p /usr/share/doc/gitlab-runner",
+      "doas cp /tmp/install/register_gitlab_runner.csh /usr/share/doc/gitlab-runner", 
       "doas rm -r -f /tmp/install",
     ]
   }
