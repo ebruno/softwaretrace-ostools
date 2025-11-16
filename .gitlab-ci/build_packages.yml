@@ -50,9 +50,9 @@
     - $RUNNER_TAG
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
-    when: never
+      when: never
     - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
-    when: never
+      when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - changes:
          - build_vms/**/*
