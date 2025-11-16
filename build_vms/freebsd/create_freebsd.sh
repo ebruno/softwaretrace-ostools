@@ -46,7 +46,7 @@ if [ -n "${PACKER_CMD}" ]; then
    done < "./CHECKSUM.SHA256-FreeBSD-${FREEBSD_VERSION}-RELEASE-amd64";
    packer init freebsd14srv_vsphere.pkr.hcl;
    rm -r -f output-artifacts;
-   packer build -force  -var "public_key=${public_key}" -var-file="${pkrvars_name}" -var-file="${vcenter_vars}" freebsd14srv_vsphere.pkr.hcl;
+   packer build -timestamp-ui -force -var "public_key=${public_key}" -var-file="${pkrvars_name}" -var-file="${vcenter_vars}" freebsd14srv_vsphere.pkr.hcl;
    exit_status=$?;
    rm -f "${pkrvars_name}";
    exit_status=0;
