@@ -55,11 +55,15 @@
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
     - changes:
-         - build_vms/**/*
+         - build_vms/**/*.sh
+         - build_vms/**/*.md
+         - build_vms/**/*.hcl
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - changes:
-         - build_vms/**/*
+         - build_vms/**/*.sh
+         - build_vms/**/*.md
+         - build_vms/**/*.hcl
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
