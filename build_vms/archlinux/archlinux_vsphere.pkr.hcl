@@ -75,14 +75,14 @@ build {
     ]
   }
   provisioner "file" {
-    sources = ["files/archlinux/setup_phase_1.sh",
-      "files/archlinux/install_pkgs.sh",
-      "files/archlinux/required_pkgs.sh",
-      "files/archlinux/setup_grub.sh",
-      "files/archlinux/setup_install_ssh_keys.sh",
-      "files/archlinux/setup_phase_1.sh",
-      "files/archlinux/setup_umount_fs.sh",
-      "files/archlinux/update_etc_issue.sh",
+    sources = ["files/setup_phase_1.sh",
+      "files/install_pkgs.sh",
+      "files/required_pkgs.sh",
+      "files/setup_grub.sh",
+      "files/setup_install_ssh_keys.sh",
+      "files/setup_nfsmounts.sh",
+      "files/setup_umount_fs.sh",
+      "files/update_etc_issue.sh",
       "assets/id_rsa.pub",
     ]
     destination = "/tmp/install/"
@@ -95,7 +95,7 @@ build {
   }
   provisioner "shell" {
     # this script will move files above to chroot /root  directory.
-    script = "./files/archlinux/setup_phase_1.sh"
+    script = "./files/setup_phase_1.sh"
   }
   provisioner "shell" {
     inline = [
@@ -110,10 +110,12 @@ build {
       "arch-chroot /mnt usermod -p '${var.adminuser_password_enc}' ${var.adminuser}",
       "arch-chroot /mnt /root/setup_install_ssh_keys.sh ${var.install_ssh_key} ${var.adminuser}",
       "arch-chroot /mnt rm -f /root/setup_install_ssh_keys.sh",
+      "arch-chroot /mnt /root/setup_nfsmounts.sh",
       "arch-chroot /mnt /root/setup_grub.sh",
       "arch-chroot /mnt rm -f /root/setup_grub.sh",
       "arch-chroot /mnt rm -f /root/install_disk_prefix.sh",
       "arch-chroot /mnt rm -f /root/setup_phase_1.sh",
+      "arch-chroot /mnt rm -f /root/setup_nfsmounts.sh",
       "arch-chroot /mnt rm -f /root/setup_umount_fs.sh",
       "arch-chroot /mnt ls -la /root",
       "/tmp/install/setup_umount_fs.sh",
