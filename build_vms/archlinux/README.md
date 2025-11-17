@@ -32,7 +32,18 @@ Note: It is necessary to create pkvar.hcl files or pass variables on the command
 to provide login and other information which does not have default.
 
 
-## Building ##
+### How to create the OVA ###
+Use the convinence script create_archlinux.sh.
 
-User the create_archlinux.sh script.
+ * The script will automatically determine the most current version of archlinux to use.
+ * Generate a unique private key to use.
+ * Create the VM and export the template OVA.
+
+ The script will accept an variable filename on the command if one is not provided on the command line it will 
+ look for vcenter.pkvars.hcl.
+ 
+       ./create_archlinux.sh [ pkvar file name ]
+
+Use the cleanup.sh script to remove build artifacts when done.
+
 
