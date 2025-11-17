@@ -8,4 +8,5 @@ echo '10.10.41.158:/Web /mnt/qnap02/Web nfs defaults,noauto,x-systemd.automount,
 systemctl enable remote-fs.target;
 systemctl restart remote-fs.target;
 echo "[INFO] NFS automounts have been configured using systemd";
+cat /etc/fstab;
 
