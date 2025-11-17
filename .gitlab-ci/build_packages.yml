@@ -56,11 +56,11 @@
     - if: $CI_PIPELINE_SOURCE == "push"
     - changes:
          - build_vms/**/*
-    - when: never
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - changes:
          - build_vms/**/*
-    - when: never
+      when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
@@ -209,11 +209,11 @@ build_deb_or_rpm_container:
     - if: $CI_PIPELINE_SOURCE == "push"
     - changes:
          - build_vms/**/*
-    - when: never
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - changes:
          - build_vms/**/*
-    - when: never
+      when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
@@ -285,11 +285,11 @@ build_freebsd:
     - if: $CI_PIPELINE_SOURCE == "push"
     - changes:
          - build_vms/**/*
-    - when: never
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - changes:
          - build_vms/**/*
-    - when: never
+      when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
