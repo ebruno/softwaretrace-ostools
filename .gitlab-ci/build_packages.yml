@@ -54,13 +54,13 @@
     - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
-    - changes:
+      changes:
          - build_vms/**/*.sh
          - build_vms/**/*.md
          - build_vms/**/*.hcl
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - changes:
+      changes:
          - build_vms/**/*.sh
          - build_vms/**/*.md
          - build_vms/**/*.hcl
@@ -73,6 +73,8 @@
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
          - ./processmanagement/os/c_cpp/**/*.c
+      when: on_success
+    - when: never
   artifacts:
     paths:
       - packages/archlinux/x86_64/
@@ -130,11 +132,11 @@ build_archlinux_container:
     - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
-    - changes:
+      changes:
          - build_vms/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - changes:
+      changes:
          - build_vms/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -211,11 +213,11 @@ build_deb_or_rpm_container:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
-    - changes:
+      changes:
          - build_vms/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - changes:
+      changes:
          - build_vms/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -287,11 +289,11 @@ build_freebsd:
     - if: $CI_SWTR_SKIP_FREEBSD == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
-    - changes:
+      changes:
          - build_vms/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - changes:
+      changes:
          - build_vms/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
