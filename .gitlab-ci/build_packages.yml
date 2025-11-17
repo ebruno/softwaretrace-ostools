@@ -55,15 +55,13 @@
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
       changes:
-         - build_vms/**/*.sh
-         - build_vms/**/*.md
-         - build_vms/**/*.hcl
+         - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
-         - build_vms/**/*.sh
-         - build_vms/**/*.md
-         - build_vms/**/*.hcl
+         - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -134,10 +132,12 @@ build_archlinux_container:
     - if: $CI_PIPELINE_SOURCE == "push"
       changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -215,10 +215,12 @@ build_deb_or_rpm_container:
     - if: $CI_PIPELINE_SOURCE == "push"
       changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -290,10 +292,12 @@ build_freebsd:
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
       changes:
+         - build_containers/**/*
          - build_vms/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
+         - build_containers/**/*
          - build_vms/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"

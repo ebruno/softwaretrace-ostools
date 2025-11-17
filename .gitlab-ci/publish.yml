@@ -25,7 +25,7 @@ archlinux:
     - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - changes:
+      changes:
          - build_vms/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -101,7 +101,7 @@ debian:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - changes:
+      changes:
          - build_vms/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -145,7 +145,7 @@ freebsd:
     - if: $CI_SWTR_SKIP_FREEBSD == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - changes:
+      changes:
          - build_vms/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"

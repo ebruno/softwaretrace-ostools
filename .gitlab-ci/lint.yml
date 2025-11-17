@@ -17,8 +17,9 @@ lint_system_management:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - changes:
+      changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -46,7 +47,7 @@ lint_c_processmanagement:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - changes:
+      changes:
          - build_vms/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -83,8 +84,9 @@ lint_python_processmanagement:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - changes:
+      changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
