@@ -46,4 +46,8 @@ Use the convinence script create_archlinux.sh.
 
 Use the cleanup.sh script to remove build artifacts when done.
 
+## File Inventory ##
 
+
+   * files scripts that build the vm.
+   * http files access via http this is currently a placeholder.
