@@ -266,7 +266,10 @@ build_freebsd:
       when: never
     - if: $CI_PIPELINE_SOURCE == "push"
       when: never
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" 
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - changes:
+         - build_vms/**/*
+      when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
