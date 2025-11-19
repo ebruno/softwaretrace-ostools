@@ -27,6 +27,7 @@ archlinux:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -65,6 +66,7 @@ redhat:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -103,6 +105,7 @@ debian:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
@@ -147,6 +150,7 @@ freebsd:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:

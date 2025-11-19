@@ -49,6 +49,7 @@ lint_c_processmanagement:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:

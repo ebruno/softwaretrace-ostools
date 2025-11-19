@@ -12,16 +12,18 @@ sanity:
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
-    - if: $CI_PIPELINE_SOURCE == "push"
-      changes:
-         - build_vms/**/*
-      when: never
+#    - if: $CI_PIPELINE_SOURCE == "push"
+#      changes:
+#         - build_vms/**/*
+#         - build_containers/**/*
+#      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
-      changes:
+    - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/sanity.yml
          - ./**/Makefile
@@ -64,13 +66,15 @@ sanity_archlinux_container:
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
-    - if: $CI_PIPELINE_SOURCE == "push"
-      changes:
-         - build_vms/**/*
-      when: never
+#    - if: $CI_PIPELINE_SOURCE == "push"
+#      changes:
+#         - build_vms/**/*
+#         - build_containers/**/*
+#      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
+         - build_containers/**/*
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
