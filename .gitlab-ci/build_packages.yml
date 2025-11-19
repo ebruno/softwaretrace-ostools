@@ -53,11 +53,6 @@
       when: never
     - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
       when: never
-    - if: $CI_PIPELINE_SOURCE == "push"
-      changes:
-         - build_vms/**/*
-         - build_containers/**/*
-      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
@@ -66,7 +61,8 @@
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/build_packages.yml
+         - .gitlab-ci/publish.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -129,11 +125,6 @@ build_archlinux_container:
       when: never
     - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
       when: never
-    - if: $CI_PIPELINE_SOURCE == "push"
-      changes:
-         - build_vms/**/*
-         - build_containers/**/*
-      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
@@ -142,7 +133,8 @@ build_archlinux_container:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/build_packages.yml
+         - .gitlab-ci/publish.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -150,6 +142,7 @@ build_archlinux_container:
   artifacts:
     paths:
       - packages/archlinux/x86_64/
+
 build_deb_or_rpm_container:
   stage: package
   image:
@@ -212,11 +205,6 @@ build_deb_or_rpm_container:
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
-    - if: $CI_PIPELINE_SOURCE == "push"
-      changes:
-         - build_vms/**/*
-         - build_containers/**/*
-      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
@@ -225,7 +213,8 @@ build_deb_or_rpm_container:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/build_packages.yml
+         - .gitlab-ci/publish.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -290,11 +279,6 @@ build_freebsd:
       when: never
     - if: $CI_SWTR_SKIP_FREEBSD == "true"
       when: never
-    - if: $CI_PIPELINE_SOURCE == "push"
-      changes:
-         - build_containers/**/*
-         - build_vms/**/*
-      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_containers/**/*
@@ -303,7 +287,8 @@ build_freebsd:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/build_packages.yml
+         - .gitlab-ci/publish.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
