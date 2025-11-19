@@ -113,7 +113,7 @@ container:
       do
         echo "[INFO] Checking file: $line";
         if [[ "${line}" =~ .*Dockerfile.* ]] || [[ "${line}" =~ .*Containerfile.* ]]; then
-           # This is need for the case when a file has been deleted.
+           # This is needed for the case when a file has been deleted.
            if [ -f "${container_path}" ]; then
                 echo "[INFO] Rebuilding ${line}";
            else
@@ -166,6 +166,10 @@ container:
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: on_success
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+         - build_vms/**/*
+      when: never
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/containers.yml
