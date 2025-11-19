@@ -12,11 +12,6 @@ sanity:
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
-#    - if: $CI_PIPELINE_SOURCE == "push"
-#      changes:
-#         - build_vms/**/*
-#         - build_containers/**/*
-#      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
@@ -27,6 +22,7 @@ sanity:
          - .gitlab-ci.yml
          - .gitlab-ci/sanity.yml
          - .gitlab-ci/build_packages.yml
+	 - .gitlab-ci/publish.yml
          - ./**/Makefile
          - spec/**/*_spec.sh
          - lib/**/*.sh
@@ -77,6 +73,7 @@ sanity_archlinux_container:
          - .gitlab-ci.yml
          - .gitlab-ci/sanity.yml
          - .gitlab-ci/build_packages.yml
+	 - .gitlab-ci/publish.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h

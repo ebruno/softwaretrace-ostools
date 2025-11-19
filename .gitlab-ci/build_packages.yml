@@ -62,6 +62,7 @@
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/build_packages.yml
+	 - .gitlab-ci/publish.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -133,6 +134,7 @@ build_archlinux_container:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/build_packages.yml
+	 - .gitlab-ci/publish.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -212,6 +214,7 @@ build_deb_or_rpm_container:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/build_packages.yml
+	 - .gitlab-ci/publish.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -285,6 +288,7 @@ build_freebsd:
     - changes:
          - .gitlab-ci.yml
          - .gitlab-ci/build_packages.yml
+	 - .gitlab-ci/publish.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
