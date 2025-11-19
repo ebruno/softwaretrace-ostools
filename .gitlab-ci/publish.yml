@@ -64,7 +64,7 @@ redhat:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - changes:
+      changes:
          - build_vms/**/*
          - build_containers/**/*
       when: never

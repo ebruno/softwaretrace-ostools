@@ -53,11 +53,6 @@
       when: never
     - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
       when: never
-#    - if: $CI_PIPELINE_SOURCE == "push"
-#      changes:
-#         - build_vms/**/*
-#         - build_containers/**/*
-#      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
@@ -129,11 +124,6 @@ build_archlinux_container:
       when: never
     - if: $CI_SWTR_SKIP_ARCHLINUX == "true"
       when: never
-#    - if: $CI_PIPELINE_SOURCE == "push"
-#      changes:
-#         - build_vms/**/*
-#         - build_containers/**/*
-#      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
@@ -212,11 +202,6 @@ build_deb_or_rpm_container:
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
-#    - if: $CI_PIPELINE_SOURCE == "push"
-#      changes:
-#         - build_vms/**/*
-#         - build_containers/**/*
-#      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_vms/**/*
@@ -290,11 +275,6 @@ build_freebsd:
       when: never
     - if: $CI_SWTR_SKIP_FREEBSD == "true"
       when: never
-#    - if: $CI_PIPELINE_SOURCE == "push"
-#      changes:
-#         - build_containers/**/*
-#         - build_vms/**/*
-#      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
          - build_containers/**/*
