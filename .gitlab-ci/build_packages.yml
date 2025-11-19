@@ -66,7 +66,7 @@
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/build_packages.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -142,7 +142,7 @@ build_archlinux_container:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/build_packages.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -225,7 +225,7 @@ build_deb_or_rpm_container:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/build_packages.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h
@@ -303,7 +303,7 @@ build_freebsd:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/build_packages.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h

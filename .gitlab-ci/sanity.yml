@@ -79,7 +79,7 @@ sanity_archlinux_container:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/sanity.yml
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
          - ./processmanagement/os/c_cpp/**/*.h

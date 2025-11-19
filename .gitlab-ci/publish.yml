@@ -32,7 +32,7 @@ archlinux:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/publish.yml
          - ./move_linux_packages.sh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
@@ -71,7 +71,7 @@ redhat:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/packages.yml
          - ./move_linux_packages.sh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
@@ -110,7 +110,7 @@ debian:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/packages.yml
          - ./move_linux_packages.sh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
@@ -155,7 +155,7 @@ freebsd:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - changes:
          - .gitlab-ci.yml
-         - .gitlab-ci/*.yml
+         - .gitlab-ci/packages.yml
          - ./move_freebsd_packages.csh
          - ./processmanagement/os/c_cpp/**/Makefile
          - ./processmanagement/os/c_cpp/**/*.mk
