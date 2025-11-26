@@ -85,6 +85,7 @@ build {
       "arch-chroot /mnt usermod -p '${var.root_password_enc}' root",
       "echo \"[INFO] Setting password for ${var.adminuser}.\"",
       "arch-chroot /mnt usermod -p '${var.adminuser_password_enc}' ${var.adminuser}",
+      "arch-chroot /mnt usermod -p '${var.builduser_passwd}' ${var.builduser}",
       "arch-chroot /mnt /root/setup_install_ssh_keys.sh ${var.install_ssh_key} ${var.adminuser}",
       "arch-chroot /mnt rm -f /root/setup_install_ssh_keys.sh",
       "arch-chroot /mnt /root/setup_nfsmounts.sh",
@@ -167,6 +168,11 @@ variable "adminuser_password_enc" {
   type        = string
   default     = "$1$packer$zBicTzVGZp3.RqEuQUnd1/"
   description = "Encrypted password to set in the VM for adminuser."
+}
+variable builduser {
+  type        = string
+  default     = "builduser"
+  description = "build user account name"
 }
 variable "builduser_passwd" {
   type        = string

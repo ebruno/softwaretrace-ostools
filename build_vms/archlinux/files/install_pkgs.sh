@@ -71,7 +71,7 @@ for userid in ${admin_user} ${build_user}
 do
     echo "[INFO] Adding account: ${userid}";
     useradd -m -G wheel -s /bin/bash ${userid};
-    echo "${admin_user} ALL=(ALL) NOPASSWD:ALL" >> "/etc/sudoers.d/admins";
+    echo "${userid} ALL=(ALL) NOPASSWD:ALL" >> "/etc/sudoers.d/admins";
 done;
 chmod 440 "/etc/sudoers.d/admins";
 echo "[INFO] Set password for root, ${admin_user} ${build_user}.";
