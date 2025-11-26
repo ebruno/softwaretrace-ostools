@@ -9,3 +9,4 @@ rm -f archlinux*.pkrvars.hcl;
 rm -f manifest.json;
 rm -f packer_archlinux_sha*.txt;
 rm -f archlinux*.xml;
+rm -f create_archlinux-*_vm.sh;
