@@ -5,4 +5,7 @@ find . -name "*~" -exec rm -f {} \;
 find . -name "#*#" -exec rm -f {} \;
 rm -f sha*sums.txt;
 rm -r -f assets;
-rm -f archlinux.pkrvars.hcl;
+rm -f archlinux*.pkrvars.hcl;
+rm -f manifest.json;
+rm -f packer_archlinux_sha*.txt;
+rm -f archlinux*.xml;

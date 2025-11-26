@@ -1,8 +1,45 @@
 #!/usr/bin/bash
-if [ $# -eq 1 ]; then
+VALID_OPTS=":he";
+declare -i exit_status=0;
+declare -i efi_build=1;
+display_help() {
+    echo "setup_phase_1 [-h -e]";
+    echo " -h  - display this message";
+    echo " -e  - build for EFI boot"
+    echo "if -e is not specified BIOS boot will be configured."
+    return 0;
+}
+while getopts "${VALID_OPTS}" option;
+do
+    case "${option}" in
+    h)
+	display_help;
+	exit 0;
+      ;;
+    e)
+	efi_build=0;
+	;;
+    \?)
+	display_help;
+	exit 1;
+	;;
+    :)
+	echo "Error: Option -$OPTARG requires an argument.";
+	exit 1;
+	;;
+    esac;
+    shift $((OPTIND-1));
+done;
+shift $((OPTIND-1))
+if [ $# -ge 1 ]; then
     admin_user="${1}";
 else
     admin_user="packer";
+fi;
+if [ $# -eq 2 ]; then
+    build_user="${1}";
+else
+    build_user="builduser";
 fi;
 tmp_val=$(lsblk | grep -v fd | grep -m 1 disk);
 read -a tmp_diskinfo <<< ${tmp_val};
@@ -13,12 +50,15 @@ hwclock --systohc
 sed -i -e 's/#en_US.UTF8/en_US.UTF8/' /etc/locale.gen
 local-gen
 pacman -Syy --noconfirm;
-pacman -Sy --noconfirm  dhcpcd dnsutils nfs-utils sudo openssh grub
-pacman -Sy --noconfirm vim emacs-nox
-pacman -Sy --noconfirm open-vm-tools
-systemctl enable dhcpcd
-systemctl enable vmtoolsd
-systemctl enable sshd
+pacman -Sy --noconfirm  dhcpcd dnsutils nfs-utils sudo openssh grub;
+pacman -Sy --noconfirm vim emacs-nox;
+if [ ${efi_build} -eq 0 ]; then
+    pacman -Sy --noconfirm efibootmgr;
+fi;
+pacman -Sy --noconfirm open-vm-tools;
+systemctl enable dhcpcd;
+systemctl enable vmtoolsd;
+systemctl enable sshd;
 # not working reliable disable for now.
 #systemctl enable systemd-networkd.service systemd-networkd-wait-online.service
 install /root/update_etc_issue.sh /usr/local/bin;
@@ -27,7 +67,11 @@ install -m 664 /root/show_ip_on_login.service /usr/lib/systemd/system;
 # systemctl disable show_ip_on_login.service;
 rm -f root/update_etc_issue.sh /root/show_ip_on_login.service;
 echo "[INFO] Package install completed.";
-useradd -m -G wheel -s /bin/bash ${admin_user};
-echo "${admin_user} ALL=(ALL) NOPASSWD:ALL" >> "/etc/sudoers.d/admins"
-chmod 440 "/etc/sudoers.d/admins"
-echo "[INFO] Set password for root and ${admin_user}."
+for userid in ${admin_user} ${build_user}
+do
+    echo "[INFO] Adding account: ${userid}";
+    useradd -m -G wheel -s /bin/bash ${userid};
+    echo "${admin_user} ALL=(ALL) NOPASSWD:ALL" >> "/etc/sudoers.d/admins";
+done;
+chmod 440 "/etc/sudoers.d/admins";
+echo "[INFO] Set password for root, ${admin_user} ${build_user}.";
