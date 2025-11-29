@@ -4,14 +4,20 @@ if ( $# > 0) then
 else
   set userlist = ("gitlab-runner")
 endif
-pkg install -y doas cmake bash git git-lfs git-who go doxygen graphviz hs-pandoc hs-pandoc-crossref mscgen python3
-sleep 20
+foreach package (doas cmake bash git git-lfs git-who go doxygen graphviz hs-pandoc hs-pandoc-crossref mscgen python3)
+    if ( { pkg info -qe $package } ) then
+	echo "[INFO] $package is installed, skipping"
+    else
+	pkg install -y $package
+    endif
+end
+sleep 10
 if ( -e /usr/local/etc/doas.conf ) then
   foreach username ($userlist)
     echo "[INFO] Checking if $username is in doas.conf"
     grep -q $username:q /usr/local/etc/doas.conf
     if ( $status == 1 ) then
-        echo "[INFO] Adding $username as root to doas.conf"
+	echo "[INFO] Adding $username as root to doas.conf"
 	echo "permit nopass $username as root" >> /usr/local/etc/doas.conf
     endif
   end
