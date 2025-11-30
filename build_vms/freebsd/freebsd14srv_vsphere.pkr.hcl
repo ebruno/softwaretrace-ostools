@@ -120,8 +120,8 @@ source "vsphere-iso" "freebsd" {
 build {
   sources = ["source.vsphere-iso.freebsd"]
   provisioner "file" {
-    sources     = ["files/freebsd/required_pkgs.sh",
-    		   "gitlab_runner",
+    sources     = ["files/required_pkgs.sh",
+		   "gitlab_runner",
 		   "gitlabrunner.csh",
 		   "pkg_install.csh",
 		   "register_gitlab_runner.csh",
@@ -130,10 +130,10 @@ build {
   }
   provisioner "file" {
     sources     = ["./nfssettings/auto_master",
-    		   "./nfssettings/autofs.d",
-    		   "./nfssettings/rc_conf_setup.csh",
-    		   "./nfssettings/setupautomounts.csh",
-                  ]
+		   "./nfssettings/autofs.d",
+		   "./nfssettings/rc_conf_setup.csh",
+		   "./nfssettings/setupautomounts.csh",
+		  ]
     destination = "/tmp/install/nfssettings/"
   }
   provisioner "shell" {
@@ -148,7 +148,7 @@ build {
       "doas /tmp/install/nfssettings/rc_conf_setup.csh",
       "doas /tmp/install/gitlabrunner.csh ${var.adminuser} ${var.ssh_user}",
       "doas mkdir -p /usr/share/doc/gitlab-runner",
-      "doas cp /tmp/install/register_gitlab_runner.csh /usr/share/doc/gitlab-runner", 
+      "doas cp /tmp/install/register_gitlab_runner.csh /usr/share/doc/gitlab-runner",
       "doas rm -r -f /tmp/install",
     ]
   }
