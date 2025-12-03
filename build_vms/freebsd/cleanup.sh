@@ -5,4 +5,5 @@ find . -name "*~" -exec rm -f {} \;
 find . -name "#*#" -exec rm -f {} \;
 rm -f CHECKSUM*;
 rm -r -f assets;
-rm -f archlinux.pkrvars.hcl;
+rm -f freebsd.pkrvars.hcl;
+rm -f packer_freebsd_sha*.txt;
