@@ -21,7 +21,6 @@ source "qemu" "freebsd" {
   memory            = 2048
   net_device        = "virtio-net"
   disk_interface    = "virtio"
-  net_bridge        = "bridge0"
   boot_wait         = "20s"
   vtpm              = false
   machine_type      = "q35"
@@ -80,9 +79,13 @@ source "qemu" "freebsd" {
     "<wait>mkdir -p /mnt/tmp/install/nfssettings<enter>",
     "<wait>chmod -R 777 /mnt/tmp/install<enter>",
     # Install doas set to all no password access for the adminuser account.
-    "<wait5>chroot /mnt pkg install -y doas<enter>",
-    "<wait30>echo  \"permit nopass :wheel as root\" > /mnt/usr/local/etc/doas.conf<enter>",
-    "<wait2>echo  \"permit nopass ${var.adminuser} as root\" >> /mnt/usr/local/etc/doas.conf<enter>",
+    "<wait5>chroot /mnt pkg install -y doas qemu-guest-agent<enter>",
+    "<wait30>echo \"permit nopass :wheel as root\" > /mnt/usr/local/etc/doas.conf<enter>",
+    "<wait2>echo \"permit nopass ${var.adminuser} as root\" >> /mnt/usr/local/etc/doas.conf<enter>",
+    "<wait>echo \"virtio_console_load=YES\" >> /mnt/boot/loader.conf<enter>",
+    "<wait>chroot /mnt sysrc kld_list+=\"virtio_console\"<enter>",
+    "<wait>chroot /mnt sysrc qemu_guest_agent_enable=YES<enter>",
+    "<wait>chroot /mnt sysrc qemu_guest_agent_flags=\"-d -v -l /var/log/qemu-ga.log\"<enter>",
     "<wait>export BOOT_NUM=`efibootmgr | grep 'Misc Device' | sed -e 's/\\*.$$//g' | sed -e 's/ Boot//g'`<enter>",
     "<wait>chroot /mnt efibootmgr -a -b $BOOT_NUM<enter>",
     "<wait>chroot /mnt efibootmgr -n -b $BOOT_NUM<enter>",
@@ -91,7 +94,7 @@ source "qemu" "freebsd" {
     "<wait3>sync<enter>",
     "<wait>umount /mnt/boot/efi<enter>",
     "<wait3>umount /mnt/dist/packages<enter>",
-    "<wait3>reboot<enter>",
+    "<wait3>shutdown -r now<enter>",
   ]
   output_directory     = local.output_directory
   qemu_binary          = "${var.qemu_binary}"
@@ -172,6 +175,7 @@ sudo virt-install \
 --os-variant freebsd14.2 \
 --graphics vnc,listen=0.0.0.0 \
 --boot uefi,loader=${var.efi_firmware_code},nvram=${var.libvirt_nvram_dir}/${var.vm_name}_VARS.fd \
+--channel 'type=unix,path=/var/lib/libvirt/qemu/guest-name.agent,target.type=virtio,target.name=org.qemu.guest_agent.0' \
 --print-xml > ./${var.vm_name}.xml;
 sudo virsh define ./${var.vm_name}.xml;
 EOF
