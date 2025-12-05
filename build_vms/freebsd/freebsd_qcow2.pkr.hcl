@@ -17,7 +17,7 @@ source "qemu" "freebsd" {
 # enable the efi menu to allow getting in to the efi boot manager for debugging"
 #  qemuargs          = [["-boot","menu=on,splash-time=60", ]]
   accelerator       = "kvm"
-  headless          = "false"
+  headless          = "true"
   memory            = 2048
   net_device        = "virtio-net"
   disk_interface    = "virtio"
