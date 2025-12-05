@@ -12,7 +12,7 @@ source "qemu" "archlinux" {
   iso_url           = "${var.iso_url}"
   iso_checksum      = "${var.iso_checksum}"
   vm_name           = "${var.vm_name}.qcow2"
-  disk_size         = "40G"
+  disk_size         = "400G"
   format            = "qcow2" # Specify qcow2 as the desired disk format
   accelerator       = "kvm"
   headless          = "true"
