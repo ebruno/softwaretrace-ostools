@@ -66,12 +66,8 @@ Variables:
  | adminuser                | Admin User acccount to set in the VM. | string | packer | Yes | optional |
  | adminuser\_password      | Password to set in the VM for adminuser. | string | packer | Yes | optional |
  | adminuser\_password\_enc | Encrypted Password (must match adminuser\_password to set in the VM for adminuser. | string | ecrypted string representing "packer" | Yes | optional |
- | builduser                |
- | builduser\_passwd        |
  | convert\_to\_template    | Convert the virtual machine to a template after the build is complete. If set to true, the virtual machine can not be imported into a content library | bool | true | Yes | Yes |
- | efi\_firmware\_code      |
  | efi\_firmware\_code      | The location and name of this may vary accross operating systems, see table below. | string | /usr/share/OVMF/OVMF\_CODE\_4M.fd | Yes | Yes |
- | efi\_firmware\_vars      |
  | efi\_firmware\_vars      | The location and name of this may vary accross operating systems, see table below. | string | /usr/share/OVMF/OVMF\_VARS\_4M.fd | Yes | Yes |
  | esxi\_server             | esxi server IP/FQDN | string | None | Yes | Yes |
  | hostname                 | Hostname to use for the system. | string | None | Yes | Yes |
@@ -105,7 +101,7 @@ Use the convinence script create\_archlinux_qcow2.sh.
  * Create the VM and export a script to install the vm using virsh-install.
 
  The script will accept an variable filename on the command if one is not provided on the command line it will
- look for vcenter.pkvars.hcl.
+ look for archlinux.pkvars.hcl.
 
 		   ./create_archlinux_qcow2.sh [ pkvar file name ]
 
