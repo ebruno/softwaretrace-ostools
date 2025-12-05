@@ -8,7 +8,8 @@ vCenter tested on:
 
 QCOW2 tested on:
 
-  Fedora 43
+  * Debian 13
+  * Fedora 43
 
 ## FreeBSD Runner on vCenter ##
 
