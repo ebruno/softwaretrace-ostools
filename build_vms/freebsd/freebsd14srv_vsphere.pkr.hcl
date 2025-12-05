@@ -112,6 +112,7 @@ source "vsphere-iso" "freebsd" {
     "<wait60>echo  \"permit nopass :wheel as root\" > /mnt/usr/local/etc/doas.conf<enter>",
     "<wait2>echo  \"permit nopass ${var.ssh_user} as root\" >> /mnt/usr/local/etc/doas.conf<enter>",
     "<wait2>echo  \"permit nopass ${var.adminuser} as root\" >> /mnt/usr/local/etc/doas.conf<enter>",
+    "<wait>chroot /mnt sysrc vmware_guestd_enable=YES<enter>"
     "<wait2>umount /packages<enter>",
     "<wait>reboot<enter>",
   ]
