@@ -7,3 +7,6 @@ rm -f CHECKSUM*;
 rm -r -f assets;
 rm -f freebsd.pkrvars.hcl;
 rm -f packer_freebsd_sha*.txt;
+rm -f freebsd*.xml;
+rm -f manifest.json;
+rm -f create_freebsdsrv*.sh

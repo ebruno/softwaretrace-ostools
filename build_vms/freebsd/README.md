@@ -1,5 +1,16 @@
 # FreeBSD runners #
 
+## Supported OS's ##
+
+vCenter tested on:
+
+  * MacOS 26
+
+QCOW2 tested on:
+
+  * Debian 13
+  * Fedora 43
+
 ## FreeBSD Runner on vCenter ##
 
 Variables:
@@ -102,12 +113,20 @@ EFI Firmware locations:
 
 ## System Configuration ##
 
-The packer build for freebsd requires the use of bridged interface.
-Make sure the bridged interface is defined in /etc/qemu/bridge.conf for example:
+The packer expacts a local NAT'ed network.
+If the default network is not not NAT'ed, use the net_bridge option to
+specify an NAT'ed network to use.
 
-	sudo cat /etc/qemu/bridge.conf
+Make sure the bridged interface is defined in /etc/qemu/bridge.conf for example virnat1:
+
+	Set net_bridge in the variables file or main hcl file.
+	net_bridge        = "virnat1"
+
+	cat /etc/qemu/bridge.conf
 	allow virbr0
-	allow bridge0
+	allow virnat1
+
+
 
 ### How to create the QCOW2 image ###
 Use the convinence script create_freebsd.sh.
@@ -115,10 +134,12 @@ Use the convinence script create_freebsd.sh.
  * The script is currently configured to create freeBSD 14.3 to use.
  * Generate a unique private key to use.
  * Create the VM and export the vSphere template and disk.
+ * In this VM the qemu agent is installed.
+ * The virtual machine create/install script defines the channel to be used by the qemu agent.
 
  The script will accept an variable filename on the command if one is not provided on the command line it will
  look for vcenter.pkvars.hcl.
 
-	   ./create_freebsd_qcow2.sh [ pkvar file name ]
+	   ./create\_freebsd\_qcow2.sh [ pkvar file name ]
 
 Use the cleanup.sh script to remove build artifacts when done.
