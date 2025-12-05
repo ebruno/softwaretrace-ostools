@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+ISO_MIRROR="https://qnap02.brunoe.net:8175/Archlinux";
+#ISO_MIRROR="https://dfw.mirror.rackspace.com/archlinux/iso";
+
 declare -i exit_status=1;
 if [ -f /etc/os-release ]; then
    . /etc/os-release
@@ -26,7 +29,6 @@ if [ -f /etc/os-release ]; then
       packer_basename="archlinux";
       pkrvars_name="${packer_basename}.pkrvars.hcl";
       hcl_name="${packer_basename}.pkr.hcl";
-      ISO_MIRROR="https://dfw.mirror.rackspace.com/archlinux/iso";
       ISO_NAME="archlinux-${ISO_BUILD_DATE}-x86_64.iso";
       if [ -f ./assets/id_rsa ]; then
 	  rm -f ./assets/id_rsa*;
