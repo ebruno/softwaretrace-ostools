@@ -76,7 +76,7 @@ build {
   }
   provisioner "shell" {
     inline = [
-      "arch-chroot /mnt /root/install_pkgs.sh -e ${var.adminuser}",
+      "arch-chroot /mnt /root/install_pkgs.sh -l -e ${var.adminuser}",
       "arch-chroot /mnt rm -f /root/install_pkgs.sh",
       "arch-chroot /mnt /root/required_pkgs.sh",
       "arch-chroot /mnt rm -f /root/required_pkgs.sh",
@@ -115,7 +115,7 @@ sudo cp ./${local.output_directory}/efivars.fd ${var.libvirt_nvram_dir}/${var.vm
 sudo chown ${var.nvram_owner}:${var.nvram_group} ${var.libvirt_nvram_dir}/${var.vm_name}_VARS.fd;
 sudo chmod 664 ${var.libvirt_nvram_dir}/${var.vm_name}_VARS.fd;
 sudo virt-install \
---name archlinux_gitlabrunner \
+--name archlinux_gitlabrunner_test \
 --memory 4086 \
 --vcpus 4 \
 --disk path=${var.libvirt_vm_image_dir}/${var.vm_name}.qcow2,format=qcow2 \
@@ -125,6 +125,7 @@ sudo virt-install \
 --os-variant archlinux \
 --graphics vnc,listen=0.0.0.0 \
 --boot uefi,loader=${var.efi_firmware_code},nvram=${var.libvirt_nvram_dir}/${var.vm_name}_VARS.fd \
+--channel 'type=unix,path=/var/lib/libvirt/qemu/guest-name.agent,target.type=virtio,target.name=org.qemu.guest_agent.0' \
 --print-xml > ./${var.vm_name}.xml;
 sudo virsh define ./${var.vm_name}.xml;
 EOF
