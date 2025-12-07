@@ -42,11 +42,12 @@ echo "KEYMAP=us" | sudo tee /etc/vconsole.conf
 echo "FONT=Lat2-Terminus16" | sudo tee -a /etc/vconsole.conf
 mkinitcpio -P
 echo "[INFO] Installing Grub at /dev/${DISK_PREFIX}";
+
 if [ ${efi_build} -eq 0 ]; then
-    echo "Configuring for EFI boot.";
+    echo "[INFO] Configuring for EFI boot.";
     grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=ARCHLINUX
 else
-    echo "Configure for BIOS boot.";
+    echo "[INFO] Configure for BIOS boot.";
     grub-install --target=i386-pc /dev/${DISK_PREFIX};
 fi;
 echo "[INFO] running grub-mkconfig"
