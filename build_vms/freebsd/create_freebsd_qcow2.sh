@@ -2,14 +2,14 @@
 declare -i exit_status=1;
 declare -i options_valid=0;
 declare -i dryrun=1;
-VALID_OPTS=":hna:H:";
+VALID_OPTS=":hna:H:i:";
 FREEBSD_MAJOR="14";
 FREEBSD_MINOR="3";
 FREEBSD_VERSION="${FREEBSD_MAJOR}.${FREEBSD_MINOR}";
 # ISO_MIRROR="https://download.freebsd.org/releases/amd64/amd64/ISO-IMAGES/${FREEBSD_VERSION}";
 ISO_MIRROR="https://qnap02.brunoe.net:8175/FreeBSD/${FREEBSD_MAJOR}_${FREEBSD_MINOR}";
 ISO_NAME="FreeBSD-${FREEBSD_MAJOR}.${FREEBSD_MINOR}-RELEASE-amd64-dvd1.iso";
-
+libvirt_image_dir="/var/lib/libvirt/images";
 ADMIN_ACCT_NAME="packer";
 DEFAULT_PASSWORD="packer";
 packer_basename="freebsd";
@@ -21,6 +21,7 @@ display_help() {
     echo "  -h   - display this message.";
     echo "  -a   - admin user account name.";
     echo "  -H   - hostname.";
+    echo "  -i   - libvirt image directory.";
     echo "  -n   - dryrun.";
     echo " hcl_filename to use to generate the image";
     return 0;
@@ -38,6 +39,8 @@ do
 	H)
 	    hostname="${OPTARG}";
 	    ;;
+	i) libvirt_image_dir="${OPTARG}";
+	   ;;
 	n)
 	    dryrun=0;
 	    ;;
@@ -152,7 +155,7 @@ if [ -f /etc/os-release ] && [ ${options_valid} -eq 0 ]; then
 	     echo "[DRYRUN] QEMU Binary: packer default." 1>&2;
 	     echo "[DRYRUN] packer init freebsd_qcow2.pkr.hcl" 1>&2;
 	     rm -r -f output-artifacts;
-	     echo "[DRYRUN] packer build -force -var \"adminuser_password_enc=<hidden>\" -var \"ssh_password_enc=<hidden>\" -var \"root_password_enc=<hidden>\" -var \"public_key=<hidden>\" -var-file="${pkrvars_name}" ${hcl_name}" 1>&2;
+	     echo "[DRYRUN] packer build -force -var \"adminuser_password_enc=<hidden>\" -var \"ssh_password_enc=<hidden>\" -var \"root_password_enc=<hidden>\" -var \"public_key=<hidden>\" -var \"libvirt_vm_image_dir=${libvirt_image_dir}\" -var-file="${pkrvars_name}" ${hcl_name}" 1>&2;
 	     exit_status=0;
 	  else
 	     packer init freebsd_qcow2.pkr.hcl;
@@ -161,6 +164,7 @@ if [ -f /etc/os-release ] && [ ${options_valid} -eq 0 ]; then
 		    -var "ssh_password_enc=${adminuser_passwd_enc}" -var "ssh_password=${DEFAULT_PASSWORD}" \
 		    -var "root_password_enc=${root_passwd_enc}" \
 		    -var "public_key=${public_key}" \
+		    -var "libvirt_vm_image_dir=${libvirt_image_dir}" \
 		    -var-file="${pkrvars_name}" ${hcl_name};
 	     exit_status=$?;
 	     rm -f "${pkrvars_name}";
