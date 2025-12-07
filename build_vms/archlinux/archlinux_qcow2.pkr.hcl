@@ -115,7 +115,7 @@ sudo cp ./${local.output_directory}/efivars.fd ${var.libvirt_nvram_dir}/${var.vm
 sudo chown ${var.nvram_owner}:${var.nvram_group} ${var.libvirt_nvram_dir}/${var.vm_name}_VARS.fd;
 sudo chmod 664 ${var.libvirt_nvram_dir}/${var.vm_name}_VARS.fd;
 sudo virt-install \
---name archlinux_gitlabrunner_test \
+--name archlinux_gitlabrunner \
 --memory 4086 \
 --vcpus 4 \
 --disk path=${var.libvirt_vm_image_dir}/${var.vm_name}.qcow2,format=qcow2 \
