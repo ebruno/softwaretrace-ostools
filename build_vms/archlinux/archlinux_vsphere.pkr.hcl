@@ -99,7 +99,7 @@ build {
   }
   provisioner "shell" {
     inline = [
-      "arch-chroot /mnt /root/install_pkgs.sh ${var.adminuser}",
+      "arch-chroot /mnt /root/install_pkgs.sh -V ${var.adminuser}",
       "arch-chroot /mnt rm -f /root/install_pkgs.sh",
       "arch-chroot /mnt /root/required_pkgs.sh",
       "arch-chroot /mnt rm -f /root/required_pkgs.sh",

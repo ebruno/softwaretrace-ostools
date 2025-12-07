@@ -1,14 +1,19 @@
 #!/usr/bin/bash
-VALID_OPTS=":he";
+VALID_OPTS=":heVl";
 declare -i exit_status=0;
 declare -i efi_build=1;
+declare -i install_vmware_tools=1;
+declare -i install_libvirt_tools=1;
 display_help() {
     echo "setup_phase_1 [-h -e]";
-    echo " -h  - display this message";
-    echo " -e  - build for EFI boot"
+    echo " -h  - display this message.";
+    echo " -e  - build for EFI boot.";
+    echo " -l  - Install libvirt tools.";
+    echo " -V  - Install Vmware tools."
     echo "if -e is not specified BIOS boot will be configured."
     return 0;
 }
+echo "[INFO] Starting install_pkgs"
 while getopts "${VALID_OPTS}" option;
 do
     case "${option}" in
@@ -18,6 +23,13 @@ do
       ;;
     e)
 	efi_build=0;
+	echo "[INFO] Building for efi boot";
+	;;
+    l)
+	install_libvirt_tools=0;
+	;;
+    V)
+	install_vmware_tools=0;
 	;;
     \?)
 	display_help;
@@ -28,7 +40,6 @@ do
 	exit 1;
 	;;
     esac;
-    shift $((OPTIND-1));
 done;
 shift $((OPTIND-1))
 if [ $# -ge 1 ]; then
@@ -53,11 +64,20 @@ pacman -Syy --noconfirm;
 pacman -Sy --noconfirm  dhcpcd dnsutils nfs-utils sudo openssh grub;
 pacman -Sy --noconfirm vim emacs-nox;
 if [ ${efi_build} -eq 0 ]; then
+    echo "[INFO] Installing efibootmgr";
     pacman -Sy --noconfirm efibootmgr;
 fi;
-pacman -Sy --noconfirm open-vm-tools;
+if [ ${install_vmware_tools} -eq 0 ]; then
+    echo "[INFO] Installing open-vm-tools";
+    pacman -Sy --noconfirm open-vm-tools;
+    systemctl enable vmtoolsd;
+fi;
+if [ ${install_libvirt_tools} -eq 0 ]; then
+    echo "[INFO] Installing qemu-guest-agent";
+    pacman -Sy --noconfirm qemu-guest-agent;
+    systemctl enable qemu-guest-agent;
+fi;
 systemctl enable dhcpcd;
-systemctl enable vmtoolsd;
 systemctl enable sshd;
 # not working reliable disable for now.
 #systemctl enable systemd-networkd.service systemd-networkd-wait-online.service
