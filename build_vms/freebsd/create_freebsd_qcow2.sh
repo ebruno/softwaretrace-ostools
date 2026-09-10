@@ -2,13 +2,10 @@
 declare -i exit_status=1;
 declare -i options_valid=0;
 declare -i dryrun=1;
-VALID_OPTS=":hna:H:i:";
+VALID_OPTS=":hna:H:i:m:r:";
 FREEBSD_MAJOR="14";
-FREEBSD_MINOR="3";
-FREEBSD_VERSION="${FREEBSD_MAJOR}.${FREEBSD_MINOR}";
+FREEBSD_MINOR="4";
 # ISO_MIRROR="https://download.freebsd.org/releases/amd64/amd64/ISO-IMAGES/${FREEBSD_VERSION}";
-ISO_MIRROR="https://qnap02.brunoe.net:8175/FreeBSD/${FREEBSD_MAJOR}_${FREEBSD_MINOR}";
-ISO_NAME="FreeBSD-${FREEBSD_MAJOR}.${FREEBSD_MINOR}-RELEASE-amd64-dvd1.iso";
 libvirt_image_dir="/var/lib/libvirt/images";
 ADMIN_ACCT_NAME="packer";
 DEFAULT_PASSWORD="packer";
@@ -22,7 +19,9 @@ display_help() {
     echo "  -a   - admin user account name.";
     echo "  -H   - hostname.";
     echo "  -i   - libvirt image directory.";
+    echo "  -m   - FreeBSD major version (default 14).";
     echo "  -n   - dryrun.";
+    echo "  -r   - FreeBSD minor version (default 4).";
     echo " hcl_filename to use to generate the image";
     return 0;
 }
@@ -41,8 +40,12 @@ do
 	    ;;
 	i) libvirt_image_dir="${OPTARG}";
 	   ;;
+	m) FREEBSD_MAJOR="${OPTARG}";
+	   ;;
 	n)
 	    dryrun=0;
+	    ;;
+	r) FREEBSD_MINOR="${OPTARG}";
 	    ;;
 	:)
 	    echo "[ERROR] Option -$OPTARG requires an argument." 1>&2;
@@ -56,6 +59,10 @@ do
     esac;
 done;
 shift $((OPTIND - 1))
+
+FREEBSD_VERSION="${FREEBSD_MAJOR}.${FREEBSD_MINOR}";
+ISO_MIRROR="https://isos.brunoe.net/FreeBSD/${FREEBSD_MAJOR}_${FREEBSD_MINOR}";
+ISO_NAME="FreeBSD-${FREEBSD_MAJOR}.${FREEBSD_MINOR}-RELEASE-amd64-dvd1.iso";
 
 if [ $# -eq 1 ]; then
     hcl_name="${1}";
@@ -113,7 +120,7 @@ if [ -f /etc/os-release ] && [ ${options_valid} -eq 0 ]; then
        echo "[DRYRUN] vm_name : ${packer_basename}srv-${FREEBSD_MAJOR}${FREEBSD_MINOR}" 1>&2;
        echo "[DRYRUN] iso_url : ${ISO_MIRROR}/${ISO_NAME}" 1>&2;
       else
-	  curl -s -O "${ISO_MIRROR}/CHECKSUM.SHA256-FreeBSD-14.3-RELEASE-amd64"
+	  curl -s -O "${ISO_MIRROR}/CHECKSUM.SHA256-FreeBSD-${FREEBSD_VERSION}-RELEASE-amd64"
 	  while read -a line
 	  do
 	      if [ "${line[1]}" = "(${ISO_NAME})" ]; then
