@@ -165,7 +165,7 @@ sudo cp ./${local.output_directory}/efivars.fd ${var.libvirt_nvram_dir}/${var.vm
 sudo chown ${var.nvram_owner}:${var.nvram_group} ${var.libvirt_nvram_dir}/${var.vm_name}_VARS.fd;
 sudo chmod 664 ${var.libvirt_nvram_dir}/${var.vm_name}_VARS.fd;
 sudo virt-install \
---name freebsd_gitlabrunner \
+--name ${var.vm_name} \
 --memory 4086 \
 --vcpus 4 \
 --disk path=${var.libvirt_vm_image_dir}/${var.vm_name}.qcow2,format=qcow2 \
@@ -175,7 +175,7 @@ sudo virt-install \
 --os-variant freebsd14.2 \
 --graphics vnc,listen=0.0.0.0 \
 --boot uefi,loader=${var.efi_firmware_code},nvram=${var.libvirt_nvram_dir}/${var.vm_name}_VARS.fd \
---channel 'type=unix,path=/var/lib/libvirt/qemu/guest-name.agent,target.type=virtio,target.name=org.qemu.guest_agent.0' \
+--channel 'type=unix,path=/var/lib/libvirt/qemu/${var.vm_name}.agent,target.type=virtio,target.name=org.qemu.guest_agent.0' \
 --print-xml > ./${var.vm_name}.xml;
 sudo virsh define ./${var.vm_name}.xml;
 EOF

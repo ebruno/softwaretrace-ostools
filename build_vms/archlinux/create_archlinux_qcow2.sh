@@ -4,7 +4,7 @@ declare -i exit_status=1;
 declare -i options_valid=0;
 declare -i dryrun=1;
 VALID_OPTS=":hna:H:i:b:";
-ISO_MIRROR="https://qnap02.brunoe.net:8175/Archlinux";
+ISO_MIRROR="https://isos.brunoe.net/Archlinux";
 #ISO_MIRROR="https://dfw.mirror.rackspace.com/archlinux/iso";
 libvirt_image_dir="/var/lib/libvirt/images";
 ADMIN_ACCT_NAME="packer";
@@ -14,7 +14,7 @@ packer_basename="archlinux";
 hostname="archlinux03";
 hcl_name="${packer_basename}_qcow2.pkr.hcl";
 display_help() {
-    echo "create_freebsd_qcow2.sh [-h] [-n] [-a <admin account name>] [hcl_filename]" ;
+    echo "create_archlinux_qcow2.sh [-h] [-n] [-a <admin account name>] [hcl_filename]" ;
     echo "  -h   - display this message.";
     echo "  -a   - admin user account name.";
     echo "  -b   - build date (YYYY-MM.01).";
@@ -35,7 +35,7 @@ do
 	    ADMIN_ACCT_NAME="${OPTARG}";
 	    ;;
 	b)
-	    ISO_BUILD_DATE="${ISO_BUILD_DATE}";
+	    ISO_BUILD_DATE="${OPTARG}";
 	    ;;
 	H)
 	    hostname="${OPTARG}";
@@ -108,7 +108,7 @@ if [ -f /etc/os-release ] && [ ${options_valid} -eq 0 ]; then
 	  root_passwd="$(echo packer | openssl passwd -6 -salt $(openssl rand -base64 16)  --stdin)"
       fi;
       # setup pkrvars file for run.
-      echo "hostname=\"archlinuxvm03\"" > "${pkrvars_name}";
+      echo "hostname=\"${hostname}\"" > "${pkrvars_name}";
       echo "vm_name=\"archlinux-${ISO_BUILD_DATE}\"" >> "${pkrvars_name}";
       if [ ${dryrun} -eq 0 ]; then
 	  echo "[DRYRUN] hostname: ${hostname}" 1>&2;
