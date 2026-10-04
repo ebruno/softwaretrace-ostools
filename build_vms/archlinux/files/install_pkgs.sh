@@ -48,7 +48,7 @@ else
     admin_user="packer";
 fi;
 if [ $# -eq 2 ]; then
-    build_user="${1}";
+    build_user="${2}";
 else
     build_user="builduser";
 fi;

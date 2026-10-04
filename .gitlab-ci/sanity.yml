@@ -35,7 +35,7 @@ sanity:
 sanity_archlinux_container:
   stage: sanity
   image:
-    name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+    name: $CI_REGISTRY/ebruno/softwaretrace-ostools/archlinuxbuild:latest
     docker:
       user: builduser
   parallel:
