@@ -76,7 +76,7 @@
 build_archlinux_container:
   stage: package
   image:
-    name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+    name: $CI_REGISTRY/ebruno/softwaretrace-ostools/archlinuxbuild:latest
     docker:
       user: builduser
   parallel:
@@ -146,7 +146,7 @@ build_archlinux_container:
 build_deb_or_rpm_container:
   stage: package
   image:
-    name: gitlab01.brunoe.net:5050/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+    name: $CI_REGISTRY/ebruno/softwaretrace-ostools/archlinuxbuild:latest
     docker:
       user: builduser
   parallel:

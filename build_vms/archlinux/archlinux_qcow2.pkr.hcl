@@ -125,7 +125,7 @@ sudo virt-install \
 --os-variant archlinux \
 --graphics vnc,listen=0.0.0.0 \
 --boot uefi,loader=${var.efi_firmware_code},nvram=${var.libvirt_nvram_dir}/${var.vm_name}_VARS.fd \
---channel 'type=unix,path=/var/lib/libvirt/qemu/${var.vm_name}.agent,target.type=virtio,target.name=org.qemu.guest_agent.0' \
+--channel unix,path=/var/lib/libvirt/qemu/${var.vm_name}.agent,mode=bind,target.type=virtio,target.name=org.qemu.guest_agent.0 \
 --print-xml > ./${var.vm_name}.xml;
 sudo virsh define ./${var.vm_name}.xml;
 EOF
