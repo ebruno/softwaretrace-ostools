@@ -246,9 +246,9 @@ To install as a service:
 	sudo ./svc.sh install
 	sudo ./svc.sh start
 
-	/etc/systemd/system/actions.runner.ebruno-softwaretrace-ostools.fedora42.service
-● actions.runner.ebruno-softwaretrace-ostools.fedora42.service - GitHub Actions Runner (ebruno-softwaretrace-ostools.fedora42)
-	 Loaded: loaded (/etc/systemd/system/actions.runner.ebruno-softwaretrace-ostools.fedora42.service; enabled; preset: disabled)
+	/etc/systemd/system/actions.runner.ebruno-softwaretrace-ostools.fedora44.service
+● actions.runner.ebruno-softwaretrace-ostools.fedora44.service - GitHub Actions Runner (ebruno-softwaretrace-ostools.fedora44)
+	 Loaded: loaded (/etc/systemd/system/actions.runner.ebruno-softwaretrace-ostools.fedora44.service; enabled; preset: disabled)
 	Drop-In: /usr/lib/systemd/system/service.d
 			 └─10-timeout-abort.conf
 	 Active: active (running) since Sat 2025-09-20 17:30:16 PDT; 252ms ago
@@ -257,7 +257,7 @@ To install as a service:
 	  Tasks: 1 (limit: 4588)
 	 Memory: 928K (peak: 1.1M)
 		CPU: 9ms
-	 CGroup: /system.slice/actions.runner.ebruno-softwaretrace-ostools.fedora42.service
+	 CGroup: /system.slice/actions.runner.ebruno-softwaretrace-ostools.fedora44.service
 or
 
 	./run.sh
@@ -266,4 +266,4 @@ or
 
 runs-on: self-hosted
 
-Or other tags assocated with runner in this example Linux, X64 and fedora42.
+Or other tags assocated with runner in this example Linux, X64 and fedora44.
