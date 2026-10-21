@@ -2,12 +2,14 @@ sanity:
   stage: sanity
   parallel:
     matrix:
-      - RUNNER_TAG: [redhat,debian]
+      - RUNNER_TAG: [fedora44,debian12]
   script:
     - |
       make -C system_management sanity_all
   tags:
      - $RUNNER_TAG
+     - shell
+     - x86_64
 
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
@@ -40,7 +42,7 @@ sanity_archlinux_container:
       user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [debcontainer]
+      - RUNNER_TAG: [debian12]
   before_script:
     - |
   script:
@@ -60,6 +62,8 @@ sanity_archlinux_container:
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
+    - container
+    - x86_64
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never

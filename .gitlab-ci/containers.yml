@@ -20,7 +20,7 @@ container:
   stage: build_envs
   parallel:
     matrix:
-      - RUNNER_TAG: [debian,fedora42]
+      - RUNNER_TAG: [debian12,fedora44]
   before_script:
     - |
       if [ -x /usr/bin/podman ]; then
@@ -162,6 +162,8 @@ container:
       echo ${CONTAINER_APP} logout $CI_REGISTRY;
   tags:
      - $RUNNER_TAG
+     - shell
+     - x86_64
 
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"

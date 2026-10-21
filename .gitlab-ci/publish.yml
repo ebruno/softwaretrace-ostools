@@ -2,7 +2,7 @@ archlinux:
   stage: publish
   parallel:
     matrix:
-      - RUNNER_TAG: [archlinuxvm]
+      - RUNNER_TAG: [archlinux]
   before_script:
     - |
       ls -lR packages;
@@ -19,6 +19,9 @@ archlinux:
     - build_archlinux_container
   tags:
     - $RUNNER_TAG
+    - shell
+    - nfs
+    - x86_64
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
@@ -43,7 +46,7 @@ redhat:
   stage: publish
   parallel:
     matrix:
-      - RUNNER_TAG: [redhat]
+      - RUNNER_TAG: [fedora44]
   before_script:
     - |
       ls -lR packages;
@@ -60,6 +63,9 @@ redhat:
     - build_deb_or_rpm_container
   tags:
     - $RUNNER_TAG
+    - shell
+    - nfs
+    - x86_64
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
@@ -82,7 +88,7 @@ debian:
   stage: publish
   parallel:
     matrix:
-      - RUNNER_TAG: [debian]
+      - RUNNER_TAG: [debian12]
   before_script:
     - |
       ls -lR packages;
@@ -99,6 +105,9 @@ debian:
     - build_deb_or_rpm_container
   tags:
     - $RUNNER_TAG
+    - shell
+    - nfs
+    - x86_64
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
@@ -120,7 +129,7 @@ freebsd:
   stage: publish
   parallel:
     matrix:
-      - RUNNER_TAG: [freebsd14vm]
+      - RUNNER_TAG: [freebsd14]
   before_script:
     - |
       ls -lR packages;
@@ -140,6 +149,9 @@ freebsd:
     - build_freebsd
   tags:
     - $RUNNER_TAG
+    - shell
+    - nfs
+    - x86_64
   timeout: 10m
   allow_failure: true
   rules:

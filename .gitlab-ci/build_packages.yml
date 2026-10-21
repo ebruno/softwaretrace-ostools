@@ -48,6 +48,8 @@
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
+    - shell
+    - x86_64
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
@@ -81,7 +83,7 @@ build_archlinux_container:
       user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [debcontainer]
+      - RUNNER_TAG: [debian12]
   before_script:
     - |
       if [ ! -d "packages" ]; then
@@ -120,6 +122,8 @@ build_archlinux_container:
   needs: ["sanity_archlinux_container"]
   tags:
     - $RUNNER_TAG
+    - container
+    - x86_64
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
@@ -151,7 +155,7 @@ build_deb_or_rpm_container:
       user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [debian,redhat]
+      - RUNNER_TAG: [debian12,fedora44]
   before_script:
     - |
       if [ ! -d "packages" ]; then
@@ -202,6 +206,8 @@ build_deb_or_rpm_container:
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
+    - shell
+    - x86_64
   rules:
     - if: $CI_SWTR_ONLY_CONTAINERS == "true"
       when: never
@@ -229,7 +235,7 @@ build_freebsd:
   stage: package
   parallel:
     matrix:
-      - RUNNER_TAG: [freebsd14vm]
+      - RUNNER_TAG: [freebsd14]
   before_script:
     - |
       machine="$(uname -p)"
@@ -272,6 +278,8 @@ build_freebsd:
   needs: ["sanity"]
   tags:
     - $RUNNER_TAG
+    - shell
+    - x86_64
   timeout: 5m
   allow_failure: true
   rules:
