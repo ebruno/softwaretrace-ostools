@@ -2,7 +2,7 @@ lint_system_management:
   stage: lint
   parallel:
     matrix:
-      - RUNNER_TAG: [debian12,fedora44]
+      - RUNNER_TAG: [debian13,fedora44]
   script:
     - |
        make -C system_management lint_all;
@@ -36,7 +36,7 @@ lint_c_processmanagement:
   stage: lint
   parallel:
     matrix:
-      - RUNNER_TAG: [debian12,fedora44]
+      - RUNNER_TAG: [debian13,fedora44]
   script:
     - |
        cd processmanagment/os;
@@ -76,7 +76,7 @@ lint_python_processmanagement:
   stage: lint
   parallel:
     matrix:
-      - RUNNER_TAG: [debian12,fedora44]
+      - RUNNER_TAG: [debian13,fedora44]
   script:
     - |
        cd processmanagment/os;

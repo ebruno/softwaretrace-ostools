@@ -88,7 +88,7 @@ debian:
   stage: publish
   parallel:
     matrix:
-      - RUNNER_TAG: [debian12]
+      - RUNNER_TAG: [debian13]
   before_script:
     - |
       ls -lR packages;

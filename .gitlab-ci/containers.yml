@@ -18,9 +18,13 @@
 
 container:
   stage: build_envs
+  # A podman build of the Arch image takes ~16 min on the Fedora runner
+  # (rootfs extract + package install) and longer on a cold cache, which
+  # overruns the 15 min project default and fails with job_execution_timeout.
+  timeout: 60m
   parallel:
     matrix:
-      - RUNNER_TAG: [debian12,fedora44]
+      - RUNNER_TAG: [debian13,fedora44]
   before_script:
     - |
       if [ -x /usr/bin/podman ]; then
