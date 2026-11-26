@@ -83,7 +83,7 @@ build_archlinux_container:
       user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [debian12]
+      - RUNNER_TAG: [debian13]
   before_script:
     - |
       if [ ! -d "packages" ]; then
@@ -155,7 +155,7 @@ build_deb_or_rpm_container:
       user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [debian12,fedora44]
+      - RUNNER_TAG: [debian13,fedora44]
   before_script:
     - |
       if [ ! -d "packages" ]; then

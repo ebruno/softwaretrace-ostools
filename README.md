@@ -63,7 +63,7 @@ The home lab is primarily hosted on a QNAP TVS-873 system with various other syt
 ### Gitlab Runners ###
 
  * Fedora 42 server VM shell and container (podman) runners 
- * Debian 12 server VM shell and container (docker) runners
+ * Debian 13 server VM shell and container runners
  * Raspberry PI5 OS (Debian 12) shell
  * ArchLinux VM shell
  * ArchLinux as a container

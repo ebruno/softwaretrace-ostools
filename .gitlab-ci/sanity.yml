@@ -2,7 +2,7 @@ sanity:
   stage: sanity
   parallel:
     matrix:
-      - RUNNER_TAG: [fedora44,debian12]
+      - RUNNER_TAG: [fedora44,debian13]
   script:
     - |
       make -C system_management sanity_all
@@ -42,7 +42,7 @@ sanity_archlinux_container:
       user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [debian12]
+      - RUNNER_TAG: [debian13]
   before_script:
     - |
   script:
