@@ -8,17 +8,23 @@
 # Some templating is done in order to allow us to easily build different configurations and to
 # allow us to automate the release process.
 #
+# The pinned release rotates out of the Arch package registry, so a build fails
+# with `sha256sum: FAILED` / 404 once it ages out. To bump it, pick the newest
+# rootfs version from
+#   https://gitlab.archlinux.org/api/v4/projects/10185/packages?package_type=generic
+# and update the URL, checksum and version below together.
+#
 # Note: Only official DockerHub images are allowed, see https://gitlab.archlinux.org/archlinux/archlinux-docker/-/commit/daa67d18579024947d69a45e6d028c5adb1c8c23
 # While we could use archlinux:base it could also break our build process, so we avoid dog fooding here
 FROM alpine:3.22 AS verify
 
 RUN apk add --no-cache curl tar zstd
 
-RUN curl -sOJL "https://gitlab.archlinux.org/api/v4/projects/10185/packages/generic/rootfs/20250810.0.398652/multilib-devel-20250810.0.398652.tar.zst" && \
-    echo "aa9826dc097d7542fb1597b653886a052436a67a597a21c7f6641e3dd6954a19  multilib-devel-20250810.0.398652.tar.zst" > /tmp/sha256sums.txt && \
+RUN curl -sOJL "https://gitlab.archlinux.org/api/v4/projects/10185/packages/generic/rootfs/20261122.0.629543/multilib-devel-20261122.0.629543.tar.zst" && \
+    echo "01034006880f93b599f3e910bf3c5d6fab6737de4a923ecc3c586ef314ebfe28  multilib-devel-20261122.0.629543.tar.zst" > /tmp/sha256sums.txt && \
     sha256sum -c /tmp/sha256sums.txt && \
     mkdir /rootfs && \
-    tar -C /rootfs --extract --file multilib-devel-20250810.0.398652.tar.zst
+    tar -C /rootfs --extract --file multilib-devel-20261122.0.629543.tar.zst
 
 FROM scratch AS root
 
@@ -29,14 +35,12 @@ LABEL org.opencontainers.image.url="https://gitlab.archlinux.org/archlinux/archl
 LABEL org.opencontainers.image.documentation="https://wiki.archlinux.org/title/Docker#Arch_Linux"
 LABEL org.opencontainers.image.source="https://gitlab.archlinux.org/archlinux/archlinux-docker"
 LABEL org.opencontainers.image.licenses="GPL-3.0-or-later"
-LABEL org.opencontainers.image.version="20250810.0.398652"
-LABEL org.opencontainers.image.revision="744b1c5c6a7f999c9a8b3daa5897c922e86563ee"
-LABEL org.opencontainers.image.created="2025-08-10T00:07:35+00:00"
+LABEL org.opencontainers.image.version="20261122.0.629543"
 
 COPY --from=verify /rootfs/ /
 
 RUN ldconfig && \
-    sed -i '/BUILD_ID/a VERSION_ID=20250810.0.398652' /etc/os-release; pacman --noconfirm -Sy cmake nfs-utils emacs-nox git python doxygen graphviz archiso; \
+    sed -i '/BUILD_ID/a VERSION_ID=20261122.0.629543' /etc/os-release; pacman --noconfirm -Sy cmake nfs-utils emacs-nox git python doxygen graphviz archiso; \
     useradd -c 'Build User' -G wheel -m builduser -s '/usr/bin/bash'; \
     echo "builduser  ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/001_admin;
 

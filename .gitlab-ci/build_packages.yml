@@ -78,12 +78,12 @@
 build_archlinux_container:
   stage: package
   image:
-    name: $CI_REGISTRY/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+    name: $CI_REGISTRY/ebruno/softwaretrace-ostools/archlinux:latest
     docker:
       user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [debian12]
+      - RUNNER_TAG: [debian13]
   before_script:
     - |
       if [ ! -d "packages" ]; then
@@ -150,12 +150,12 @@ build_archlinux_container:
 build_deb_or_rpm_container:
   stage: package
   image:
-    name: $CI_REGISTRY/ebruno/softwaretrace-ostools/archlinuxbuild:latest
+    name: $CI_REGISTRY/ebruno/softwaretrace-ostools/archlinux:latest
     docker:
       user: builduser
   parallel:
     matrix:
-      - RUNNER_TAG: [debian12,fedora44]
+      - RUNNER_TAG: [debian13,fedora44]
   before_script:
     - |
       if [ ! -d "packages" ]; then
